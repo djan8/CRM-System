@@ -1,7 +1,10 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --main-text-color: #b8b2b2;
+  --main-bg-color: #dad8d8;
+  color: var(--main-text-color);
+ background-color: var(--main-bg-color);
+
 }
 
 

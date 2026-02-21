@@ -1,0 +1,26 @@
+.elem {
+  display: flex;
+  border: azure 1px solid;
+  border-radius: 5px;
+  margin-bottom: 3px;
+  padding: 5px;
+  background: white;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+}
+.elem > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.elem input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+
+
+.done {
+  text-decoration: line-through;
+}
