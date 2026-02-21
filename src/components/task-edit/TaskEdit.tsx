@@ -3,6 +3,9 @@ import Button from "../ui/Button/Button.tsx";
 import Input from "../ui/Input/Input.tsx";
 import type { Todo } from "../type.ts";
 import Icon from "../ui/Icon/Icon.tsx";
+import saveIcon from "/src/assets/save.svg";
+import cancelIcon from "/src/assets/cancel.svg";
+
 interface ITaskEditProps {
   task: Todo;
   isEdit: boolean;
@@ -21,9 +24,6 @@ export default function TaskEdit({
   changeTaskName,
   setIsEdit,
 }: ITaskEditProps) {
-  // const handleClick = (e: React.ChangeEvent<HTMLButtonElement>) => {
-  //   setEdited(e.target.value);
-  // };
   return (
     <>
       <Input
@@ -31,18 +31,15 @@ export default function TaskEdit({
         edited={edited}
         task={task}
         setEdited={setEdited}
-        // onClick={(e) => setEdited(e.target.value)}
-        // onClick={handleClick}
       />
-      {/*<input value={edited} onChange={(e) => setEdited(e.target.value)} />*/}
+
       <Button
         onClick={changeTaskName}
         width="2rem"
         height="2rem"
         background={"DodgerBlue"}
       >
-        <Icon src="/src/assets/save.svg" alt="save" />
-        {/*<img src="/src/assets/save.svg" alt="save" />*/}
+        <Icon src={saveIcon} alt="save" />
       </Button>
       <Button
         onClick={() => setIsEdit((prev) => !prev)}
@@ -50,8 +47,7 @@ export default function TaskEdit({
         height="2rem"
         background={"red"}
       >
-        <Icon src="/src/assets/cancel.svg" alt="cancel" />
-        {/*<img src="/src/assets/cancel.svg" alt="cancel" />*/}
+        <Icon src={cancelIcon} alt="cancel" />
       </Button>
       {/*<button onClick={changeTaskName}>{children}</button>*/}
       {/*<button onClick={() => setIsEdit((prev) => !prev)}>cancel</button>*/}

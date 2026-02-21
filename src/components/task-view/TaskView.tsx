@@ -5,6 +5,8 @@ import Input from "../ui/Input/Input.tsx";
 import type { MetaResponse, Todo, TodoInfo } from "../type.ts";
 import * as React from "react";
 import Icon from "../ui/Icon/Icon.tsx";
+import editIcon from "/src/assets/edit.svg";
+import trashIcon from "/src/assets/trash.svg";
 
 interface ITaskViewProps {
   task: Todo;
@@ -39,7 +41,7 @@ export default function TaskView({
         background={"DodgerBlue"}
         onClick={() => setIsEdit((prev) => !prev)}
       >
-        <Icon src="/src/assets/edit.svg" alt="edit" />
+        <Icon src={editIcon} alt="edit" />
       </Button>
       <Button
         width="2rem"
@@ -47,7 +49,7 @@ export default function TaskView({
         background={"red"}
         onClick={() => deleteTask(task.id, setData, status)}
       >
-        <Icon src="/src/assets/trash.svg" alt="delete" />
+        <Icon src={trashIcon} alt="delete" />
       </Button>
     </div>
   );
