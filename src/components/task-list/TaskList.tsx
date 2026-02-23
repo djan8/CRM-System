@@ -1,6 +1,6 @@
 import TaskItem from "../task-items/TaskItem.tsx";
 import cls from "./TaskList.module.scss";
-import type { MetaResponse, Todo, TodoInfo } from "../type.ts";
+import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
 import * as React from "react";
 
 interface ITaskListProps {

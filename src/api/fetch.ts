@@ -4,7 +4,7 @@ import type {
   Todo,
   TodoInfo,
   TodoRequest,
-} from "../components/type.ts";
+} from "../types/type.ts";
 import { checkValidate } from "../helpers/validation.ts";
 
 export const STATUSES = {

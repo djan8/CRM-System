@@ -1,5 +1,5 @@
 import cls from "./Input.module.scss";
-import type { Todo } from "../../type.ts";
+import type { Todo } from "../../../types/type.ts";
 import * as React from "react";
 interface IInputProps {
   task?: Todo;

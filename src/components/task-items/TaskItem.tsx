@@ -1,5 +1,5 @@
 import cls from "./TaskItem.module.scss";
-import type { MetaResponse, Todo, TodoInfo } from "../type.ts";
+import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
 import { changeStatus, editTask } from "../../api/fetch.ts";
 import { useState } from "react";
 import * as React from "react";

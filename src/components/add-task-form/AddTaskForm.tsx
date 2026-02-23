@@ -1,7 +1,7 @@
 import { addTask, type SetData } from "../../api/fetch.ts";
 import { useState } from "react";
 import Button from "../ui/Button/Button.tsx";
-import cls from "./AddTask.module.scss";
+import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
 
 interface IAddTaskProps {
@@ -9,7 +9,7 @@ interface IAddTaskProps {
   status: string;
 }
 
-export default function AddTask({ setData, status }: IAddTaskProps) {
+export default function AddTaskForm({ setData, status }: IAddTaskProps) {
   const [task, setTask] = useState<string>("");
   const [error, setError] = useState("");
 
@@ -41,15 +41,6 @@ export default function AddTask({ setData, status }: IAddTaskProps) {
           onChange={(e) => setTask(e.target.value)}
         />
 
-        {/*<Input*/}
-        {/*  placeholder="Task To be Done..."*/}
-        {/*  task={task}*/}
-        {/*  minLength={2}*/}
-        {/*  maxLength={64}*/}
-        {/*  setTask={setTask}*/}
-        {/*  width="10rem"*/}
-        {/*  height="2rem"*/}
-        {/*/>*/}
         <Button
           width="10rem"
           height="2rem"

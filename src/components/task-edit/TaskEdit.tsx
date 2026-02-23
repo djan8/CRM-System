@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "../ui/Button/Button.tsx";
 import Input from "../ui/Input/Input.tsx";
-import type { Todo } from "../type.ts";
+import type { Todo } from "../../types/type.ts";
 import Icon from "../ui/Icon/Icon.tsx";
 import saveIcon from "/src/assets/save.svg";
 import cancelIcon from "/src/assets/cancel.svg";

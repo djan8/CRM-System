@@ -2,7 +2,7 @@ import { deleteTask } from "../../api/fetch.ts";
 import cls from "./TaskView.module.scss";
 import Button from "../ui/Button/Button.tsx";
 import Input from "../ui/Input/Input.tsx";
-import type { MetaResponse, Todo, TodoInfo } from "../type.ts";
+import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
 import * as React from "react";
 import Icon from "../ui/Icon/Icon.tsx";
 import editIcon from "/src/assets/edit.svg";

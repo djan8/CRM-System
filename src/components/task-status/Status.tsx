@@ -1,7 +1,6 @@
 import cls from "./Status.module.scss";
-import type { TodoInfo } from "../type.ts";
+import type { TodoInfo } from "../../types/type.ts";
 import * as React from "react";
-import { STATUSES } from "../../api/fetch.ts";
 
 interface IStatusProps {
   info?: TodoInfo;
@@ -21,21 +20,21 @@ export default function Status({ info, setStatus, status }: IStatusProps) {
   return (
     <div className={cls.wrapper}>
       <button
-        className={`${cls.button} ${status === STATUSES.ALL ? cls.active : ""}`}
+        className={`${cls.button} ${status === all ? cls.active : ""}`}
         data-id={all}
         onClick={getTaskWithChangeStatus}
       >
         {`Все (${info.all})`}
       </button>
       <button
-        className={`${cls.button} ${status === STATUSES.INWORK ? cls.active : ""}`}
+        className={`${cls.button} ${status === inWork ? cls.active : ""}`}
         data-id={inWork}
         onClick={getTaskWithChangeStatus}
       >
         {`в работе (${info.inWork})`}
       </button>
       <button
-        className={`${cls.button} ${status === STATUSES.COMPLETED ? cls.active : ""}`}
+        className={`${cls.button} ${status === completed ? cls.active : ""}`}
         data-id={completed}
         onClick={getTaskWithChangeStatus}
       >
