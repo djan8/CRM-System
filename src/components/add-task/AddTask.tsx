@@ -6,9 +6,10 @@ import * as React from "react";
 
 interface IAddTaskProps {
   setData: SetData;
+  status: string;
 }
 
-export default function AddTask({ setData }: IAddTaskProps) {
+export default function AddTask({ setData, status }: IAddTaskProps) {
   const [task, setTask] = useState<string>("");
   const [error, setError] = useState("");
 
@@ -18,7 +19,7 @@ export default function AddTask({ setData }: IAddTaskProps) {
     event.preventDefault();
     try {
       setError("");
-      await addTask(task, setData);
+      await addTask(task, setData, status);
       setTask("");
     } catch (err) {
       if (err instanceof Error) {

@@ -9,4 +9,5 @@ export function checkValidate(title: string) {
   if (value.length >= 64) {
     throw new Error("Не может быть больше 64");
   }
+  return value;
 }

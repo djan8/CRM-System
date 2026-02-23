@@ -36,7 +36,9 @@ export type SetData = React.Dispatch<
   React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
 >;
 
-export async function addTask(task: string, setData: SetData) {
+export async function addTask(task: string, setData: SetData, status: string) {
+  console.log(status);
+  console.log(task);
   const validate = checkValidate(task);
   console.log(validate);
   // const trim = task.trim();
@@ -54,7 +56,7 @@ export async function addTask(task: string, setData: SetData) {
     console.log(res);
     const data = await res.json();
     console.log(data);
-    const refresh = await getTodos();
+    const refresh = await getTodos(status);
     setData(refresh);
   } catch (err) {
     console.error(err);

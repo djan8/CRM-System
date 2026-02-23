@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className="app">
-      <AddTask setData={setData} />
+      <AddTask setData={setData} status={status} />
       <Status {...statusProps} />
       <TaskList {...taskListProps} />
     </div>
