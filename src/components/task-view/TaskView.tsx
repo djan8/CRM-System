@@ -10,7 +10,6 @@ import trashIcon from "/src/assets/trash.svg";
 
 interface ITaskViewProps {
   task: Todo;
-  children: React.ReactNode;
   handleChange: React.ChangeEventHandler<HTMLInputElement>;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   setData: React.Dispatch<
@@ -20,7 +19,6 @@ interface ITaskViewProps {
 }
 export default function TaskView({
   task,
-
   handleChange,
   setIsEdit,
   setData,

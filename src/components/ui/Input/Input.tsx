@@ -35,7 +35,6 @@ export default function Input({
         className={`${cls.input} ${!isEdit && task?.isDone ? cls.done : ""}`}
         placeholder={placeholder}
         value={isEdit ? edited : task?.title}
-        // value={edited}
         minLength={minLength}
         maxLength={maxLength}
         onChange={(e) => setEdited?.(e.target.value)}

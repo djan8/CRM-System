@@ -37,11 +37,8 @@ export type SetData = React.Dispatch<
 >;
 
 export async function addTask(task: string, setData: SetData, status: string) {
-  console.log(status);
-  console.log(task);
   const validate = checkValidate(task);
-  console.log(validate);
-  // const trim = task.trim();
+
   try {
     const res = await fetch(url, {
       method: "POST",
@@ -112,6 +109,7 @@ export async function editTask(
   setData: SetData,
   status: string,
 ) {
+  // const validateTitle = checkValidate(title);
   try {
     const res = await fetch(`${url}/${id}`, {
       method: "PUT",

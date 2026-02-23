@@ -7,6 +7,7 @@ import saveIcon from "/src/assets/save.svg";
 import cancelIcon from "/src/assets/cancel.svg";
 
 interface ITaskEditProps {
+  setError: React.Dispatch<React.SetStateAction<string>>;
   task: Todo;
   isEdit: boolean;
   children?: React.ReactNode;
@@ -23,7 +24,14 @@ export default function TaskEdit({
   setEdited,
   changeTaskName,
   setIsEdit,
+  setError,
 }: ITaskEditProps) {
+  const handleChangeStateValue = () => {
+    setIsEdit((prev) => !prev);
+    setError("");
+    setEdited(task?.title);
+  };
+
   return (
     <>
       <Input
@@ -42,7 +50,8 @@ export default function TaskEdit({
         <Icon src={saveIcon} alt="save" />
       </Button>
       <Button
-        onClick={() => setIsEdit((prev) => !prev)}
+        // нажимаю сюда состояние меняется и значение инпута меняется на изначальное
+        onClick={handleChangeStateValue}
         width="2rem"
         height="2rem"
         background={"red"}
