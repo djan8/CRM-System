@@ -12,6 +12,7 @@ interface IAddTaskProps {
 export default function AddTaskForm({ setData, status }: IAddTaskProps) {
   const [task, setTask] = useState<string>("");
   const [error, setError] = useState("");
+  console.log("iz add", error);
 
   const handleOnSubmit: React.SubmitEventHandler<HTMLFormElement> = async (
     event,

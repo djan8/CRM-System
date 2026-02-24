@@ -25,6 +25,7 @@ export default function TaskItem({
   const [isEdit, setIsEdit] = useState(false);
   const [edited, setEdited] = useState(task.title);
   const [errorChangeValue, setErrorChangeValue] = useState<string>("");
+  console.log("iz item", errorChangeValue);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const checked = e.target.checked;
@@ -35,6 +36,7 @@ export default function TaskItem({
       const validateTitle = checkValidate(edited);
       editTask(task.id, validateTitle, setData, status);
       setIsEdit((prev) => !prev);
+      setErrorChangeValue("");
     } catch (err) {
       if (err instanceof Error) {
         // console.error(err.message);
