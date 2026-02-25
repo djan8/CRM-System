@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "../ui/Button/Button.tsx";
 import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
+import { validateTodoTitle } from "../../helpers/validation.ts";
 
 interface IAddTaskProps {
   setData: SetData;
@@ -11,8 +12,9 @@ interface IAddTaskProps {
 
 export default function AddTaskForm({ setData, status }: IAddTaskProps) {
   const [task, setTask] = useState<string>("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   console.log("iz add", error);
+  console.log(task);
 
   const handleOnSubmit: React.SubmitEventHandler<HTMLFormElement> = async (
     event,
@@ -20,6 +22,13 @@ export default function AddTaskForm({ setData, status }: IAddTaskProps) {
     event.preventDefault();
     try {
       setError("");
+      const validateTitle = validateTodoTitle(task);
+      const { errorMessage, isValid } = validateTitle;
+      console.log(errorMessage, isValid);
+      if (!isValid) {
+        setError(errorMessage);
+        return;
+      }
       await addTask(task, setData, status);
       setTask("");
     } catch (err) {

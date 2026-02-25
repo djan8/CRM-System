@@ -5,7 +5,6 @@ import type {
   TodoInfo,
   TodoRequest,
 } from "../types/type.ts";
-import { validateTodoTitle } from "../helpers/validation.ts";
 
 export const STATUSES = {
   ALL: "all",
@@ -23,8 +22,6 @@ export async function getTodos(
     if (!res.ok) {
       throw new Error(`Ooops, status ${res.status}`);
     }
-    // const data = await res.json();
-    // // setData(data);
     return res.json();
   } catch (err) {
     console.error(err);
@@ -37,14 +34,12 @@ export type SetData = React.Dispatch<
 >;
 
 export async function addTask(task: string, setData: SetData, status: string) {
-  const validate = validateTodoTitle(task);
-
   try {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title: validate,
+        title: task,
       }),
     });
     if (!res.ok) {

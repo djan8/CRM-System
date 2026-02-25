@@ -1,13 +1,28 @@
-export function validateTodoTitle(title: string) {
+type ValidationResult = {
+  errorMessage: string;
+  isValid: boolean;
+};
+
+export function validateTodoTitle(title: string): ValidationResult {
   const value = title.trim();
   if (!value) {
-    throw new Error("Не может быть пусто");
+    return {
+      errorMessage: "Не может быть пусто",
+      isValid: false,
+    };
+    // throw new Error("Не может быть пусто");
   }
   if (value.length < 2) {
-    throw new Error("Не может быть меньше двух");
+    return {
+      errorMessage: "Не может быть меньше двух",
+      isValid: false,
+    };
   }
   if (value.length > 64) {
-    throw new Error("Не может быть больше 64");
+    return {
+      errorMessage: "Не может быть больше 64",
+      isValid: false,
+    };
   }
-  return value;
+  return { errorMessage: "", isValid: true };
 }
