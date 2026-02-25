@@ -10,7 +10,7 @@ import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
 import { validateTodoTitle } from "../../helpers/validation.ts";
 
-interface AddTaskProps {
+interface onUpdate {
   setData: SetData;
   status: StatusType;
 }
@@ -18,7 +18,7 @@ interface AddTaskProps {
 export default function AddTaskForm({
   setData,
   status,
-}: AddTaskProps): JSX.Element {
+}: onUpdate): JSX.Element {
   const [title, setTitle] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -30,7 +30,6 @@ export default function AddTaskForm({
       setError("");
       const validateTitle = validateTodoTitle(title);
       const { errorMessage, isValid } = validateTitle;
-      console.log(errorMessage, isValid);
       if (!isValid) {
         setError(errorMessage);
         return;
@@ -45,6 +44,7 @@ export default function AddTaskForm({
       }
     }
   }
+
   function handleSetInputValue(e: React.ChangeEvent<HTMLInputElement>): void {
     setTitle(e.target.value);
   }
