@@ -1,4 +1,4 @@
-export function checkValidate(title: string) {
+export function validateTodoTitle(title: string) {
   const value = title.trim();
   if (!value) {
     throw new Error("Не может быть пусто");

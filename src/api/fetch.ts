@@ -5,7 +5,7 @@ import type {
   TodoInfo,
   TodoRequest,
 } from "../types/type.ts";
-import { checkValidate } from "../helpers/validation.ts";
+import { validateTodoTitle } from "../helpers/validation.ts";
 
 export const STATUSES = {
   ALL: "all",
@@ -37,7 +37,7 @@ export type SetData = React.Dispatch<
 >;
 
 export async function addTask(task: string, setData: SetData, status: string) {
-  const validate = checkValidate(task);
+  const validate = validateTodoTitle(task);
 
   try {
     const res = await fetch(url, {
@@ -109,7 +109,7 @@ export async function editTask(
   setData: SetData,
   status: string,
 ) {
-  // const validateTitle = checkValidate(title);
+  // const validateTitle = validateTodoTitle(title);
   try {
     const res = await fetch(`${url}/${id}`, {
       method: "PUT",

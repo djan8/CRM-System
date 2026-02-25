@@ -5,7 +5,7 @@ import { useState } from "react";
 import * as React from "react";
 import TaskEdit from "../task-edit/TaskEdit.tsx";
 import TaskView from "../task-view/TaskView.tsx";
-import { checkValidate } from "../../helpers/validation.ts";
+import { validateTodoTitle } from "../../helpers/validation.ts";
 
 type TaskItemProps = {
   task: Todo;
@@ -33,7 +33,7 @@ export default function TaskItem({
   };
   const changeTaskName = () => {
     try {
-      const validateTitle = checkValidate(edited);
+      const validateTitle = validateTodoTitle(edited);
       editTask(task.id, validateTitle, setData, status);
       setIsEdit((prev) => !prev);
       setErrorChangeValue("");
