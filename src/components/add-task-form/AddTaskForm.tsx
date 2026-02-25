@@ -10,7 +10,7 @@ import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
 import { validateTodoTitle } from "../../helpers/validation.ts";
 
-interface IAddTaskProps {
+interface AddTaskProps {
   setData: SetData;
   status: StatusType;
 }
@@ -18,7 +18,7 @@ interface IAddTaskProps {
 export default function AddTaskForm({
   setData,
   status,
-}: IAddTaskProps): JSX.Element {
+}: AddTaskProps): JSX.Element {
   const [task, setTask] = useState<string>("");
   const [error, setError] = useState<string>("");
 
