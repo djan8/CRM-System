@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import cls from "./Button.module.scss";
 
 interface IProp {
@@ -19,7 +19,7 @@ export default function Button({
   background,
   color,
   onClick,
-}: IProp) {
+}: IProp): JSX.Element {
   return (
     <button
       className={cls.button}

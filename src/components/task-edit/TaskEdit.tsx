@@ -5,6 +5,7 @@ import type { Todo } from "../../types/type.ts";
 import Icon from "../ui/Icon/Icon.tsx";
 import saveIcon from "/src/assets/save.svg";
 import cancelIcon from "/src/assets/cancel.svg";
+import type { JSX } from "react";
 
 interface ITaskEditProps {
   setError: React.Dispatch<React.SetStateAction<string>>;
@@ -25,8 +26,8 @@ export default function TaskEdit({
   changeTaskName,
   setIsEdit,
   setError,
-}: ITaskEditProps) {
-  function handleChangeStateValue() {
+}: ITaskEditProps): JSX.Element {
+  function handleChangeStateValue(): void {
     setIsEdit((prev) => !prev);
     setError("");
     setEdited(task?.title);
@@ -50,7 +51,6 @@ export default function TaskEdit({
         <Icon src={saveIcon} alt="save" />
       </Button>
       <Button
-        // нажимаю сюда состояние меняется и значение инпута меняется на изначальное
         onClick={handleChangeStateValue}
         width="2rem"
         height="2rem"
@@ -58,8 +58,6 @@ export default function TaskEdit({
       >
         <Icon src={cancelIcon} alt="cancel" />
       </Button>
-      {/*<button onClick={changeTaskName}>{children}</button>*/}
-      {/*<button onClick={() => setIsEdit((prev) => !prev)}>cancel</button>*/}
     </>
   );
 }

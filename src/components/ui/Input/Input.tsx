@@ -1,6 +1,7 @@
 import cls from "./Input.module.scss";
 import type { Todo } from "../../../types/type.ts";
 import * as React from "react";
+import type { JSX } from "react";
 interface IInputProps {
   task?: Todo;
   edited?: string;
@@ -27,7 +28,7 @@ export default function Input({
   width,
   height,
   readOnly = false,
-}: IInputProps) {
+}: IInputProps): JSX.Element {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEdited?.(e.target.value);
   }

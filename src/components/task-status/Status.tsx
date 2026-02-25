@@ -1,21 +1,29 @@
 import cls from "./Status.module.scss";
 import type { TodoInfo } from "../../types/type.ts";
 import * as React from "react";
+import type { JSX } from "react";
+import type { StatusType } from "../../api/fetch.ts";
 
 interface IStatusProps {
   info?: TodoInfo;
-  setStatus: React.Dispatch<React.SetStateAction<string>>;
-  status?: string;
+  setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
+  status?: StatusType;
 }
 
-export default function Status({ info, setStatus, status }: IStatusProps) {
+export default function Status({
+  info,
+  setStatus,
+  status,
+}: IStatusProps): JSX.Element {
   if (!info) return <div>Статусы не переданы</div>;
   const [all, completed, inWork] = Object.keys(info);
 
-  function getTaskWithChangeStatus(e: React.MouseEvent<HTMLButtonElement>) {
+  function getTaskWithChangeStatus(
+    e: React.MouseEvent<HTMLButtonElement>,
+  ): void {
     const id = e.currentTarget.dataset.id;
     if (!id) return;
-    setStatus(id);
+    setStatus(id as StatusType);
   }
 
   return (

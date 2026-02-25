@@ -1,7 +1,7 @@
 import cls from "./TaskItem.module.scss";
 import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
-import { changeStatus, editTask } from "../../api/fetch.ts";
-import { useState } from "react";
+import { changeStatus, editTask, type StatusType } from "../../api/fetch.ts";
+import { type JSX, useState } from "react";
 import * as React from "react";
 import TaskEdit from "../task-edit/TaskEdit.tsx";
 import TaskView from "../task-view/TaskView.tsx";
@@ -13,27 +13,24 @@ type TaskItemProps = {
   setData: React.Dispatch<
     React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
   >;
-  status: string;
+  status: StatusType;
 };
 
 export default function TaskItem({
   task,
-  // info,
   setData,
   status,
-}: TaskItemProps) {
+}: TaskItemProps): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
   const [edited, setEdited] = useState(task.title);
   const [errorChangeValue, setErrorChangeValue] = useState<string>("");
-  // console.log("iz item", errorChangeValue);
-  console.log(edited);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const checked = e.target.checked;
     changeStatus(task.id, { isDone: checked }, setData, status);
   }
 
-  function changeTaskName() {
+  function changeTaskName(): void {
     try {
       const validateTitle = validateTodoTitle(edited);
       const { errorMessage, isValid } = validateTitle;

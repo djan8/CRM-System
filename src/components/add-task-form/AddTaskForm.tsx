@@ -1,5 +1,10 @@
-import { addTask, getTodos, type SetData } from "../../api/fetch.ts";
-import { useState } from "react";
+import {
+  addTask,
+  getTodos,
+  type SetData,
+  type StatusType,
+} from "../../api/fetch.ts";
+import { type JSX, useState } from "react";
 import Button from "../ui/Button/Button.tsx";
 import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
@@ -7,16 +12,21 @@ import { validateTodoTitle } from "../../helpers/validation.ts";
 
 interface IAddTaskProps {
   setData: SetData;
-  status: string;
+  status: StatusType;
 }
 
-export default function AddTaskForm({ setData, status }: IAddTaskProps) {
+export default function AddTaskForm({
+  setData,
+  status,
+}: IAddTaskProps): JSX.Element {
   const [task, setTask] = useState<string>("");
   const [error, setError] = useState<string>("");
   console.log("iz add", error);
   console.log(task);
 
-  async function handleOnSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+  async function handleOnSubmit(
+    event: React.SubmitEvent<HTMLFormElement>,
+  ): Promise<void> {
     event.preventDefault();
     try {
       setError("");
@@ -37,7 +47,7 @@ export default function AddTaskForm({ setData, status }: IAddTaskProps) {
       }
     }
   }
-  function handleSetInputValue(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleSetInputValue(e: React.ChangeEvent<HTMLInputElement>): void {
     setTask(e.target.value);
   }
   return (

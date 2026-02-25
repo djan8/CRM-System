@@ -6,21 +6,23 @@ import type {
   TodoRequest,
 } from "../types/type.ts";
 
-type Statuses = {
-  ALL: string;
-  INWORK: string;
-  COMPLETED: string;
-};
-export const STATUSES: Statuses = {
+// type Statuses = {
+//   ALL: string;
+//   INWORK: string;
+//   COMPLETED: string;
+// };
+
+export const STATUSES = {
   ALL: "all",
   INWORK: "inWork",
   COMPLETED: "completed",
-};
+} as const;
+export type StatusType = (typeof STATUSES)[keyof typeof STATUSES];
 
 const URL: string = "https://easydev.club/api/v1/todos";
 
 export async function getTodos(
-  status = STATUSES.ALL,
+  status: StatusType = STATUSES.ALL,
 ): Promise<MetaResponse<Todo, TodoInfo>> {
   try {
     const res = await fetch(`${URL}?filter=${status}`);
@@ -38,7 +40,7 @@ export type SetData = React.Dispatch<
   React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
 >;
 
-export async function addTask(task: string) {
+export async function addTask(task: string): Promise<void> {
   try {
     const res = await fetch(URL, {
       method: "POST",
@@ -62,7 +64,11 @@ export async function addTask(task: string) {
   }
 }
 
-export async function deleteTask(id: number, setData: SetData, status: string) {
+export async function deleteTask(
+  id: number,
+  setData: SetData,
+  status: StatusType,
+): Promise<void> {
   try {
     const res = await fetch(`${URL}/${id}`, {
       method: "DELETE",
@@ -84,8 +90,8 @@ export async function changeStatus(
   id: number,
   isDone: TodoRequest,
   setData: SetData,
-  status: string,
-) {
+  status: StatusType,
+): Promise<void> {
   try {
     const res = await fetch(`${URL}/${id}`, {
       method: "PUT",
@@ -109,8 +115,8 @@ export async function editTask(
   id: number,
   title: string,
   setData: SetData,
-  status: string,
-) {
+  status: StatusType,
+): Promise<void> {
   // const validateTitle = validateTodoTitle(title);
   try {
     const res = await fetch(`${URL}/${id}`, {

@@ -1,4 +1,4 @@
-import { deleteTask } from "../../api/fetch.ts";
+import { deleteTask, type StatusType } from "../../api/fetch.ts";
 import cls from "./TaskView.module.scss";
 import Button from "../ui/Button/Button.tsx";
 import Input from "../ui/Input/Input.tsx";
@@ -7,6 +7,7 @@ import * as React from "react";
 import Icon from "../ui/Icon/Icon.tsx";
 import editIcon from "/src/assets/edit.svg";
 import trashIcon from "/src/assets/trash.svg";
+import type { JSX } from "react";
 
 interface ITaskViewProps {
   task: Todo;
@@ -15,7 +16,7 @@ interface ITaskViewProps {
   setData: React.Dispatch<
     React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
   >;
-  status: string;
+  status: StatusType;
 }
 export default function TaskView({
   task,
@@ -23,11 +24,11 @@ export default function TaskView({
   setIsEdit,
   setData,
   status,
-}: ITaskViewProps) {
-  function handleClickEdit() {
+}: ITaskViewProps): JSX.Element {
+  function handleClickEdit(): void {
     setIsEdit((prev) => !prev);
   }
-  function handleClickDelete() {
+  function handleClickDelete(): void {
     deleteTask(task.id, setData, status);
   }
   return (
