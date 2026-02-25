@@ -19,7 +19,7 @@ export default function AddTaskForm({
   setData,
   status,
 }: AddTaskProps): JSX.Element {
-  const [task, setTask] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   async function handleOnSubmit(
@@ -28,17 +28,17 @@ export default function AddTaskForm({
     event.preventDefault();
     try {
       setError("");
-      const validateTitle = validateTodoTitle(task);
+      const validateTitle = validateTodoTitle(title);
       const { errorMessage, isValid } = validateTitle;
       console.log(errorMessage, isValid);
       if (!isValid) {
         setError(errorMessage);
         return;
       }
-      await addTask(task);
+      await addTask(title);
       const refresh = await getTodos(status);
       setData(refresh);
-      setTask("");
+      setTitle("");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -46,7 +46,7 @@ export default function AddTaskForm({
     }
   }
   function handleSetInputValue(e: React.ChangeEvent<HTMLInputElement>): void {
-    setTask(e.target.value);
+    setTitle(e.target.value);
   }
   return (
     <>
@@ -58,7 +58,7 @@ export default function AddTaskForm({
           // maxLength={64}
           className={cls.input}
           placeholder="Task to be Done ..."
-          value={task}
+          value={title}
           onChange={handleSetInputValue}
         />
 
