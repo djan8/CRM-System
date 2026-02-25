@@ -28,6 +28,9 @@ export default function Input({
   height,
   readOnly = false,
 }: IInputProps) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setEdited?.(e.target.value);
+  }
   return (
     <div className={cls.wrapper}>
       <input
@@ -37,7 +40,7 @@ export default function Input({
         value={isEdit ? edited : task?.title}
         minLength={minLength}
         maxLength={maxLength}
-        onChange={(e) => setEdited?.(e.target.value)}
+        onChange={handleChange}
         type="text"
         readOnly={readOnly}
         required

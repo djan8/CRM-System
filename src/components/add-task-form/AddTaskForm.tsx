@@ -16,9 +16,7 @@ export default function AddTaskForm({ setData, status }: IAddTaskProps) {
   console.log("iz add", error);
   console.log(task);
 
-  const handleOnSubmit: React.SubmitEventHandler<HTMLFormElement> = async (
-    event,
-  ) => {
+  async function handleOnSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       setError("");
@@ -36,7 +34,10 @@ export default function AddTaskForm({ setData, status }: IAddTaskProps) {
         setError(err.message);
       }
     }
-  };
+  }
+  function handleSetInputValue(e: React.ChangeEvent<HTMLInputElement>) {
+    setTask(e.target.value);
+  }
   return (
     <>
       {error.length > 0 && <div style={{ color: "red" }}>{error}</div>}
@@ -48,7 +49,7 @@ export default function AddTaskForm({ setData, status }: IAddTaskProps) {
           className={cls.input}
           placeholder="Task to be Done ..."
           value={task}
-          onChange={(e) => setTask(e.target.value)}
+          onChange={handleSetInputValue}
         />
 
         <Button

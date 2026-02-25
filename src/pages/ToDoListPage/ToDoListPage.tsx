@@ -11,14 +11,14 @@ export default function ToDoListPage() {
   const [data, setData] = useState<MetaResponse<Todo, TodoInfo> | undefined>();
 
   useEffect(() => {
-    const loadTodos = async () => {
+    async function loadTodos() {
       try {
         const todos = await getTodos(status);
         setData(todos);
       } catch (err) {
         console.error(err);
       }
-    };
+    }
     loadTodos();
   }, [status]);
 

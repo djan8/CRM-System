@@ -26,11 +26,11 @@ export default function TaskEdit({
   setIsEdit,
   setError,
 }: ITaskEditProps) {
-  const handleChangeStateValue = () => {
+  function handleChangeStateValue() {
     setIsEdit((prev) => !prev);
     setError("");
     setEdited(task?.title);
-  };
+  }
 
   return (
     <>

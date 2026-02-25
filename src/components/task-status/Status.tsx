@@ -7,15 +7,16 @@ interface IStatusProps {
   setStatus: React.Dispatch<React.SetStateAction<string>>;
   status?: string;
 }
+
 export default function Status({ info, setStatus, status }: IStatusProps) {
   if (!info) return <div>Статусы не переданы</div>;
   const [all, completed, inWork] = Object.keys(info);
 
-  const getTaskWithChangeStatus = (e: React.MouseEvent<HTMLButtonElement>) => {
+  function getTaskWithChangeStatus(e: React.MouseEvent<HTMLButtonElement>) {
     const id = e.currentTarget.dataset.id;
     if (!id) return;
     setStatus(id);
-  };
+  }
 
   return (
     <div className={cls.wrapper}>

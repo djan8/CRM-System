@@ -28,12 +28,12 @@ export default function TaskItem({
   // console.log("iz item", errorChangeValue);
   console.log(edited);
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     changeStatus(task.id, { isDone: checked }, setData, status);
-  };
+  }
 
-  const changeTaskName = () => {
+  function changeTaskName() {
     try {
       const validateTitle = validateTodoTitle(edited);
       const { errorMessage, isValid } = validateTitle;
@@ -51,7 +51,7 @@ export default function TaskItem({
         setErrorChangeValue(err.message);
       }
     }
-  };
+  }
   return (
     <>
       {errorChangeValue.length > 0 && (

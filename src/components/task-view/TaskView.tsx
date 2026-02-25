@@ -24,6 +24,12 @@ export default function TaskView({
   setData,
   status,
 }: ITaskViewProps) {
+  function handleClickEdit() {
+    setIsEdit((prev) => !prev);
+  }
+  function handleClickDelete() {
+    deleteTask(task.id, setData, status);
+  }
   return (
     <div>
       <input
@@ -37,7 +43,7 @@ export default function TaskView({
         width="2rem"
         height="2rem"
         background={"DodgerBlue"}
-        onClick={() => setIsEdit((prev) => !prev)}
+        onClick={handleClickEdit}
       >
         <Icon src={editIcon} alt="edit" />
       </Button>
@@ -45,7 +51,7 @@ export default function TaskView({
         width="2rem"
         height="2rem"
         background={"red"}
-        onClick={() => deleteTask(task.id, setData, status)}
+        onClick={handleClickDelete}
       >
         <Icon src={trashIcon} alt="delete" />
       </Button>
