@@ -6,7 +6,12 @@ import type {
   TodoRequest,
 } from "../types/type.ts";
 
-export const STATUSES = {
+type Statuses = {
+  ALL: string;
+  INWORK: string;
+  COMPLETED: string;
+};
+export const STATUSES: Statuses = {
   ALL: "all",
   INWORK: "inWork",
   COMPLETED: "completed",
