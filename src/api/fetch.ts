@@ -54,8 +54,11 @@ export async function addTask(task: string) {
     const data = await res.json();
     console.log(data);
   } catch (err) {
-    console.error(err);
-    throw err;
+    // throw err;
+    if (err instanceof Error) {
+      alert(`${err.name}-${err.message}`);
+      alert(`Вы написали: ${task}`);
+    }
   }
 }
 
