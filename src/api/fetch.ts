@@ -12,13 +12,13 @@ export const STATUSES = {
   COMPLETED: "completed",
 };
 
-const url = "https://easydev.club/api/v1/todos";
+const URL: string = "https://easydev.club/api/v1/todos";
 
 export async function getTodos(
   status = STATUSES.ALL,
 ): Promise<MetaResponse<Todo, TodoInfo>> {
   try {
-    const res = await fetch(`${url}?filter=${status}`);
+    const res = await fetch(`${URL}?filter=${status}`);
     if (!res.ok) {
       throw new Error(`Ooops, status ${res.status}`);
     }
@@ -35,7 +35,7 @@ export type SetData = React.Dispatch<
 
 export async function addTask(task: string, setData: SetData, status: string) {
   try {
-    const res = await fetch(url, {
+    const res = await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -57,7 +57,7 @@ export async function addTask(task: string, setData: SetData, status: string) {
 
 export async function deleteTask(id: number, setData: SetData, status: string) {
   try {
-    const res = await fetch(`${url}/${id}`, {
+    const res = await fetch(`${URL}/${id}`, {
       method: "DELETE",
     });
     if (!res.ok) {
@@ -80,7 +80,7 @@ export async function changeStatus(
   status: string,
 ) {
   try {
-    const res = await fetch(`${url}/${id}`, {
+    const res = await fetch(`${URL}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export async function editTask(
 ) {
   // const validateTitle = validateTodoTitle(title);
   try {
-    const res = await fetch(`${url}/${id}`, {
+    const res = await fetch(`${URL}/${id}`, {
       method: "PUT",
       body: JSON.stringify({ title }),
     });
