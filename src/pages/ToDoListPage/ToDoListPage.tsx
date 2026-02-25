@@ -16,22 +16,26 @@ export default function ToDoListPage(): JSX.Element {
         const todos = await getTodos(status);
         setData(todos);
       } catch (err) {
-        console.error(err);
+        alert(`Ошибка вот такая: ${err}`);
       }
     }
     loadTodos();
   }, [status]);
 
-  if (!data) return <div>Loading...</div>;
+  // if (!data) return <div>Loading...</div>;
 
   // const statusProps = { info: data.info, status, setStatus, setData };
-  const taskListProps = { data, setData, status };
+  // const taskListProps = { data, setData, status };
 
   return (
     <div className={cls.app}>
       <AddTaskForm setData={setData} status={status} />
-      <Status info={data.info} status={status} setStatus={setStatus} />
-      <TaskList {...taskListProps} />
+      <Status info={data?.info} status={status} setStatus={setStatus} />
+      {!data ? (
+        <div>Loading...</div>
+      ) : (
+        <TaskList data={data} setData={setData} status={status} />
+      )}
     </div>
   );
 }
