@@ -1,6 +1,6 @@
 import cls from "./TaskItem.module.scss";
 import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
-import { changeStatus, editTask, type StatusType } from "../../api/fetch.ts";
+import { editTask, type StatusType } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 import * as React from "react";
 import TaskEdit from "../task-edit/TaskEdit.tsx";
@@ -27,7 +27,7 @@ export default function TaskItem({
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const checked = e.target.checked;
-    changeStatus(task.id, { isDone: checked }, setData, status);
+    editTask(task.id, { isDone: checked }, setData, status);
   }
 
   function changeTaskName(): void {
@@ -39,7 +39,7 @@ export default function TaskItem({
         setErrorChangeValue(errorMessage);
         return;
       }
-      editTask(task.id, edited, setData, status);
+      editTask(task.id, { title: edited }, setData, status);
       setIsEdit((prev) => !prev);
       setErrorChangeValue("");
     } catch (err) {
@@ -49,6 +49,7 @@ export default function TaskItem({
       }
     }
   }
+
   return (
     <>
       {errorChangeValue.length > 0 && (
@@ -56,15 +57,17 @@ export default function TaskItem({
       )}
       <div className={cls.elem}>
         {isEdit ? (
-          <TaskEdit
-            setError={setErrorChangeValue}
-            isEdit={isEdit}
-            task={task}
-            edited={edited}
-            setEdited={setEdited}
-            changeTaskName={changeTaskName}
-            setIsEdit={setIsEdit}
-          />
+          <>
+            <TaskEdit
+              setError={setErrorChangeValue}
+              isEdit={isEdit}
+              task={task}
+              edited={edited}
+              setEdited={setEdited}
+              changeTaskName={changeTaskName}
+              setIsEdit={setIsEdit}
+            />
+          </>
         ) : (
           <TaskView
             task={task}

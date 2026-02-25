@@ -21,8 +21,6 @@ export default function AddTaskForm({
 }: IAddTaskProps): JSX.Element {
   const [task, setTask] = useState<string>("");
   const [error, setError] = useState<string>("");
-  console.log("iz add", error);
-  console.log(task);
 
   async function handleOnSubmit(
     event: React.SubmitEvent<HTMLFormElement>,

@@ -33,9 +33,13 @@ export default function TaskEdit({
     setEdited(task?.title);
   }
 
+  console.log(edited);
+
   return (
     <>
+      {/*<Input type="checkbox" checked={task?.isDone} />*/}
       <Input
+        // checked={task.isDone}
         isEdit={isEdit}
         edited={edited}
         task={task}
@@ -43,7 +47,9 @@ export default function TaskEdit({
       />
 
       <Button
+        type={"submit"}
         onClick={changeTaskName}
+        // onChange={changeTaskName}
         width="2rem"
         height="2rem"
         background={"DodgerBlue"}

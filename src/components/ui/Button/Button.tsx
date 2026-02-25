@@ -9,6 +9,7 @@ interface IProp {
   color?: string;
   type?: "button" | "submit";
   onClick?: () => void;
+  // onChange?: () => void;
 }
 
 export default function Button({
@@ -19,6 +20,7 @@ export default function Button({
   background,
   color,
   onClick,
+  // onChange,
 }: IProp): JSX.Element {
   return (
     <button

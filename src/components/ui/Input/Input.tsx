@@ -13,8 +13,13 @@ interface IInputProps {
   placeholder?: string;
   width?: string;
   height?: string;
+  checked?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  type?: string;
+  defaultChecked?: boolean;
+  name?: string;
+  defaultValue?: string;
 }
 
 export default function Input({
@@ -27,23 +32,29 @@ export default function Input({
   placeholder,
   width,
   height,
+  checked,
   readOnly = false,
+  type,
+  defaultChecked,
+  name,
+  defaultValue,
 }: IInputProps): JSX.Element {
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEdited?.(e.target.value);
-  }
   return (
     <div className={cls.wrapper}>
       <input
+        defaultValue={defaultValue}
+        name={name}
+        defaultChecked={defaultChecked}
         style={{ width: width, height: height }}
         className={`${cls.input} ${!isEdit && task?.isDone ? cls.done : ""}`}
         placeholder={placeholder}
         value={isEdit ? edited : task?.title}
         minLength={minLength}
         maxLength={maxLength}
-        onChange={handleChange}
-        type="text"
+        onChange={(e) => setEdited?.(e.target.value)}
+        type={type}
         readOnly={readOnly}
+        checked={checked}
         required
       />
     </div>
