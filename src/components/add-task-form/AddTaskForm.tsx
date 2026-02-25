@@ -1,4 +1,4 @@
-import { addTask, type SetData } from "../../api/fetch.ts";
+import { addTask, getTodos, type SetData } from "../../api/fetch.ts";
 import { useState } from "react";
 import Button from "../ui/Button/Button.tsx";
 import cls from "./AddTaskForm.module.scss";
@@ -27,7 +27,9 @@ export default function AddTaskForm({ setData, status }: IAddTaskProps) {
         setError(errorMessage);
         return;
       }
-      await addTask(task, setData, status);
+      await addTask(task);
+      const refresh = await getTodos(status);
+      setData(refresh);
       setTask("");
     } catch (err) {
       if (err instanceof Error) {
