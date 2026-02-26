@@ -1,7 +1,7 @@
 import {
   addTask,
-  getTodos,
-  type SetData,
+  // getTodos,
+  // type SetData,
   type StatusType,
 } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
@@ -11,13 +11,13 @@ import * as React from "react";
 import { validateTodoTitle } from "../../helpers/validation.ts";
 
 interface onUpdate {
-  setData: SetData;
   status: StatusType;
+  onUpdate: (status: StatusType) => Promise<void>;
 }
 
 export default function AddTaskForm({
-  setData,
   status,
+  onUpdate,
 }: onUpdate): JSX.Element {
   const [title, setTitle] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -28,7 +28,7 @@ export default function AddTaskForm({
     event.preventDefault();
 
     const { errorMessage, isValid } = validateTodoTitle(title);
-    // const { errorMessage, isValid } = validateTitle;
+
     if (!isValid) {
       setError(errorMessage);
       return;
@@ -36,8 +36,8 @@ export default function AddTaskForm({
     try {
       setError("");
       await addTask(title);
-      const data = await getTodos(status);
-      setData(data);
+      await onUpdate(status);
+
       setTitle("");
     } catch (err) {
       console.log("сработал кетч, адд таск упал");

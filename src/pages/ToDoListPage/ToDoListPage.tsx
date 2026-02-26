@@ -10,26 +10,23 @@ export default function ToDoListPage(): JSX.Element {
   const [status, setStatus] = useState<StatusType>(STATUSES.ALL);
   const [data, setData] = useState<MetaResponse<Todo, TodoInfo> | undefined>();
 
-  useEffect(() => {
-    async function loadTodos() {
-      try {
-        const todos = await getTodos(status);
-        setData(todos);
-      } catch (err) {
-        alert(`Ошибка вот такая: ${err}`);
-      }
+  async function loadTodos(status: StatusType) {
+    try {
+      const todos = await getTodos(status);
+      setData(todos);
+    } catch (err) {
+      alert(`Ошибка вот такая: ${err}`);
     }
-    loadTodos();
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadTodos(status);
   }, [status]);
-
-  // if (!data) return <div>Loading...</div>;
-
-  // const statusProps = { info: data.info, status, setStatus, setData };
-  // const taskListProps = { data, setData, status };
 
   return (
     <div className={cls.app}>
-      <AddTaskForm setData={setData} status={status} />
+      <AddTaskForm onUpdate={loadTodos} status={status} />
       <Status info={data?.info} status={status} setStatus={setStatus} />
       {!data ? (
         <div>Loading...</div>
