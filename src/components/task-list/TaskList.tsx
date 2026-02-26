@@ -19,18 +19,18 @@ export default function TaskList({
 }: ITaskListProps): JSX.Element {
   return (
     <>
-      <div className={cls.wrapper}>
+      <ul className={cls.wrapper}>
         {tasks.map((task) => (
-          <div key={task.id} className={cls.wrapper}>
+          <li key={task.id} className={cls.wrapper}>
             <TaskItem
               status={status}
               task={task}
               info={info}
               setData={setData}
             />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }
