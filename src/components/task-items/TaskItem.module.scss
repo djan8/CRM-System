@@ -1,5 +1,6 @@
 .elem {
   display: flex;
+  justify-content: space-between;
   border: azure 1px solid;
   border-radius: 5px;
   margin-bottom: 3px;
@@ -9,17 +10,6 @@
   align-items: center;
   gap: 8px;
 }
-.elem > div {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.elem input[type="text"] {
-  flex: 1;
-  min-width: 0;
-}
-
 
 .done {
   text-decoration: line-through;
@@ -28,3 +18,4 @@
 .error {
   color: red;
 }
+

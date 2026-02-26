@@ -3,8 +3,7 @@ import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
 import { deleteTask, editTask, type StatusType } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 import * as React from "react";
-// import TaskEdit from "../task-edit/TaskEdit.tsx";
-// import TaskView from "../task-view/TaskView.tsx";
+
 import { validateTodoTitle } from "../../helpers/validation.ts";
 import Input from "../ui/Input/Input.tsx";
 import Button from "../ui/Button/Button.tsx";
@@ -59,6 +58,7 @@ export default function TaskItem({
   }
   function handleClickEdit(): void {
     setIsEdit((prev) => !prev);
+    setEdited(task.title);
   }
   function handleClickDelete(): void {
     deleteTask(task.id, setData, status);
@@ -66,6 +66,9 @@ export default function TaskItem({
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const checked = e.target.checked;
     editTask(task.id, { isDone: checked }, setData, status);
+  }
+  function changeValue(editedTitle: string) {
+    setEdited(editedTitle);
   }
 
   return (
@@ -76,76 +79,92 @@ export default function TaskItem({
       <div className={cls.elem}>
         {isEdit ? (
           <>
-            <Input
-              // checked={task.isDone}
-              isEdit={isEdit}
-              edited={edited}
-              task={task}
-              setEdited={setEdited}
-            />
-
-            <Button
-              type={"submit"}
-              onClick={changeTaskName}
-              // onChange={changeTaskName}
-              width="2rem"
-              height="2rem"
-              background={"DodgerBlue"}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                paddingLeft: "5.5rem",
+                height: "100%",
+              }}
             >
-              <Icon src={saveIcon} alt="save" />
-            </Button>
-
-            <Button
-              onClick={handleChangeStateValue}
-              width="2rem"
-              height="2rem"
-              background={"red"}
+              <Input
+                // className={isEdit}
+                value={isEdit ? edited : task.title}
+                // isEdit={isEdit}
+                // edited={edited}
+                onChange={changeValue}
+                type="text"
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "inherit",
+              }}
             >
-              <Icon src={cancelIcon} alt="cancel" />
-            </Button>
-            {/*<TaskEdit*/}
-            {/*  setError={setErrorChangeValue}*/}
-            {/*  isEdit={isEdit}*/}
-            {/*  task={task}*/}
-            {/*  edited={edited}*/}
-            {/*  setEdited={setEdited}*/}
-            {/*  changeTaskName={changeTaskName}*/}
-            {/*  setIsEdit={setIsEdit}*/}
-            {/*/>*/}
+              <Button
+                type={"submit"}
+                onClick={changeTaskName}
+                // onChange={changeTaskName}
+                width="2rem"
+                height="2rem"
+                background={"DodgerBlue"}
+              >
+                <Icon src={saveIcon} alt="save" />
+              </Button>
+              <Button
+                onClick={handleChangeStateValue}
+                width="2rem"
+                height="2rem"
+                background={"red"}
+              >
+                <Icon src={cancelIcon} alt="cancel" />
+              </Button>
+            </div>
           </>
         ) : (
           <>
-            <input
-              className={cls.input}
-              type="checkbox"
-              checked={task.isDone}
-              onChange={handleChange}
-            />
-            {/*<Input type="checkbox" checked={task.isDone} />*/}
-            <Input task={task} readOnly />
-            <Button
-              width="2rem"
-              height="2rem"
-              background={"DodgerBlue"}
-              onClick={handleClickEdit}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
             >
-              <Icon src={editIcon} alt="edit" />
-            </Button>
-            <Button
-              width="2rem"
-              height="2rem"
-              background={"red"}
-              onClick={handleClickDelete}
+              <Input
+                // style={cls.input}
+                onClick={handleChange}
+                type="checkbox"
+                checked={task.isDone}
+              />
+
+              <Input value={task.title} readOnly />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "inherit",
+              }}
             >
-              <Icon src={trashIcon} alt="delete" />
-            </Button>
-            {/*<TaskView*/}
-            {/*  task={task}*/}
-            {/*  handleChange={handleChange}*/}
-            {/*  setIsEdit={setIsEdit}*/}
-            {/*  setData={setData}*/}
-            {/*  status={status}*/}
-            {/*/>*/}
+              <Button
+                width="2rem"
+                height="2rem"
+                background={"DodgerBlue"}
+                onClick={handleClickEdit}
+              >
+                <Icon src={editIcon} alt="edit" />
+              </Button>
+              <Button
+                width="2rem"
+                height="2rem"
+                background={"red"}
+                onClick={handleClickDelete}
+              >
+                <Icon src={trashIcon} alt="delete" />
+              </Button>
+            </div>
           </>
         )}
       </div>

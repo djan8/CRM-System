@@ -20,39 +20,46 @@ interface IInputProps {
   defaultChecked?: boolean;
   name?: string;
   defaultValue?: string;
-  onChange?: () => void;
+  onChange?: any;
+  value?: string;
+  onClick?: any;
+  style?: any;
+  className?: any;
 }
 
 export default function Input({
   task,
   edited,
+  value,
   isEdit,
-  setEdited,
   minLength,
   maxLength,
   placeholder,
-  width,
-  height,
   checked,
   readOnly = false,
   type,
   defaultChecked,
   name,
   defaultValue,
+  onChange,
+  onClick,
+  style,
+  className,
 }: IInputProps): JSX.Element {
   return (
     <div className={cls.wrapper}>
       <input
+        onClick={onClick}
         defaultValue={defaultValue}
         name={name}
         defaultChecked={defaultChecked}
-        style={{ width: width, height: height }}
-        className={`${cls.input} ${!isEdit && task?.isDone ? cls.done : ""}`}
+        style={style}
+        className={className}
         placeholder={placeholder}
-        value={isEdit ? edited : task?.title}
+        value={isEdit ? edited : value}
         minLength={minLength}
         maxLength={maxLength}
-        onChange={(e) => setEdited?.(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         type={type}
         readOnly={readOnly}
         checked={checked}
