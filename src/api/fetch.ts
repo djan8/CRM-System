@@ -41,13 +41,13 @@ export type SetData = React.Dispatch<
   React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
 >;
 
-export async function addTask(task: string): Promise<void> {
+export async function addTask(title: string): Promise<void> {
   try {
     const res = await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title: task,
+        title: title,
       }),
     });
     if (!res.ok) {
@@ -59,7 +59,7 @@ export async function addTask(task: string): Promise<void> {
   } catch (err) {
     if (err instanceof Error) {
       alert(`${err.name}-${err.message}`);
-      alert(`Вы написали: ${task}`);
+      alert(`Вы написали: ${title}`);
     }
     throw err;
   }

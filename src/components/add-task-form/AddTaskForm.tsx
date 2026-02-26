@@ -36,8 +36,8 @@ export default function AddTaskForm({
     try {
       setError("");
       await addTask(title);
-      const refresh = await getTodos(status);
-      setData(refresh);
+      const data = await getTodos(status);
+      setData(data);
       setTitle("");
     } catch (err) {
       console.log("сработал кетч, адд таск упал");
