@@ -16,10 +16,11 @@ interface IInputProps {
   checked?: boolean;
   readOnly?: boolean;
   required?: boolean;
-  type?: string;
+  type?: "checkbox" | "text" | "submit";
   defaultChecked?: boolean;
   name?: string;
   defaultValue?: string;
+  onChange?: () => void;
 }
 
 export default function Input({
