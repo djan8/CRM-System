@@ -26,19 +26,21 @@ export default function AddTaskForm({
     event: React.SubmitEvent<HTMLFormElement>,
   ): Promise<void> {
     event.preventDefault();
+
+    const { errorMessage, isValid } = validateTodoTitle(title);
+    // const { errorMessage, isValid } = validateTitle;
+    if (!isValid) {
+      setError(errorMessage);
+      return;
+    }
     try {
       setError("");
-      const validateTitle = validateTodoTitle(title);
-      const { errorMessage, isValid } = validateTitle;
-      if (!isValid) {
-        setError(errorMessage);
-        return;
-      }
       await addTask(title);
       const refresh = await getTodos(status);
       setData(refresh);
       setTitle("");
     } catch (err) {
+      console.log("сработал кетч, адд таск упал");
       if (err instanceof Error) {
         setError(err.message);
       }
