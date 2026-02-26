@@ -32,16 +32,17 @@ export default function TaskItem({
   const [edited, setEdited] = useState(task.title);
   const [errorChangeValue, setErrorChangeValue] = useState<string>("");
 
-  function changeTaskName(): void {
+  async function changeTaskName() {
+    const { errorMessage, isValid } = validateTodoTitle(edited);
+    if (!isValid) {
+      setErrorChangeValue(errorMessage);
+      return;
+    }
     try {
-      const validateTitle = validateTodoTitle(edited);
-      const { errorMessage, isValid } = validateTitle;
+      // const { errorMessage, isValid } = validateTitle;
       console.log(errorMessage, isValid);
-      if (!isValid) {
-        setErrorChangeValue(errorMessage);
-        return;
-      }
-      editTask(task.id, { title: edited }, setData, status);
+
+      await editTask(task.id, { title: edited }, setData, status);
       setIsEdit((prev) => !prev);
       setErrorChangeValue("");
     } catch (err) {
