@@ -7,7 +7,7 @@ import * as React from "react";
 import { validateTodoTitle } from "../../helpers/validation.ts";
 import Input from "../ui/Input/Input.tsx";
 import Button from "../ui/Button/Button.tsx";
-import Icon from "../ui/Icon/Icon.tsx";
+import IconButton from "../ui/Icon/IconButton.tsx";
 import saveIcon from "../../assets/save.svg";
 import cancelIcon from "../../assets/cancel.svg";
 import editIcon from "../../assets/edit.svg";
@@ -67,8 +67,8 @@ export default function TaskItem({
     const checked = e.target.checked;
     editTask(task.id, { isDone: checked }, setData, status);
   }
-  function changeValue(editedTitle: string) {
-    setEdited(editedTitle);
+  function changeValue(e: React.ChangeEvent<HTMLInputElement>) {
+    setEdited(e.target.value);
   }
 
   return (
@@ -79,90 +79,49 @@ export default function TaskItem({
       <div className={cls.elem}>
         {isEdit ? (
           <>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-around",
-                paddingLeft: "5.5rem",
-                height: "100%",
-              }}
-            >
+            <div className={cls.edit}>
               <Input
-                // className={isEdit}
                 value={isEdit ? edited : task.title}
-                // isEdit={isEdit}
-                // edited={edited}
                 onChange={changeValue}
                 type="text"
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "inherit",
-              }}
-            >
+            <div className={cls.buttongroup}>
               <Button
+                variant="primary"
                 type={"submit"}
                 onClick={changeTaskName}
-                // onChange={changeTaskName}
-                width="2rem"
-                height="2rem"
-                background={"DodgerBlue"}
               >
-                <Icon src={saveIcon} alt="save" />
+                <IconButton src={saveIcon} alt="save" />
               </Button>
-              <Button
-                onClick={handleChangeStateValue}
-                width="2rem"
-                height="2rem"
-                background={"red"}
-              >
-                <Icon src={cancelIcon} alt="cancel" />
+              <Button onClick={handleChangeStateValue} variant="danger">
+                <IconButton src={cancelIcon} alt="cancel" />
               </Button>
             </div>
           </>
         ) : (
           <>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-around",
-                alignItems: "center",
-              }}
-            >
+            <div className={cls.view}>
               <Input
                 // style={cls.input}
-                onClick={handleChange}
+                onChange={handleChange}
                 type="checkbox"
                 checked={task.isDone}
               />
-
-              <Input value={task.title} readOnly />
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "inherit",
-              }}
-            >
-              <Button
-                width="2rem"
-                height="2rem"
-                background={"DodgerBlue"}
-                onClick={handleClickEdit}
-              >
-                <Icon src={editIcon} alt="edit" />
+            <div className={cls.viewText}>
+              <Input
+                className={task.isDone ? cls.done : ""}
+                value={task.title}
+                readOnly
+              />
+            </div>
+            <div className={cls.buttongroup}>
+              <Button variant="primary" onClick={handleClickEdit}>
+                <IconButton src={editIcon} alt="edit" />
               </Button>
-              <Button
-                width="2rem"
-                height="2rem"
-                background={"red"}
-                onClick={handleClickDelete}
-              >
-                <Icon src={trashIcon} alt="delete" />
+              <Button variant="danger" onClick={handleClickDelete}>
+                <IconButton src={trashIcon} alt="delete" />
               </Button>
             </div>
           </>

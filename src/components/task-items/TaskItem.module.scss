@@ -5,10 +5,30 @@
   border-radius: 5px;
   margin-bottom: 3px;
   padding: 5px;
-  background: white;
   width: 100%;
+  background: white;
   align-items: center;
   gap: 8px;
+}
+.edit {
+  display: flex;
+  align-items: center;
+  gap: 46px;
+  width: 100%;
+}
+.view {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.buttongroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: inherit;
+}
+.viewText {
+  width: 100%;
 }
 
 .done {

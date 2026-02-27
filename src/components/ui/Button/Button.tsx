@@ -3,29 +3,22 @@ import cls from "./Button.module.scss";
 
 interface IProp {
   children?: ReactNode;
-  width?: string;
-  height?: string;
-  background?: string;
-  color?: string;
-  type?: "button" | "submit";
-  onClick?: () => void;
-  // onChange?: () => void;
+  type?: "button" | "submit"; // +
+  onClick?: () => void; // +
+  variant?: ButtonVariant; // +
 }
 
+type ButtonVariant = "primary" | "secondary" | "danger";
+
 export default function Button({
+  variant = "primary",
   children,
   type,
-  width,
-  height,
-  background,
-  color,
   onClick,
-  // onChange,
 }: IProp): JSX.Element {
   return (
     <button
-      className={cls.button}
-      style={{ width, height, background, color }}
+      className={`${cls.button} ${cls[variant]}`}
       type={type}
       onClick={onClick}
     >
