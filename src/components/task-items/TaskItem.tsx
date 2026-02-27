@@ -1,6 +1,11 @@
 import cls from "./TaskItem.module.scss";
 import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
-import { deleteTask, editTask, type StatusType } from "../../api/fetch.ts";
+import {
+  deleteTask,
+  editTask,
+  // getTodos,
+  type StatusType,
+} from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 import * as React from "react";
 
@@ -20,12 +25,14 @@ type TaskItemProps = {
     React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
   >;
   status: StatusType;
+  onUpdate?: (status: StatusType) => Promise<void>;
 };
 
 export default function TaskItem({
   task,
-  setData,
+  // setData,
   status,
+  onUpdate,
 }: TaskItemProps): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
   const [edited, setEdited] = useState(task.title);
@@ -41,7 +48,9 @@ export default function TaskItem({
       // const { errorMessage, isValid } = validateTitle;
       console.log(errorMessage, isValid);
 
-      await editTask(task.id, { title: edited }, setData, status);
+      // await editTask(task.id, { title: edited }, setData, status);
+      await editTask(task.id, { title: edited });
+      await onUpdate?.(status);
       setIsEdit((prev) => !prev);
       setErrorChangeValue("");
     } catch (err) {
@@ -60,12 +69,18 @@ export default function TaskItem({
     setIsEdit((prev) => !prev);
     setEdited(task.title);
   }
-  function handleClickDelete(): void {
-    deleteTask(task.id, setData, status);
+  async function handleClickDelete(): Promise<void> {
+    await deleteTask(task.id);
+
+    await onUpdate?.(status);
   }
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+  async function handleChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> {
     const checked = e.target.checked;
-    editTask(task.id, { isDone: checked }, setData, status);
+
+    await editTask(task.id, { isDone: checked });
+    await onUpdate?.(status);
   }
   function changeValue(e: React.ChangeEvent<HTMLInputElement>) {
     setEdited(e.target.value);
@@ -88,13 +103,18 @@ export default function TaskItem({
             </div>
             <div className={cls.buttongroup}>
               <Button
+                size="normal"
                 variant="primary"
                 type={"submit"}
                 onClick={changeTaskName}
               >
                 <IconButton src={saveIcon} alt="save" />
               </Button>
-              <Button onClick={handleChangeStateValue} variant="danger">
+              <Button
+                size="normal"
+                onClick={handleChangeStateValue}
+                variant="danger"
+              >
                 <IconButton src={cancelIcon} alt="cancel" />
               </Button>
             </div>
@@ -103,7 +123,6 @@ export default function TaskItem({
           <>
             <div className={cls.view}>
               <Input
-                // style={cls.input}
                 onChange={handleChange}
                 type="checkbox"
                 checked={task.isDone}
@@ -117,10 +136,14 @@ export default function TaskItem({
               />
             </div>
             <div className={cls.buttongroup}>
-              <Button variant="primary" onClick={handleClickEdit}>
+              <Button size="normal" variant="primary" onClick={handleClickEdit}>
                 <IconButton src={editIcon} alt="edit" />
               </Button>
-              <Button variant="danger" onClick={handleClickDelete}>
+              <Button
+                size="normal"
+                variant="danger"
+                onClick={handleClickDelete}
+              >
                 <IconButton src={trashIcon} alt="delete" />
               </Button>
             </div>

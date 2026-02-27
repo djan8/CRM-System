@@ -7,6 +7,7 @@ input {
   border: none;
   outline: none;
   width: 100%;
+
   //background-color: transparent;
 }
 
@@ -14,6 +15,14 @@ input {
   text-decoration: line-through;
 }
 
+.form {
+
+  background-color: transparent;
+  border-bottom: 1px solid darkgray;
+  margin-right: 10px;
+  border-bottom: 1px solid darkgray;
+  padding: 10px
+}
 
 input[type="checkbox"] {
   appearance: none;

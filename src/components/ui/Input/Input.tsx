@@ -11,7 +11,11 @@ interface IInputProps {
   value?: string; // +
   onClick?: React.MouseEventHandler<HTMLInputElement>;
   className?: string; //+
+  placeholder?: string;
+  variant?: InputStyle;
 }
+
+type InputStyle = "form" | "text";
 
 export default function Input({
   value,
@@ -21,18 +25,21 @@ export default function Input({
   onChange,
   onClick,
   className,
+  placeholder,
+  variant = "text",
 }: IInputProps): JSX.Element {
   return (
     <div className={cls.wrapper}>
       <input
+        placeholder={placeholder}
         onClick={onClick}
-        className={className}
+        className={`${className} ${cls[variant]}`}
         value={value}
         onChange={onChange}
         type={type}
         readOnly={readOnly}
         checked={checked}
-        required
+        // required
       />
     </div>
   );

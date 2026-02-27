@@ -1,16 +1,9 @@
-import * as React from "react";
 import type {
   MetaResponse,
   Todo,
   TodoInfo,
   TodoRequest,
 } from "../types/type.ts";
-
-// type Statuses = {
-//   ALL: string;
-//   INWORK: string;
-//   COMPLETED: string;
-// };
 
 export const STATUSES = {
   ALL: "all",
@@ -37,11 +30,7 @@ export async function getTodos(
   }
 }
 
-export type SetData = React.Dispatch<
-  React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
->;
-
-export async function addTask(title: string): Promise<void> {
+export async function addTask(title: string): Promise<Todo> {
   try {
     const res = await fetch(URL, {
       method: "POST",
@@ -53,9 +42,8 @@ export async function addTask(title: string): Promise<void> {
     if (!res.ok) {
       throw new Error(`Ooops, status ${res.status}`);
     }
-    console.log(res);
-    const data = await res.json();
-    console.log(data);
+
+    return res.json();
   } catch (err) {
     if (err instanceof Error) {
       alert(`${err.name}-${err.message}`);
@@ -65,11 +53,7 @@ export async function addTask(title: string): Promise<void> {
   }
 }
 
-export async function deleteTask(
-  id: number,
-  setData: SetData,
-  status: StatusType,
-): Promise<void> {
+export async function deleteTask(id: number): Promise<void> {
   try {
     const res = await fetch(`${URL}/${id}`, {
       method: "DELETE",
@@ -77,22 +61,13 @@ export async function deleteTask(
     if (!res.ok) {
       throw new Error(`Ooops, delete fail ${res.status}`);
     }
-    // const data = await res.json();
-    // console.log(data);
-    const refresh = await getTodos(status);
-    setData(refresh);
   } catch (err) {
     console.error(err);
     throw err;
   }
 }
 
-export async function editTask(
-  id: number,
-  data: TodoRequest,
-  setData: SetData,
-  status: StatusType,
-): Promise<void> {
+export async function editTask(id: number, data: TodoRequest): Promise<void> {
   try {
     const res = await fetch(`${URL}/${id}`, {
       method: "PUT",
@@ -101,8 +76,6 @@ export async function editTask(
     if (!res.ok) {
       throw new Error(`Ooops, edit task fail ${res.status}`);
     }
-    const refresh = await getTodos(status);
-    setData(refresh);
   } catch (err) {
     console.error(err);
     throw err;

@@ -6,19 +6,22 @@ interface IProp {
   type?: "button" | "submit"; // +
   onClick?: () => void; // +
   variant?: ButtonVariant; // +
+  size?: ButtonSize;
 }
 
 type ButtonVariant = "primary" | "secondary" | "danger";
+type ButtonSize = "normal" | "wide";
 
 export default function Button({
   variant = "primary",
   children,
   type,
   onClick,
+  size = "normal",
 }: IProp): JSX.Element {
   return (
     <button
-      className={`${cls.button} ${cls[variant]}`}
+      className={`${cls.button} ${cls[variant]} ${cls[size]}`}
       type={type}
       onClick={onClick}
     >

@@ -11,11 +11,13 @@ interface ITaskListProps {
   setData: React.Dispatch<
     React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
   >;
+  onUpdate?: (status: StatusType) => Promise<void>;
 }
 export default function TaskList({
   data: { data: tasks, info },
   status,
   setData,
+  onUpdate,
 }: ITaskListProps): JSX.Element {
   return (
     <>
@@ -23,6 +25,7 @@ export default function TaskList({
         {tasks.map((task) => (
           <li key={task.id} className={cls.wrapper}>
             <TaskItem
+              onUpdate={onUpdate}
               status={status}
               task={task}
               info={info}

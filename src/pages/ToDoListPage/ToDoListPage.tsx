@@ -32,7 +32,12 @@ export default function ToDoListPage(): JSX.Element {
       {!data ? (
         <div>Loading...</div>
       ) : (
-        <TaskList data={data} setData={setData} status={status} />
+        <TaskList
+          data={data}
+          setData={setData}
+          onUpdate={loadTodos}
+          status={status}
+        />
       )}
     </div>
   );

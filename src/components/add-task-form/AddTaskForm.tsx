@@ -9,6 +9,7 @@ import Button from "../ui/Button/Button.tsx";
 import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
 import { validateTodoTitle } from "../../helpers/validation.ts";
+import Input from "../ui/Input/Input.tsx";
 
 interface onUpdate {
   status: StatusType;
@@ -54,23 +55,15 @@ export default function AddTaskForm({
     <>
       {error.length > 0 && <div style={{ color: "red" }}>{error}</div>}
       <form className={cls.main} onSubmit={handleOnSubmit}>
-        <input
-          required
-          // minLength={2}
-          // maxLength={64}
+        <Input
+          variant="form"
           className={cls.input}
           placeholder="Task to be Done ..."
           value={title}
           onChange={handleSetInputValue}
         />
-
-        <Button
-          width="10rem"
-          height="2rem"
-          background={"DodgerBlue"}
-          type="submit"
-        >
-          Add
+        <Button size="wide" variant="primary" type="submit">
+          Создать
         </Button>
       </form>
     </>
