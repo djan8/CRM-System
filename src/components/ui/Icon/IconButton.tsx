@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import cls from "./IconButton.module.scss";
 
-export default function IconButton({
+export default function IconContainer({
   src,
   alt,
 }: {

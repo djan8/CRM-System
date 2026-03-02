@@ -1,3 +1,5 @@
+import { STATUSES } from "../const/const.ts";
+
 export interface Todo {
   id: number;
   title: string;
@@ -23,3 +25,5 @@ export interface MetaResponse<T, N> {
 // }
 
 export type TodoRequest = Partial<Omit<Todo, "id" | "created">>;
+
+export type StatusType = (typeof STATUSES)[keyof typeof STATUSES];

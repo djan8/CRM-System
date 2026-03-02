@@ -1,19 +1,12 @@
 import type {
   MetaResponse,
+  StatusType,
   Todo,
   TodoInfo,
   TodoRequest,
 } from "../types/type.ts";
-
-export const STATUSES = {
-  ALL: "all",
-  INWORK: "inWork",
-  COMPLETED: "completed",
-} as const;
-
-export type StatusType = (typeof STATUSES)[keyof typeof STATUSES];
-
-const URL: string = "https://easydev.club/api/v1/todos";
+import { URL } from "../const/const.ts";
+import { STATUSES } from "../const/const.ts";
 
 export async function getTodos(
   status: StatusType = STATUSES.ALL,

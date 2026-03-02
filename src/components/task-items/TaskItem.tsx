@@ -1,39 +1,30 @@
 import cls from "./TaskItem.module.scss";
-import type { MetaResponse, Todo, TodoInfo } from "../../types/type.ts";
-import {
-  deleteTask,
-  editTask,
-  // getTodos,
-  type StatusType,
-} from "../../api/fetch.ts";
+import type { StatusType, Todo } from "../../types/type.ts";
+import { deleteTask, editTask } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 import * as React from "react";
 
 import { validateTodoTitle } from "../../helpers/validation.ts";
 import Input from "../ui/Input/Input.tsx";
 import Button from "../ui/Button/Button.tsx";
-import IconButton from "../ui/Icon/IconButton.tsx";
+
 import saveIcon from "../../assets/save.svg";
 import cancelIcon from "../../assets/cancel.svg";
 import editIcon from "../../assets/edit.svg";
 import trashIcon from "../../assets/trash.svg";
+import IconContainer from "../ui/Icon/IconButton.tsx";
 
-type TaskItemProps = {
+type Props = {
   task: Todo;
-  info?: TodoInfo;
-  setData: React.Dispatch<
-    React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
-  >;
   status: StatusType;
   onUpdate?: (status: StatusType) => Promise<void>;
 };
 
 export default function TaskItem({
   task,
-  // setData,
   status,
   onUpdate,
-}: TaskItemProps): JSX.Element {
+}: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
   const [edited, setEdited] = useState(task.title);
   const [errorChangeValue, setErrorChangeValue] = useState<string>("");
@@ -82,7 +73,7 @@ export default function TaskItem({
     await editTask(task.id, { isDone: checked });
     await onUpdate?.(status);
   }
-  function changeValue(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleEditedValue(e: React.ChangeEvent<HTMLInputElement>) {
     setEdited(e.target.value);
   }
 
@@ -94,13 +85,14 @@ export default function TaskItem({
       <div className={cls.elem}>
         {isEdit ? (
           <>
-            <div className={cls.edit}>
-              <Input
-                value={isEdit ? edited : task.title}
-                onChange={changeValue}
-                type="text"
-              />
-            </div>
+            {/*<div className={cls.edit}>*/}
+            <Input
+              className={cls.inputEditing}
+              value={isEdit ? edited : task.title}
+              onChange={handleEditedValue}
+              type="text"
+            />
+            {/*</div>*/}
             <div className={cls.buttongroup}>
               <Button
                 size="normal"
@@ -108,14 +100,14 @@ export default function TaskItem({
                 type={"submit"}
                 onClick={changeTaskName}
               >
-                <IconButton src={saveIcon} alt="save" />
+                <IconContainer src={saveIcon} alt="save" />
               </Button>
               <Button
                 size="normal"
                 onClick={handleChangeStateValue}
                 variant="danger"
               >
-                <IconButton src={cancelIcon} alt="cancel" />
+                <IconContainer src={cancelIcon} alt="cancel" />
               </Button>
             </div>
           </>
@@ -137,14 +129,14 @@ export default function TaskItem({
             </div>
             <div className={cls.buttongroup}>
               <Button size="normal" variant="primary" onClick={handleClickEdit}>
-                <IconButton src={editIcon} alt="edit" />
+                <IconContainer src={editIcon} alt="edit" />
               </Button>
               <Button
                 size="normal"
                 variant="danger"
                 onClick={handleClickDelete}
               >
-                <IconButton src={trashIcon} alt="delete" />
+                <IconContainer src={trashIcon} alt="delete" />
               </Button>
             </div>
           </>

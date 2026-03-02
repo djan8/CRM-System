@@ -1,25 +1,18 @@
-import {
-  addTask,
-  // getTodos,
-  // type SetData,
-  type StatusType,
-} from "../../api/fetch.ts";
+import { addTask } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 import Button from "../ui/Button/Button.tsx";
 import cls from "./AddTaskForm.module.scss";
 import * as React from "react";
 import { validateTodoTitle } from "../../helpers/validation.ts";
 import Input from "../ui/Input/Input.tsx";
+import type { StatusType } from "../../types/type.ts";
 
-interface onUpdate {
+interface Props {
   status: StatusType;
   onUpdate: (status: StatusType) => Promise<void>;
 }
 
-export default function AddTaskForm({
-  status,
-  onUpdate,
-}: onUpdate): JSX.Element {
+export default function AddTaskForm({ status, onUpdate }: Props): JSX.Element {
   const [title, setTitle] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -54,6 +47,7 @@ export default function AddTaskForm({
   return (
     <>
       {error.length > 0 && <div style={{ color: "red" }}>{error}</div>}
+
       <form className={cls.main} onSubmit={handleOnSubmit}>
         <Input
           variant="form"
