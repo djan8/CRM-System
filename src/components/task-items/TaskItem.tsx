@@ -12,7 +12,8 @@ import saveIcon from "../../assets/save.svg";
 import cancelIcon from "../../assets/cancel.svg";
 import editIcon from "../../assets/edit.svg";
 import trashIcon from "../../assets/trash.svg";
-import IconContainer from "../ui/Icon/IconButton.tsx";
+
+import IconButton from "../ui/Icon/IconButton.tsx";
 
 type Props = {
   task: Todo;
@@ -100,14 +101,14 @@ export default function TaskItem({
                 type={"submit"}
                 onClick={changeTaskName}
               >
-                <IconContainer src={saveIcon} alt="save" />
+                <IconButton src={saveIcon} alt="save" />
               </Button>
               <Button
                 size="normal"
                 onClick={handleChangeStateValue}
                 variant="danger"
               >
-                <IconContainer src={cancelIcon} alt="cancel" />
+                <IconButton src={cancelIcon} alt="cancel" />
               </Button>
             </div>
           </>
@@ -129,14 +130,14 @@ export default function TaskItem({
             </div>
             <div className={cls.buttongroup}>
               <Button size="normal" variant="primary" onClick={handleClickEdit}>
-                <IconContainer src={editIcon} alt="edit" />
+                <IconButton src={editIcon} alt="edit" />
               </Button>
               <Button
                 size="normal"
                 variant="danger"
                 onClick={handleClickDelete}
               >
-                <IconContainer src={trashIcon} alt="delete" />
+                <IconButton src={trashIcon} alt="delete" />
               </Button>
             </div>
           </>

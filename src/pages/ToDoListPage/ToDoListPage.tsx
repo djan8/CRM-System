@@ -36,6 +36,7 @@ export default function ToDoListPage(): JSX.Element {
       <AddTaskForm onUpdate={loadTodos} status={status} />
 
       {!data && <div>Loading...</div>}
+
       {data && data.info && (
         <>
           <StatusFilter

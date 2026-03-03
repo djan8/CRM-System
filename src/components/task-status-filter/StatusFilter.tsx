@@ -24,26 +24,28 @@ export default function StatusFilter({
   return (
     <>
       {!info && <div>Статусы не переданы</div>}
-      <div className={cls.wrapper}>
-        <button
-          className={`${cls.button} ${status === all ? cls.active : ""}`}
-          onClick={() => getTaskWithChangeStatus("all")}
-        >
-          {`Все (${info.all})`}
-        </button>
-        <button
-          className={`${cls.button} ${status === inWork ? cls.active : ""}`}
-          onClick={() => getTaskWithChangeStatus("inWork")}
-        >
-          {`в работе (${info.inWork})`}
-        </button>
-        <button
-          className={`${cls.button} ${status === completed ? cls.active : ""}`}
-          onClick={() => getTaskWithChangeStatus("completed")}
-        >
-          {`сделано (${info.completed})`}
-        </button>
-      </div>
+      {info && (
+        <div className={cls.wrapper}>
+          <button
+            className={`${cls.button} ${status === all ? cls.active : ""}`}
+            onClick={() => getTaskWithChangeStatus("all")}
+          >
+            {`Все (${info.all})`}
+          </button>
+          <button
+            className={`${cls.button} ${status === inWork ? cls.active : ""}`}
+            onClick={() => getTaskWithChangeStatus("inWork")}
+          >
+            {`в работе (${info.inWork})`}
+          </button>
+          <button
+            className={`${cls.button} ${status === completed ? cls.active : ""}`}
+            onClick={() => getTaskWithChangeStatus("completed")}
+          >
+            {`сделано (${info.completed})`}
+          </button>
+        </div>
+      )}
     </>
   );
 }
