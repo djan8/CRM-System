@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
 import ToDoListPage from "./pages/ToDoListPage/ToDoListPage.tsx";
-import LayoutPage from "../../CRM-System/src/pages/OutletPage/LayoutPage.tsx";
+import LayoutPage from "./pages/LayoutPage/LayoutPage.tsx";
 import UserPage from "./pages/UserPage/UserPage.tsx";
 
 const router = createBrowserRouter([
