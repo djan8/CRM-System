@@ -5,6 +5,7 @@ import type {
   TodoInfo,
   TodoRequest,
 } from "../types/type.ts";
+import axios from "axios";
 import { URL } from "../const/const.ts";
 import { STATUSES } from "../const/const.ts";
 
@@ -12,31 +13,21 @@ export async function getTodos(
   status: StatusType = STATUSES.ALL,
 ): Promise<MetaResponse<Todo, TodoInfo>> {
   try {
-    const res = await fetch(`${URL}?filter=${status}`);
-    if (!res.ok) {
-      throw new Error(`Ooops, status ${res.status}`);
-    }
-    return res.json();
+    const res = await axios.get<MetaResponse<Todo, TodoInfo>>(URL, {
+      params: { filter: status },
+    });
+    return res.data;
   } catch (err) {
     console.error(err);
     throw err;
   }
 }
 
-export async function addTask(title: string): Promise<Todo> {
+export async function addTask(title: { title: string }): Promise<Todo> {
+  console.log(title);
   try {
-    const res = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title,
-      }),
-    });
-    if (!res.ok) {
-      throw new Error(`Ooops, status ${res.status}`);
-    }
-
-    return res.json();
+    const res = await axios.post(URL, title);
+    return res.data;
   } catch (err) {
     if (err instanceof Error) {
       alert(`${err.name}-${err.message}`);
@@ -48,12 +39,7 @@ export async function addTask(title: string): Promise<Todo> {
 
 export async function deleteTask(id: number): Promise<void> {
   try {
-    const res = await fetch(`${URL}/${id}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) {
-      throw new Error(`Ooops, delete fail ${res.status}`);
-    }
+    await axios.delete(`${URL}/${id}`);
   } catch (err) {
     console.error(err);
     throw err;
@@ -62,13 +48,7 @@ export async function deleteTask(id: number): Promise<void> {
 
 export async function editTask(id: number, data: TodoRequest): Promise<void> {
   try {
-    const res = await fetch(`${URL}/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) {
-      throw new Error(`Ooops, edit task fail ${res.status}`);
-    }
+    await axios.put(`${URL}/${id}`, data);
   } catch (err) {
     console.error(err);
     throw err;

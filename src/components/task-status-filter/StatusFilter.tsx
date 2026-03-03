@@ -1,10 +1,13 @@
-import cls from "./Status.module.scss";
 import type { StatusType, TodoInfo } from "../../types/type.ts";
 import * as React from "react";
 import type { JSX } from "react";
 
-interface Props {
-  info: TodoInfo;
+import { Tabs, type TabsProps } from "antd";
+import { Typography } from "antd";
+const { Text } = Typography;
+
+interface IStatusProps {
+  info?: TodoInfo | undefined;
   setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
   status?: StatusType;
 }
@@ -12,40 +15,41 @@ interface Props {
 export default function StatusFilter({
   info,
   setStatus,
-  status,
-}: Props): JSX.Element {
-  // if (!info) return null;
+}: IStatusProps): JSX.Element {
+  if (!info) return <Text type="warning">Ant Design (warning)</Text>;
   const [all, completed, inWork] = Object.keys(info);
 
-  function getTaskWithChangeStatus(status: StatusType): void {
-    setStatus(status);
-  }
+  const onChangeStatus = (status: string): void => {
+    setStatus(status as StatusType);
+  };
+
+  const items: TabsProps["items"] = [
+    {
+      key: all,
+      label: `Все (${info.all})`,
+    },
+    {
+      key: inWork,
+      label: `В работе (${info.inWork})`,
+    },
+    {
+      key: completed,
+      label: `Сделано (${info.completed})`,
+    },
+  ];
 
   return (
     <>
-      {!info && <div>Статусы не переданы</div>}
-      {info && (
-        <div className={cls.wrapper}>
-          <button
-            className={`${cls.button} ${status === all ? cls.active : ""}`}
-            onClick={() => getTaskWithChangeStatus("all")}
-          >
-            {`Все (${info.all})`}
-          </button>
-          <button
-            className={`${cls.button} ${status === inWork ? cls.active : ""}`}
-            onClick={() => getTaskWithChangeStatus("inWork")}
-          >
-            {`в работе (${info.inWork})`}
-          </button>
-          <button
-            className={`${cls.button} ${status === completed ? cls.active : ""}`}
-            onClick={() => getTaskWithChangeStatus("completed")}
-          >
-            {`сделано (${info.completed})`}
-          </button>
-        </div>
-      )}
+      <Tabs
+        type={"line"}
+        size={"large"}
+        centered
+        color={"deepskyblue"}
+        defaultActiveKey="1"
+        className={""}
+        items={items}
+        onChange={onChangeStatus}
+      />
     </>
   );
 }
