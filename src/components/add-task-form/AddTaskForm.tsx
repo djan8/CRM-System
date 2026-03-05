@@ -12,7 +12,6 @@ export default function AddTaskForm({ onUpdate }: onUpdate): JSX.Element {
 
   async function handleOnSubmit(title: { title: string }): Promise<void> {
     await form.validateFields();
-
     try {
       await addTask(title);
 
@@ -33,6 +32,7 @@ export default function AddTaskForm({ onUpdate }: onUpdate): JSX.Element {
           required
           rules={[
             { required: true, message: "Введите задачу" },
+            { whitespace: true, message: "Нельзя только пробелы" },
             { min: 2, message: "Минимум 2 символа" },
             { max: 64, message: "Максимум 64 символа" },
           ]}
