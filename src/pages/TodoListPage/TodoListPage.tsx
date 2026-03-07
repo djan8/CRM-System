@@ -50,12 +50,7 @@ export default function TodoListPage(): JSX.Element {
         {!todosResponse ? (
           <Spin />
         ) : (
-          <TaskList
-            data={todosResponse}
-            setData={setTodosResponse}
-            onUpdate={loadTodos}
-            status={status}
-          />
+          <TaskList data={todosResponse} onUpdate={loadTodos} />
         )}
       </Flex>
     </Flex>

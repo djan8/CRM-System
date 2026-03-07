@@ -1,12 +1,6 @@
-import type {
-  MetaResponse,
-  StatusType,
-  Todo,
-  TodoInfo,
-} from "../../types/type.ts";
+import type { Todo } from "../../types/type.ts";
 import { deleteTask, editTask } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
-import * as React from "react";
 
 import {
   Button,
@@ -28,19 +22,10 @@ import {
 const { Text } = Typography;
 type Props = {
   task: Todo;
-  info?: TodoInfo;
-  setData: React.Dispatch<
-    React.SetStateAction<MetaResponse<Todo, TodoInfo> | undefined>
-  >;
-  status: StatusType;
-  onUpdate?: (status: StatusType) => Promise<void>;
+  onUpdate?: () => Promise<void>;
 };
 
-export default function TaskItem({
-  task,
-  status,
-  onUpdate,
-}: Props): JSX.Element {
+export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
   const [form] = Form.useForm();
 
@@ -50,7 +35,7 @@ export default function TaskItem({
       const title = form.getFieldsValue();
       console.log(title);
       await editTask(task.id, title);
-      await onUpdate?.(status);
+      await onUpdate?.();
       setIsEdit((prev) => !prev);
     } catch {
       message.error("Ошибка изменения имени, ппробуйте еще раз");
@@ -66,12 +51,12 @@ export default function TaskItem({
   async function handleClickDelete(): Promise<void> {
     await deleteTask(task.id);
 
-    await onUpdate?.(status);
+    await onUpdate?.();
   }
   async function handleChangeStatusTask(e: CheckboxChangeEvent): Promise<void> {
     const checked = e.target.checked;
     await editTask(task.id, { isDone: checked });
-    await onUpdate?.(status);
+    await onUpdate?.();
   }
   return (
     <>
