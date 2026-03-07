@@ -6,13 +6,13 @@ import type {
   TodoInfo,
 } from "../../types/type.ts";
 import { getTodos } from "../../api/fetch.ts";
-import TaskList from "../../components/task-list/TaskList.tsx";
-import AddTaskForm from "../../components/add-task-form/AddTaskForm.tsx";
-import StatusFilter from "../../components/task-status-filter/StatusFilter.tsx";
+import TaskList from "../../components/TaskList/TaskList.tsx";
+import AddTaskForm from "../../components/AddTaskForm/AddTaskForm.tsx";
+import StatusFilter from "../../components/StatusFilter/StatusFilter.tsx";
 import { Flex, message, Spin } from "antd";
 import { STATUSES } from "../../const/const.ts";
 
-export default function ToDoListPage(): JSX.Element {
+export default function TodoListPage(): JSX.Element {
   const [status, setStatus] = useState<StatusType>(STATUSES.ALL);
   const [todosResponse, setTodosResponse] = useState<
     MetaResponse<Todo, TodoInfo> | undefined

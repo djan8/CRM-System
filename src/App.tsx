@@ -1,9 +1,9 @@
-import ToDoListPage from "./pages/todoist-page/ToDoListPage.tsx";
+import TodoListPage from "./pages/TodoListPage/TodoListPage.tsx";
 
 function App() {
   return (
     <>
-      <ToDoListPage />
+      <TodoListPage />
     </>
   );
 }

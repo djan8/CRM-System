@@ -1,4 +1,4 @@
-import TaskItem from "../task-items/TaskItem.tsx";
+import TaskItem from "../TaskItem/TaskItem.tsx";
 
 import type {
   MetaResponse,
