@@ -7,7 +7,7 @@ import { Typography } from "antd";
 const { Text } = Typography;
 
 interface IStatusProps {
-  info?: TodoInfo | undefined;
+  info?: TodoInfo;
   setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
   status?: StatusType;
 }
@@ -46,7 +46,6 @@ export default function StatusFilter({
         centered
         color={"deepskyblue"}
         defaultActiveKey="1"
-        className={""}
         items={items}
         onChange={onChangeStatus}
       />

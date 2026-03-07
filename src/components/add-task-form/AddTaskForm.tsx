@@ -1,13 +1,13 @@
 import { addTask } from "../../api/fetch.ts";
 import { type JSX } from "react";
 
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 
-interface onUpdate {
+interface Props {
   onUpdate: () => Promise<void>;
 }
 
-export default function AddTaskForm({ onUpdate }: onUpdate): JSX.Element {
+export default function AddTaskForm({ onUpdate }: Props): JSX.Element {
   const [form] = Form.useForm();
 
   async function handleOnSubmit(title: { title: string }): Promise<void> {
@@ -18,8 +18,8 @@ export default function AddTaskForm({ onUpdate }: onUpdate): JSX.Element {
       await onUpdate();
 
       form.resetFields();
-    } catch (err) {
-      console.log("сработал кетч, адд таск упал", err);
+    } catch {
+      message.error("Не удалось добавить задачу");
     }
   }
 

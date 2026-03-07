@@ -8,6 +8,7 @@ import type {
 import axios from "axios";
 import { URL } from "../const/const.ts";
 import { STATUSES } from "../const/const.ts";
+import { message } from "antd";
 
 export async function getTodos(
   status: StatusType = STATUSES.ALL,
@@ -18,7 +19,10 @@ export async function getTodos(
     });
     return res.data;
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      message.error(err.message);
+      console.error(err);
+    }
     throw err;
   }
 }
@@ -30,8 +34,8 @@ export async function addTask(title: { title: string }): Promise<Todo> {
     return res.data;
   } catch (err) {
     if (err instanceof Error) {
-      alert(`${err.name}-${err.message}`);
-      alert(`Вы написали: ${title}`);
+      message.error(`Не удалось добавить задачу ${err.name}-${err.message}`);
+      message.error(`Вы написали: ${title}`);
     }
     throw err;
   }
@@ -41,7 +45,9 @@ export async function deleteTask(id: number): Promise<void> {
   try {
     await axios.delete(`${URL}/${id}`);
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      message.error(err.message);
+    }
     throw err;
   }
 }
@@ -50,7 +56,9 @@ export async function editTask(id: number, data: TodoRequest): Promise<void> {
   try {
     await axios.put(`${URL}/${id}`, data);
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      message.error(err.message);
+    }
     throw err;
   }
 }

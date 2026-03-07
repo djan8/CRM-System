@@ -1,4 +1,3 @@
-// import cls from "./TaskItem.module.scss";
 import type {
   MetaResponse,
   StatusType,
@@ -16,6 +15,7 @@ import {
   Flex,
   Form,
   Input,
+  message,
   Typography,
 } from "antd";
 import {
@@ -26,7 +26,7 @@ import {
 } from "@ant-design/icons";
 
 const { Text } = Typography;
-type TaskItemProps = {
+type Props = {
   task: Todo;
   info?: TodoInfo;
   setData: React.Dispatch<
@@ -40,7 +40,7 @@ export default function TaskItem({
   task,
   status,
   onUpdate,
-}: TaskItemProps): JSX.Element {
+}: Props): JSX.Element {
   const [isEdit, setIsEdit] = useState(false);
   const [form] = Form.useForm();
 
@@ -52,8 +52,8 @@ export default function TaskItem({
       await editTask(task.id, title);
       await onUpdate?.(status);
       setIsEdit((prev) => !prev);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      message.error("Ошибка изменения имени, ппробуйте еще раз");
     }
   }
   function handleChangeStateValue(): void {
@@ -68,12 +68,11 @@ export default function TaskItem({
 
     await onUpdate?.(status);
   }
-  async function handleChange(e: CheckboxChangeEvent): Promise<void> {
+  async function handleChangeStatusTask(e: CheckboxChangeEvent): Promise<void> {
     const checked = e.target.checked;
     await editTask(task.id, { isDone: checked });
     await onUpdate?.(status);
   }
-
   return (
     <>
       {isEdit ? (
@@ -120,7 +119,7 @@ export default function TaskItem({
       ) : (
         <Flex align={"center"} justify={"space-between"} flex={1}>
           <Flex align={"center"} gap={"small"}>
-            <Checkbox checked={task.isDone} onChange={handleChange} />
+            <Checkbox checked={task.isDone} onChange={handleChangeStatusTask} />
             <Text delete={task.isDone}>{task.title}</Text>
           </Flex>
           <Flex gap={"small"}>

@@ -1,4 +1,4 @@
-import ToDoListPage from "./pages/ToDoListPage/ToDoListPage.tsx";
+import ToDoListPage from "./pages/todoist-page/ToDoListPage.tsx";
 
 function App() {
   return (

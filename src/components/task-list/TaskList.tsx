@@ -1,5 +1,5 @@
 import TaskItem from "../task-items/TaskItem.tsx";
-// import cls from "./TaskList.module.scss";
+
 import type {
   MetaResponse,
   StatusType,
@@ -11,7 +11,7 @@ import type { JSX } from "react";
 
 import { Card, Flex } from "antd";
 
-interface ITaskListProps {
+interface Props {
   data: MetaResponse<Todo, TodoInfo>;
   status: StatusType;
   setData: React.Dispatch<
@@ -24,7 +24,7 @@ export default function TaskList({
   status,
   setData,
   onUpdate,
-}: ITaskListProps): JSX.Element {
+}: Props): JSX.Element {
   return (
     <Flex vertical gap={"small"}>
       {tasks.map((task) => (

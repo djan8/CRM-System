@@ -1,4 +1,4 @@
-import { type JSX, useEffect, useState } from "react";
+import { type JSX, useCallback, useEffect, useState } from "react";
 import type {
   MetaResponse,
   StatusType,
@@ -9,29 +9,30 @@ import { getTodos } from "../../api/fetch.ts";
 import TaskList from "../../components/task-list/TaskList.tsx";
 import AddTaskForm from "../../components/add-task-form/AddTaskForm.tsx";
 import StatusFilter from "../../components/task-status-filter/StatusFilter.tsx";
-import { Flex, Spin } from "antd";
+import { Flex, message, Spin } from "antd";
 import { STATUSES } from "../../const/const.ts";
 
 export default function ToDoListPage(): JSX.Element {
   const [status, setStatus] = useState<StatusType>(STATUSES.ALL);
-  const [data, setData] = useState<MetaResponse<Todo, TodoInfo> | undefined>();
+  const [todosResponse, setTodosResponse] = useState<
+    MetaResponse<Todo, TodoInfo> | undefined
+  >();
 
-  async function loadTodos() {
+  const loadTodos = useCallback(async () => {
     try {
       const todos = await getTodos(status);
-      setData(todos);
-      console.log("данные обновились");
-    } catch (err) {
-      alert(`Ошибка вот такая: ${err}`);
+      setTodosResponse(todos);
+    } catch {
+      message.error("Ошибка загрузки данных");
     }
-  }
+  }, [status]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadTodos();
+    void loadTodos();
     const intervalId = setInterval(loadTodos, 5000);
     return () => clearInterval(intervalId);
-  }, [status]);
+  }, [status, loadTodos]);
 
   return (
     <Flex vertical flex={1} style={{ width: "100%" }}>
@@ -41,13 +42,17 @@ export default function ToDoListPage(): JSX.Element {
         style={{ maxWidth: "40rem", width: "100%", padding: "1rem 1rem" }}
       >
         <AddTaskForm onUpdate={loadTodos} />
-        <StatusFilter info={data?.info} status={status} setStatus={setStatus} />
-        {!data ? (
+        <StatusFilter
+          info={todosResponse?.info}
+          status={status}
+          setStatus={setStatus}
+        />
+        {!todosResponse ? (
           <Spin />
         ) : (
           <TaskList
-            data={data}
-            setData={setData}
+            data={todosResponse}
+            setData={setTodosResponse}
             onUpdate={loadTodos}
             status={status}
           />
