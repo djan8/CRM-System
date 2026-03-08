@@ -1,26 +1,27 @@
-import type { StatusType, TodoInfo } from "../../types/type.ts";
-import * as React from "react";
+import type { StatusType } from "../../types/type.ts";
+
 import type { JSX } from "react";
 
 import { Tabs, type TabsProps } from "antd";
 import { Typography } from "antd";
 const { Text } = Typography;
+import { setFilterStatus } from "../../pages/TodoListPage/TodoListSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 
-interface IStatusProps {
-  info?: TodoInfo;
-  setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
-  status?: StatusType;
-}
+export default function StatusFilter(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const filterStatus = useAppSelector(
+    (state) => state.todosResponse.filerStatus,
+  );
+  const info = useAppSelector(
+    (state) => state.todosResponse.todosResponse?.info,
+  );
 
-export default function StatusFilter({
-  info,
-  setStatus,
-}: IStatusProps): JSX.Element {
   if (!info) return <Text type="warning">Ant Design (warning)</Text>;
   const [all, completed, inWork] = Object.keys(info);
 
-  const onChangeStatus = (status: string): void => {
-    setStatus(status as StatusType);
+  const onChangeStatus = (filterStatus: string): void => {
+    dispatch(setFilterStatus(filterStatus as StatusType));
   };
 
   const items: TabsProps["items"] = [
@@ -45,7 +46,7 @@ export default function StatusFilter({
         size={"large"}
         centered
         color={"deepskyblue"}
-        defaultActiveKey="1"
+        activeKey={filterStatus}
         items={items}
         onChange={onChangeStatus}
       />

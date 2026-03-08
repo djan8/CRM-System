@@ -1,4 +1,9 @@
-import { addTask } from "../../api/fetch.ts";
+import {
+  addTask,
+  // getTodos,
+  // type SetData,
+  // type StatusType,
+} from "../../api/fetch.ts";
 import { type JSX } from "react";
 
 import { Button, Form, Input, message } from "antd";
@@ -14,12 +19,13 @@ export default function AddTaskForm({ onUpdate }: Props): JSX.Element {
     await form.validateFields();
     try {
       await addTask(title);
-
       await onUpdate();
-
       form.resetFields();
-    } catch {
-      message.error("Не удалось добавить задачу");
+    } catch (err) {
+      if (err instanceof Error) {
+        message.error("Не удалось добавить задачу");
+        message.error(err.message);
+      }
     }
   }
 

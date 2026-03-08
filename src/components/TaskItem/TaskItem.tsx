@@ -1,4 +1,4 @@
-import type { Todo } from "../../types/type.ts";
+import type { StatusType, Todo } from "../../types/type.ts";
 import { deleteTask, editTask } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 
@@ -18,16 +18,20 @@ import {
   EditOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
+import { useAppSelector } from "../../hooks.ts";
 
 const { Text } = Typography;
 type Props = {
   task: Todo;
-  onUpdate?: () => Promise<void>;
+  onUpdate?: (status: StatusType) => Promise<void>;
 };
 
 export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEditText, setIsEditText] = useState(false);
   const [form] = Form.useForm();
+  const filerStatus = useAppSelector(
+    (state) => state.todosResponse.filerStatus,
+  );
 
   async function changeTaskName() {
     try {
@@ -35,32 +39,32 @@ export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
       const title = form.getFieldsValue();
       console.log(title);
       await editTask(task.id, title);
-      await onUpdate?.();
-      setIsEdit((prev) => !prev);
+      await onUpdate?.(filerStatus);
+      setIsEditText((prev) => !prev);
     } catch {
       message.error("Ошибка изменения имени, ппробуйте еще раз");
     }
   }
   function handleChangeStateValue(): void {
-    setIsEdit((prev) => !prev);
+    setIsEditText((prev) => !prev);
     form.setFieldsValue({ title: task.title });
   }
   function handleClickEdit(): void {
-    setIsEdit((prev) => !prev);
+    setIsEditText((prev) => !prev);
   }
   async function handleClickDelete(): Promise<void> {
     await deleteTask(task.id);
 
-    await onUpdate?.();
+    await onUpdate?.(filerStatus);
   }
   async function handleChangeStatusTask(e: CheckboxChangeEvent): Promise<void> {
     const checked = e.target.checked;
     await editTask(task.id, { isDone: checked });
-    await onUpdate?.();
+    await onUpdate?.(filerStatus);
   }
   return (
     <>
-      {isEdit ? (
+      {isEditText ? (
         <Flex align={"center"} justify={"space-between"} flex={1}>
           <Form
             name="title"

@@ -1,15 +1,20 @@
 import { createBrowserRouter } from "react-router";
-import LayoutPage from "./pages/LayoutPage/LayoutPage.tsx";
-import TodoListPage from "./pages/TodoListPage/TodoListPage.tsx";
+
+import App from "./App.tsx";
 import UserPage from "./pages/UserPage/UserPage.tsx";
+import RegistrationForm from "./components/FormUserAuth/registration/RegistrationForm.tsx";
+import AutorizationForm from "./components/FormUserAuth/autorization/AutorizationForm.tsx";
+import LayoutPage from "./pages/LayoutPage/LayoutPage.tsx";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <LayoutPage />,
     children: [
-      { index: true, element: <TodoListPage /> },
+      { index: true, element: <App /> },
       { path: "profile", element: <UserPage /> },
+      { path: "reg-modal", element: <RegistrationForm /> },
+      { path: "auth-modal", element: <AutorizationForm /> },
     ],
   },
 ]);
