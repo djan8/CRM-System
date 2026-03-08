@@ -5,5 +5,3 @@ export const STATUSES = {
   INWORK: "inWork",
   COMPLETED: "completed",
 } as const;
-
-console.log("тест");
