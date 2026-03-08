@@ -87,10 +87,6 @@ export default function RegistrationForm() {
         // onCancel={() => setModalOpen(false)}
         closable={false}
       >
-        <Link to={"/auth-modal"}>
-          <Button />
-        </Link>
-
         <Layout
           style={{
             minHeight: "50vh",
@@ -208,6 +204,14 @@ export default function RegistrationForm() {
                 >
                   Зарегистрироваться
                 </Button>
+                <Flex justify={"space-between"}>
+                  <Text type={"secondary"}>Есть аккаунт?</Text>
+                  <Link to={"/auth-modal"}>
+                    <Button color={"purple"} type={"link"}>
+                      Войти
+                    </Button>
+                  </Link>
+                </Flex>
               </Form>
             )}
           </Flex>

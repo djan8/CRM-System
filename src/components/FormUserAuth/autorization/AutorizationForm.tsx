@@ -11,7 +11,7 @@ import {
 import { Image } from "antd";
 const { Sider } = Layout;
 import auth from "../../../assets/regImg.svg";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../hooks.ts";
 import { setUserProfileData } from "../../../pages/UserPage/userDataSlice.ts";
 import { setIsAuth, setModalMode } from "../../../AppSlice.ts";
@@ -162,6 +162,20 @@ export default function AutorizationForm() {
               >
                 Войти
               </Button>
+              {/*<Flex justify={"space-between"}>*/}
+              {/*  Нет аккаунта?*/}
+              {/*  <Button color={"purple"} type={"link"}>*/}
+              {/*    создать*/}
+              {/*  </Button>*/}
+              {/*</Flex>*/}
+              <Flex justify={"space-between"}>
+                <Text type={"secondary"}>Нет аккаунта?</Text>
+                <Link to={"/reg-modal"}>
+                  <Button color={"purple"} type={"link"}>
+                    создать
+                  </Button>
+                </Link>
+              </Flex>
             </Form>
           </Flex>
         </Layout>
