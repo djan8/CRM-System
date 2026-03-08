@@ -7,6 +7,25 @@ import type {
 } from "../../types/type.ts";
 
 import { STATUSES } from "../../const/const.ts";
+import axios from "axios";
+import { message } from "antd";
+import { URL } from "../../const/const.ts";
+
+export async function getTodos(
+  status: StatusType = STATUSES.ALL,
+): Promise<MetaResponse<Todo, TodoInfo>> {
+  try {
+    const res = await axios.get<MetaResponse<Todo, TodoInfo>>(URL, {
+      params: { filter: status },
+    });
+    return res.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      message.error(err.message);
+    }
+    throw err;
+  }
+}
 
 export interface Props {
   todosResponse: MetaResponse<Todo, TodoInfo> | undefined | null;

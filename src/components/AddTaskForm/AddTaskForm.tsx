@@ -1,12 +1,6 @@
-import {
-  addTask,
-  // getTodos,
-  // type SetData,
-  // type StatusType,
-} from "../../api/fetch.ts";
 import { type JSX } from "react";
-
 import { Button, Form, Input, message } from "antd";
+import { addTask } from "./AddTaskSlice.ts";
 
 interface Props {
   onUpdate: () => Promise<void>;

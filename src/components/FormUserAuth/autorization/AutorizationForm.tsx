@@ -34,47 +34,35 @@ const styles: ModalProps["styles"] = {
 
 export default function AutorizationForm() {
   const [form] = Form.useForm();
-  const userData = useAppSelector((state) => state.user.data);
-  // const modalMode = useAppSelector((state) => state.visible.modalMode);
   const textResponseAuth = useAppSelector(
     (state) => state.authorization.textResponseAuth,
   );
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  console.log(userData);
-
   async function handleOnSubmit() {
     try {
       await form.validateFields();
       const data = form.getFieldsValue();
-      console.log("отправка формы авторизации", data);
       const tokens = await authenticationUser(data);
       dispatch(setTextResponseAuth("Успешная аутентификация."));
       setTokenToLocalStorage(tokens);
-
       const userData = await getProfile();
-
       dispatch(setIsAuth(true));
-
-      console.log(userData);
       dispatch(setUserProfileData(userData));
       navigate("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
           dispatch(setTextResponseAuth("Неверные учетные данные"));
-          console.log("отправка регистрации провалена 409");
         } else if (err.response?.status === 400) {
           dispatch(
             setTextResponseAuth(
               "Ошибка десериализации запроса или неверный ввод",
             ),
           );
-          console.log("отправка регистрации провалена 400");
         } else if (err.response?.status === 500) {
           dispatch(setTextResponseAuth("Внутренняя ошибка сервера"));
-          console.log("отправка регистрации провалена 500");
         } else {
           dispatch(
             setTextResponseAuth(
@@ -83,10 +71,7 @@ export default function AutorizationForm() {
           );
         }
       }
-      console.log(err);
       dispatch(setModalMode(false));
-      console.log("отправка авторизации данных с формы");
-      // navigate("auth-modal");
     }
   }
 
@@ -98,8 +83,6 @@ export default function AutorizationForm() {
         styles={styles}
         mask={{ enabled: true, blur: true }}
         open={true}
-        // onOk={() => setModalOpen(false)}
-        // onCancel={() => setModalOpen(false)}
         closable={false}
       >
         <Layout
@@ -162,12 +145,6 @@ export default function AutorizationForm() {
               >
                 Войти
               </Button>
-              {/*<Flex justify={"space-between"}>*/}
-              {/*  Нет аккаунта?*/}
-              {/*  <Button color={"purple"} type={"link"}>*/}
-              {/*    создать*/}
-              {/*  </Button>*/}
-              {/*</Flex>*/}
               <Flex justify={"space-between"}>
                 <Text type={"secondary"}>Нет аккаунта?</Text>
                 <Link to={"/reg-modal"}>

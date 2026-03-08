@@ -29,41 +29,33 @@ const styles: ModalProps["styles"] = {
 
 export default function RegistrationForm() {
   const dispatch = useAppDispatch();
-
   const [form] = Form.useForm();
-
   const textResponseReg = useAppSelector(
     (state) => state.registration.textResponseReg,
   );
-
   const regIsSuccess = useAppSelector((state) => state.visible.regIsSuccess);
-  // const modalMode = useAppSelector((state) => state.visible.modalMode);
 
   async function handleOnSubmit() {
     try {
       await form.validateFields();
       const data = form.getFieldsValue();
       const { password2, ...other } = data;
+      void password2;
       await registrationUser(other);
       dispatch(setTextResponseReg("Успешная регистрация"));
-      console.log("отправка формы регистрации", password2, "не пападет", other);
-
       dispatch(setRegIsSuccess());
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 409) {
           dispatch(setTextResponseReg("Пользователь существует"));
-          console.log("отправка регистрации провалена 409");
         } else if (err.response?.status === 400) {
           dispatch(
             setTextResponseReg(
               "Ошибка десериализации запроса или неверный ввод",
             ),
           );
-          console.log("отправка регистрации провалена 400");
         } else if (err.response?.status === 500) {
           dispatch(setTextResponseReg("Внутренняя ошибка сервера"));
-          console.log("отправка регистрации провалена 500");
         } else {
           dispatch(
             setTextResponseReg(
@@ -83,8 +75,6 @@ export default function RegistrationForm() {
         styles={styles}
         mask={{ enabled: true, blur: true }}
         open={true}
-        // onOk={() => setModalOpen(false)}
-        // onCancel={() => setModalOpen(false)}
         closable={false}
       >
         <Layout
@@ -107,15 +97,11 @@ export default function RegistrationForm() {
             {regIsSuccess ? (
               <>
                 <Link to={"/auth-modal"}>
-                  {/*<Button onClick={handleTransition}>на авторизацию</Button>*/}
                   {textResponseReg.length > 0 && (
                     <Text type={"success"}>{textResponseReg}</Text>
                   )}
                   <Button>на авторизацию</Button>
                 </Link>
-                {/*<Link to={"reg-modal"}>*/}
-                {/*  <Button>на регистрацию</Button>*/}
-                {/*</Link>*/}
               </>
             ) : (
               <Form form={form} layout={"vertical"} onFinish={handleOnSubmit}>

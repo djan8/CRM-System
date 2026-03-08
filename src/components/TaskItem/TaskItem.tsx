@@ -1,5 +1,4 @@
 import type { StatusType, Todo } from "../../types/type.ts";
-import { deleteTask, editTask } from "../../api/fetch.ts";
 import { type JSX, useState } from "react";
 
 import {
@@ -19,6 +18,7 @@ import {
   SaveOutlined,
 } from "@ant-design/icons";
 import { useAppSelector } from "../../hooks.ts";
+import { deleteTask, editTask } from "./TaslItemSlice.ts";
 
 const { Text } = Typography;
 type Props = {
@@ -37,7 +37,6 @@ export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
     try {
       await form.validateFields();
       const title = form.getFieldsValue();
-      console.log(title);
       await editTask(task.id, title);
       await onUpdate?.(filerStatus);
       setIsEditText((prev) => !prev);
@@ -54,7 +53,6 @@ export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
   }
   async function handleClickDelete(): Promise<void> {
     await deleteTask(task.id);
-
     await onUpdate?.(filerStatus);
   }
   async function handleChangeStatusTask(e: CheckboxChangeEvent): Promise<void> {

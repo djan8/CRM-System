@@ -1,12 +1,15 @@
 import type { UserRegistration } from "../autorization/authType.ts";
 import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 
 export async function registrationUser(data: UserRegistration): Promise<void> {
   try {
     await axios.post("https://easydev.club/api/v1/auth/signup", data);
   } catch (err) {
-    console.error(err);
+    if (err instanceof Error) {
+      message.error(err.message);
+    }
     throw err;
   }
 }
@@ -24,7 +27,6 @@ export const RegSlice = createSlice({
   initialState,
   reducers: {
     setTextResponseReg: (state, action) => {
-      console.log("должна записаться");
       state.textResponseReg = action.payload;
     },
   },

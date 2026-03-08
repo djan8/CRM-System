@@ -1,14 +1,11 @@
 import { type JSX, useCallback, useEffect } from "react";
 
-import { getTodos } from "../../api/fetch.ts";
-
 import TaskList from "../../components/TaskList/TaskList.tsx";
 import AddTaskForm from "../../components/AddTaskForm/AddTaskForm.tsx";
 import StatusFilter from "../../components/StatusFilter/StatusFilter.tsx";
 import { Flex, message, Spin } from "antd";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
-import { setTodosResponse } from "./TodoListSlice.ts";
-
+import { getTodos, setTodosResponse } from "./TodoListSlice.ts";
 
 export default function TodoListPage(): JSX.Element {
   const { todosResponse, filerStatus } = useAppSelector(
@@ -19,17 +16,13 @@ export default function TodoListPage(): JSX.Element {
   const loadTodos = useCallback(async () => {
     try {
       const todos = await getTodos(filerStatus);
-      // setTodosResponse(todos);
       dispatch(setTodosResponse(todos));
-      console.log("данные обновились");
-      // console.log(toDoData);
     } catch {
       message.error("Ошибка загрузки данных");
     }
   }, [filerStatus, dispatch]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadTodos();
 
     const intervalId = setInterval(loadTodos, 5000);

@@ -1,32 +1,22 @@
 import { Link, Outlet } from "react-router";
-import { Flex, Layout } from "antd";
+import { Flex, Layout, message } from "antd";
 import { useAppDispatch } from "../../hooks.ts";
 import { getProfile } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-
-import { useEffect } from "react";
-
+import { useCallback, useEffect } from "react";
 const { Sider } = Layout;
-
 import { setIsAuth, setIsChecking, setModalMode } from "../../AppSlice.ts";
 
 export default function LayoutPage() {
-  console.log("я на лайауте");
-  console.log("сюда попало после рефреша на туду");
-  // const userData = useAppSelector((state) => state.user.data);
-  // const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
-  async function loadLayOut() {
+  const loadLayout = useCallback(async () => {
     try {
       dispatch(setIsChecking(true));
       await getProfile();
       dispatch(setIsAuth(true));
     } catch (err) {
-      console.log(err);
-      console.log(
-        "запрос гетпрофайла упал, ты в лэйаут, и тут перехорд на авторизацию, нахуя?",
-      );
+      if (err instanceof Error) {
+        message.error(err.message);
+      }
       if (localStorage.getItem("accessToken")) {
         dispatch(setModalMode(false));
       }
@@ -35,13 +25,11 @@ export default function LayoutPage() {
     } finally {
       dispatch(setIsChecking(false));
     }
-  }
+  }, [dispatch]);
+
   useEffect(() => {
-    loadLayOut();
-    // console.log("делается?");
-    // dispatch(setIsAuthTrue());
-    // loadProfile();
-  }, []);
+    void loadLayout();
+  }, [loadLayout]);
   return (
     <Flex gap="middle">
       <Layout style={{ textAlign: "center", lineHeight: "30px" }}>

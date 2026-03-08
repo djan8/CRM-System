@@ -1,7 +1,5 @@
 import type { StatusType } from "../../types/type.ts";
-
 import type { JSX } from "react";
-
 import { Tabs, type TabsProps } from "antd";
 import { Typography } from "antd";
 const { Text } = Typography;

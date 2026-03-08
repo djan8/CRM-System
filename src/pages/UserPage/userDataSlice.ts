@@ -27,12 +27,6 @@ export const userDataSlice = createSlice({
     setUserProfileData: (state, action: PayloadAction<Profile>) => {
       state.data = action.payload;
     },
-    // increment: (state) => {
-    //   state.value += 1;
-
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload;
-    // },
   },
 });
 

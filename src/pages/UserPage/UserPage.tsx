@@ -1,9 +1,9 @@
 // import Text from "antd/es/typography/Text";
 import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
-import { Button, Flex, Spin } from "antd";
+import { Button, Flex, message, Spin } from "antd";
 import { LoadingOutlined, LoginOutlined } from "@ant-design/icons";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { getProfile } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import { setUserProfileData } from "./userDataSlice.ts";
 import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
@@ -13,23 +13,26 @@ export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  async function loadProfile() {
+
+  const loadProfile = useCallback(async () => {
     try {
       dispatch(setIsChecking(true));
       const userData = await getProfile();
       dispatch(setUserProfileData(userData));
       dispatch(setIsAuth(true));
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        message.error(err.message);
+      }
       navigate("/auth-modal");
     } finally {
       dispatch(setIsChecking(false));
     }
-  }
+  }, [dispatch, navigate]);
+
   useEffect(() => {
-    console.log("делается?");
-    loadProfile();
-  }, []);
+    void loadProfile();
+  }, [loadProfile]);
 
   return (
     <>
