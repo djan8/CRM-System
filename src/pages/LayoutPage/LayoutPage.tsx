@@ -1,31 +1,42 @@
-import { Link, Outlet } from "react-router";
-import { Flex, Layout, message } from "antd";
+import { Link, Outlet, useNavigate } from "react-router";
+import { Flex, Layout } from "antd";
 import { useAppDispatch } from "../../hooks.ts";
-import { getProfile } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
+import {
+  getProfile,
+  refreshToken,
+} from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import { useCallback, useEffect } from "react";
 const { Sider } = Layout;
-import { setIsAuth, setIsChecking, setModalMode } from "../../AppSlice.ts";
+import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
+import { accessTokenClosure } from "../../const/const.ts";
 
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loadLayout = useCallback(async () => {
     try {
+      const test = accessTokenClosure.getAccessToken();
+      console.log(test);
+      if (!accessTokenClosure.getAccessToken()) {
+        await refreshToken();
+      }
+
       dispatch(setIsChecking(true));
-      await getProfile();
+      await getProfile(accessTokenClosure.getAccessToken());
       dispatch(setIsAuth(true));
     } catch (err) {
       if (err instanceof Error) {
-        message.error(err.message);
+        // message.error(err.message);
       }
-      if (localStorage.getItem("accessToken")) {
-        dispatch(setModalMode(false));
-      }
-      // navigate("/auth-modal");
+      // if (localStorage.getItem("accessToken")) {
+      //   dispatch(setModalMode(false));
+      // }
+      navigate("/auth-modal");
       // navigate("/reg-modal");
     } finally {
       dispatch(setIsChecking(false));
     }
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     void loadLayout();

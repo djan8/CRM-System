@@ -67,6 +67,11 @@ export default function RegistrationForm() {
     }
   }
 
+  const handlerButtonAuthWay = () => {
+    dispatch(setRegIsSuccess());
+    dispatch(setTextResponseReg(""));
+  };
+
   return (
     <Flex gap="middle">
       <Modal
@@ -100,7 +105,7 @@ export default function RegistrationForm() {
                   {textResponseReg.length > 0 && (
                     <Text type={"success"}>{textResponseReg}</Text>
                   )}
-                  <Button>на авторизацию</Button>
+                  <Button onClick={handlerButtonAuthWay}>на авторизацию</Button>
                 </Link>
               </>
             ) : (

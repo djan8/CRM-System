@@ -4,10 +4,15 @@ import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { Button, Flex, message, Spin } from "antd";
 import { LoadingOutlined, LoginOutlined } from "@ant-design/icons";
 import { useCallback, useEffect } from "react";
-import { getProfile } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-import { setUserProfileData } from "./userDataSlice.ts";
+import {
+  getProfile,
+  refreshToken,
+  setTextResponseAuth,
+} from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
+import { logoutUser, setUserProfileData } from "./userDataSlice.ts";
 import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
 import { useNavigate } from "react-router";
+import { accessTokenClosure } from "../../const/const.ts";
 
 export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
@@ -16,8 +21,14 @@ export default function UserPage() {
 
   const loadProfile = useCallback(async () => {
     try {
+      let token = accessTokenClosure.getAccessToken();
+      if (!token) {
+        console.log("запустилась");
+        token = await refreshToken();
+      }
+
       dispatch(setIsChecking(true));
-      const userData = await getProfile();
+      const userData = await getProfile(token);
       dispatch(setUserProfileData(userData));
       dispatch(setIsAuth(true));
     } catch (err) {
@@ -33,6 +44,13 @@ export default function UserPage() {
   useEffect(() => {
     void loadProfile();
   }, [loadProfile]);
+
+  const handlerLogOutUser = () => {
+    logoutUser();
+    dispatch(setTextResponseAuth(""));
+    navigate("/auth-modal");
+    dispatch(setIsAuth(false));
+  };
 
   return (
     <>
@@ -76,7 +94,7 @@ export default function UserPage() {
               size={"middle"}
               variant={"solid"}
               color={"blue"}
-              onClick={() => alert("логаут")}
+              onClick={handlerLogOutUser}
             >
               <LoginOutlined />
             </Button>

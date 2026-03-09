@@ -1,8 +1,9 @@
 import axios from "axios";
 
-import type { AuthData, Profile, Token } from "./authType.ts";
+import type { AuthData, Profile } from "./authType.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
+import { accessTokenClosure } from "../../../const/const.ts";
 
 export async function authenticationUser(data: AuthData) {
   try {
@@ -19,11 +20,13 @@ export async function authenticationUser(data: AuthData) {
   }
 }
 
-export async function getProfile(): Promise<Profile> {
+export async function getProfile(
+  accessValidToken: string | null,
+): Promise<Profile> {
   try {
     const res = await axios.get("https://easydev.club/api/v1/user/profile", {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${accessValidToken}`,
       },
     });
     return res.data;
@@ -31,6 +34,7 @@ export async function getProfile(): Promise<Profile> {
     if (axios.isAxiosError(err)) {
       if (err.response?.status === 401) {
         const newAccessToken = await refreshToken();
+
         const res = await axios.get(
           "https://easydev.club/api/v1/user/profile",
           {
@@ -39,6 +43,7 @@ export async function getProfile(): Promise<Profile> {
             },
           },
         );
+        accessTokenClosure.setAccessToken(res.data);
         return res.data;
       }
     }
@@ -46,7 +51,7 @@ export async function getProfile(): Promise<Profile> {
   }
 }
 
-async function refreshToken() {
+export async function refreshToken() {
   try {
     const res = await axios.post("https://easydev.club/api/v1/auth/refresh", {
       refreshToken: localStorage.getItem("refreshToken"),
@@ -54,25 +59,25 @@ async function refreshToken() {
     const newAccessToken = res.data.accessToken;
     const newRefreshToken = res.data.refreshToken;
 
-    localStorage.setItem("accessToken", newAccessToken);
+    accessTokenClosure.setAccessToken(newAccessToken);
     localStorage.setItem("refreshToken", newRefreshToken);
 
     return newAccessToken;
   } catch (err) {
     if (err instanceof Error) {
-      message.error(err.message);
-      message.error("refresh токен просрочен");
+      // message.error(err.message);
     }
-    localStorage.removeItem("refreshToken");
+    accessTokenClosure.setAccessToken("");
+    localStorage.removeItem("accessToken");
     throw err;
   }
 }
 
-export function setTokenToLocalStorage(tokens: Token) {
-  const { accessToken, refreshToken } = tokens;
-  localStorage.setItem("accessToken", accessToken);
-  localStorage.setItem("refreshToken", refreshToken);
-}
+// export function setTokenToLocalStorage(tokens: Token) {
+//   const { accessToken, refreshToken } = tokens;
+//   localStorage.setItem("accessToken", accessToken);
+//   localStorage.setItem("refreshToken", refreshToken);
+// }
 
 export interface Props {
   textResponseAuth: string;

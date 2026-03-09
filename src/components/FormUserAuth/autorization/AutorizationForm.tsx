@@ -19,10 +19,11 @@ import {
   authenticationUser,
   getProfile,
   setTextResponseAuth,
-  setTokenToLocalStorage,
+  // setTokenToLocalStorage,
 } from "./AutorizationSlice.ts";
 import axios from "axios";
 import Text from "antd/es/typography/Text";
+import { accessTokenClosure } from "../../../const/const.ts";
 
 const styles: ModalProps["styles"] = {
   body: { padding: "1px" },
@@ -44,10 +45,13 @@ export default function AutorizationForm() {
     try {
       await form.validateFields();
       const data = form.getFieldsValue();
-      const tokens = await authenticationUser(data);
+      const { accessToken, refreshToken } = await authenticationUser(data);
       dispatch(setTextResponseAuth("Успешная аутентификация."));
-      setTokenToLocalStorage(tokens);
-      const userData = await getProfile();
+      accessTokenClosure.setAccessToken(accessToken);
+      const accessValidToken = accessTokenClosure.getAccessToken();
+      localStorage.setItem("refreshToken", refreshToken);
+      // localStorage.setItem("accessToken", accessToken);
+      const userData = await getProfile(accessValidToken);
       dispatch(setIsAuth(true));
       dispatch(setUserProfileData(userData));
       navigate("/");
