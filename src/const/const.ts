@@ -18,4 +18,3 @@ function closureAccessToken() {
   };
 }
 export const accessTokenClosure = closureAccessToken();
-console.log(accessTokenClosure.getAccessToken());
