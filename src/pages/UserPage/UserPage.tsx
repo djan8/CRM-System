@@ -1,50 +1,63 @@
 // import Text from "antd/es/typography/Text";
 import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
-import { Button, Flex, message, Spin } from "antd";
+import { Button, Flex, Spin } from "antd";
 import { LoadingOutlined, LoginOutlined } from "@ant-design/icons";
-import { useCallback, useEffect } from "react";
-import {
-  getProfile,
-  refreshToken,
-  setTextResponseAuth,
-} from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-import { logoutUser, setUserProfileData } from "./userDataSlice.ts";
-import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
+import { logoutUser } from "./userDataSlice.ts";
+import { setTextResponseAuth } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import { useNavigate } from "react-router";
-import { accessTokenClosure } from "../../const/const.ts";
+import { setIsAuth } from "../../AppSlice.ts";
+// import { useCallback, useEffect } from "react";
+// import {
+//   getProfile,
+//   refreshToken,
+//   setTextResponseAuth,
+// } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
+// import { logoutUser, setUserProfileData } from "./userDataSlice.ts";
+// import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
+// import { useNavigate } from "react-router";
+// import { accessTokenClosure } from "../../const/const.ts";
 
 export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const loadProfile = useCallback(async () => {
-    try {
-      let token = accessTokenClosure.getAccessToken();
-      if (!token) {
-        console.log("запустилась");
-        token = await refreshToken();
-      }
-
-      dispatch(setIsChecking(true));
-      const userData = await getProfile(token);
-      dispatch(setUserProfileData(userData));
-      dispatch(setIsAuth(true));
-    } catch (err) {
-      if (err instanceof Error) {
-        message.error(err.message);
-      }
-      navigate("/auth-modal");
-    } finally {
-      dispatch(setIsChecking(false));
-    }
-  }, [dispatch, navigate]);
-
-  useEffect(() => {
-    void loadProfile();
-  }, [loadProfile]);
-
+  //
+  // const loadProfile = useCallback(async () => {
+  //   try {
+  //     dispatch(setIsChecking(true));
+  //     let token = accessTokenClosure.getAccessToken();
+  //     const refresh = localStorage.getItem("refreshToken");
+  //
+  //     if (!refresh) {
+  //       navigate("/auth-modal");
+  //       return;
+  //     }
+  //     if (!token) {
+  //       console.log("запустилась");
+  //       // const newAccessToken = await refreshToken();
+  //       token = await refreshToken();
+  //       // accessTokenClosure.setAccessToken(newAccessToken);
+  //     }
+  //
+  //     console.log(token);
+  //     const userData = await getProfile(token);
+  //     dispatch(setUserProfileData(userData));
+  //     dispatch(setIsAuth(true));
+  //   } catch (err) {
+  //     if (err instanceof Error) {
+  //       message.error(err.message);
+  //     }
+  //     navigate("/auth-modal");
+  //   } finally {
+  //     dispatch(setIsChecking(false));
+  //   }
+  // }, [dispatch, navigate]);
+  //
+  // useEffect(() => {
+  //   void loadProfile();
+  // }, [loadProfile]);
+  //
   const handlerLogOutUser = () => {
     logoutUser();
     dispatch(setTextResponseAuth(""));

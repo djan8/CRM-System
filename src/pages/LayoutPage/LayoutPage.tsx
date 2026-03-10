@@ -1,46 +1,48 @@
-import { Link, Outlet, useNavigate } from "react-router";
+import { Link, Outlet } from "react-router";
 import { Flex, Layout } from "antd";
+
 import { useAppDispatch } from "../../hooks.ts";
+import { useEffect } from "react";
+import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
 import {
   getProfile,
   refreshToken,
 } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-import { useCallback, useEffect } from "react";
-const { Sider } = Layout;
-import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
 import { accessTokenClosure } from "../../const/const.ts";
+import { setUserProfileData } from "../UserPage/userDataSlice.ts";
+
+const { Sider } = Layout;
 
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const loadLayout = useCallback(async () => {
-    try {
-      const test = accessTokenClosure.getAccessToken();
-      console.log(test);
-      if (!accessTokenClosure.getAccessToken()) {
-        await refreshToken();
-      }
-
-      dispatch(setIsChecking(true));
-      await getProfile(accessTokenClosure.getAccessToken());
-      dispatch(setIsAuth(true));
-    } catch (err) {
-      if (err instanceof Error) {
-        // message.error(err.message);
-      }
-      // if (localStorage.getItem("accessToken")) {
-      //   dispatch(setModalMode(false));
-      // }
-      navigate("/auth-modal");
-      // navigate("/reg-modal");
-    } finally {
-      dispatch(setIsChecking(false));
-    }
-  }, [dispatch, navigate]);
 
   useEffect(() => {
-    void loadLayout();
-  }, [loadLayout]);
+    async function initAuth() {
+      try {
+        dispatch(setIsChecking(true));
+        const refresh = localStorage.getItem("refreshToken");
+
+        if (!refresh) {
+          dispatch(setIsChecking(false));
+          return;
+        }
+
+        const newToken = await refreshToken();
+        accessTokenClosure.setAccessToken(newToken);
+        const userData = await getProfile(newToken);
+        console.log(userData);
+        dispatch(setUserProfileData(userData));
+
+        dispatch(setIsAuth(true));
+      } catch {
+        localStorage.removeItem("refreshToken");
+      } finally {
+        dispatch(setIsChecking(false));
+      }
+    }
+
+    initAuth();
+  }, [dispatch]);
   return (
     <Flex gap="middle">
       <Layout style={{ textAlign: "center", lineHeight: "30px" }}>

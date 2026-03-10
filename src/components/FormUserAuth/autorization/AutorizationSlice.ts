@@ -31,33 +31,37 @@ export async function getProfile(
     });
     return res.data;
   } catch (err) {
-    if (axios.isAxiosError(err)) {
-      if (err.response?.status === 401) {
-        const newAccessToken = await refreshToken();
-
-        const res = await axios.get(
-          "https://easydev.club/api/v1/user/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${newAccessToken}`,
-            },
-          },
-        );
-        accessTokenClosure.setAccessToken(res.data);
-        return res.data;
-      }
-    }
+    // if (axios.isAxiosError(err)) {
+    //   if (err.response?.status === 401) {
+    //     const newAccessToken = await refreshToken();
+    //
+    //     const res = await axios.get(
+    //       "https://easydev.club/api/v1/user/profile",
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${newAccessToken}`,
+    //         },
+    //       },
+    //     );
+    //     accessTokenClosure.setAccessToken(newAccessToken);
+    //     return res.data;
+    //   }
+    // }
     throw err;
   }
 }
 
 export async function refreshToken() {
   try {
+    const refreshToken = localStorage.getItem("refreshToken");
+    console.log(refreshToken);
     const res = await axios.post("https://easydev.club/api/v1/auth/refresh", {
-      refreshToken: localStorage.getItem("refreshToken"),
+      refreshToken: refreshToken,
     });
     const newAccessToken = res.data.accessToken;
     const newRefreshToken = res.data.refreshToken;
+    console.log("refresh", newRefreshToken);
+    console.log("access", newAccessToken);
 
     accessTokenClosure.setAccessToken(newAccessToken);
     localStorage.setItem("refreshToken", newRefreshToken);
@@ -68,7 +72,7 @@ export async function refreshToken() {
       // message.error(err.message);
     }
     accessTokenClosure.setAccessToken("");
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     throw err;
   }
 }
