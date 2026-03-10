@@ -24,25 +24,3 @@ export async function editTask(id: number, data: TodoRequest): Promise<void> {
     throw err;
   }
 }
-//
-// export interface Props {
-//   isEditText: boolean;
-// }
-//
-// const initialState: Props = {
-//   isEditText: false,
-// };
-//
-// export const TaskItemsSlice = createSlice({
-//   name: "taskItems",
-//   initialState,
-//   reducers: {
-//     setIsEditText: (state) => {
-//       state.isEditText = !state.isEditText;
-//     },
-//   },
-// });
-//
-// export const { setIsEditText } = TaskItemsSlice.actions;
-//
-// export default TaskItemsSlice.reducer;

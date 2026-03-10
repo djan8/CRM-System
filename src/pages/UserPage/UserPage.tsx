@@ -22,42 +22,6 @@ export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  //
-  // const loadProfile = useCallback(async () => {
-  //   try {
-  //     dispatch(setIsChecking(true));
-  //     let token = accessTokenClosure.getAccessToken();
-  //     const refresh = localStorage.getItem("refreshToken");
-  //
-  //     if (!refresh) {
-  //       navigate("/auth-modal");
-  //       return;
-  //     }
-  //     if (!token) {
-  //       console.log("запустилась");
-  //       // const newAccessToken = await refreshToken();
-  //       token = await refreshToken();
-  //       // accessTokenClosure.setAccessToken(newAccessToken);
-  //     }
-  //
-  //     console.log(token);
-  //     const userData = await getProfile(token);
-  //     dispatch(setUserProfileData(userData));
-  //     dispatch(setIsAuth(true));
-  //   } catch (err) {
-  //     if (err instanceof Error) {
-  //       message.error(err.message);
-  //     }
-  //     navigate("/auth-modal");
-  //   } finally {
-  //     dispatch(setIsChecking(false));
-  //   }
-  // }, [dispatch, navigate]);
-  //
-  // useEffect(() => {
-  //   void loadProfile();
-  // }, [loadProfile]);
-  //
   const handlerLogOutUser = () => {
     logoutUser();
     dispatch(setTextResponseAuth(""));

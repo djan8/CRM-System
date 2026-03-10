@@ -31,22 +31,7 @@ export async function getProfile(
     });
     return res.data;
   } catch (err) {
-    // if (axios.isAxiosError(err)) {
-    //   if (err.response?.status === 401) {
-    //     const newAccessToken = await refreshToken();
-    //
-    //     const res = await axios.get(
-    //       "https://easydev.club/api/v1/user/profile",
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${newAccessToken}`,
-    //         },
-    //       },
-    //     );
-    //     accessTokenClosure.setAccessToken(newAccessToken);
-    //     return res.data;
-    //   }
-    // }
+    console.log(err);
     throw err;
   }
 }
@@ -76,12 +61,6 @@ export async function refreshToken() {
     throw err;
   }
 }
-
-// export function setTokenToLocalStorage(tokens: Token) {
-//   const { accessToken, refreshToken } = tokens;
-//   localStorage.setItem("accessToken", accessToken);
-//   localStorage.setItem("refreshToken", refreshToken);
-// }
 
 export interface Props {
   textResponseAuth: string;

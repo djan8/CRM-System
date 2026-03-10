@@ -19,7 +19,6 @@ export async function logoutUser() {
   } catch (err) {
     console.log(err);
   } finally {
-    // localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
   }
 }

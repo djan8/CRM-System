@@ -30,7 +30,6 @@ export default function LayoutPage() {
         const newToken = await refreshToken();
         accessTokenClosure.setAccessToken(newToken);
         const userData = await getProfile(newToken);
-        console.log(userData);
         dispatch(setUserProfileData(userData));
 
         dispatch(setIsAuth(true));
