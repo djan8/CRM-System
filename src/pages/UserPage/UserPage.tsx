@@ -7,23 +7,13 @@ import { logoutUser } from "./userDataSlice.ts";
 import { setTextResponseAuth } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import { useNavigate } from "react-router";
 import { setIsAuth } from "../../AppSlice.ts";
-// import { useCallback, useEffect } from "react";
-// import {
-//   getProfile,
-//   refreshToken,
-//   setTextResponseAuth,
-// } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-// import { logoutUser, setUserProfileData } from "./userDataSlice.ts";
-// import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
-// import { useNavigate } from "react-router";
-// import { accessTokenClosure } from "../../const/const.ts";
 
 export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handlerLogOutUser = () => {
-    logoutUser();
+    void logoutUser();
     dispatch(setTextResponseAuth(""));
     navigate("/auth-modal");
     dispatch(setIsAuth(false));

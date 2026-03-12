@@ -5,7 +5,6 @@ import { useAppSelector } from "./hooks.ts";
 import AuthLayOut from "./components/FormUserAuth/AuthLayOut.tsx";
 
 function App() {
-  // const dispatch = useAppDispatch();
   const isAuth = useAppSelector((state) => state.visible.isAuth);
   const isChecking = useAppSelector((state) => state.visible.isChecking);
 

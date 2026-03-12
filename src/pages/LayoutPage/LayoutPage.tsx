@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import { Flex, Layout } from "antd";
 
 import { useAppDispatch } from "../../hooks.ts";
@@ -15,6 +15,7 @@ const { Sider } = Layout;
 
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function initAuth() {
@@ -31,17 +32,17 @@ export default function LayoutPage() {
         accessTokenClosure.setAccessToken(newToken);
         const userData = await getProfile(newToken);
         dispatch(setUserProfileData(userData));
-
         dispatch(setIsAuth(true));
       } catch {
         localStorage.removeItem("refreshToken");
+        navigate("/auth-modal");
       } finally {
         dispatch(setIsChecking(false));
       }
     }
 
-    initAuth();
-  }, [dispatch]);
+    void initAuth();
+  }, [dispatch, navigate]);
   return (
     <Flex gap="middle">
       <Layout style={{ textAlign: "center", lineHeight: "30px" }}>

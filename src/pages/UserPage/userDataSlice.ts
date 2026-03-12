@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { accessTokenClosure } from "../../const/const.ts";
+import { message } from "antd";
 
 export async function logoutUser() {
   try {
@@ -16,10 +17,12 @@ export async function logoutUser() {
         },
       },
     );
-  } catch (err) {
-    console.log(err);
-  } finally {
     localStorage.removeItem("refreshToken");
+    accessTokenClosure.setAccessToken(null);
+  } catch (err) {
+    if (err instanceof Error) {
+      message.error(err.message);
+    }
   }
 }
 

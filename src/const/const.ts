@@ -12,7 +12,7 @@ function closureAccessToken() {
     getAccessToken: function () {
       return accessToken;
     },
-    setAccessToken: function (token: string) {
+    setAccessToken: function (token: string | null) {
       accessToken = token;
     },
   };

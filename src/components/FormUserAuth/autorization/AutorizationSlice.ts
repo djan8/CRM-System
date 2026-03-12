@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import type { AuthData, Profile } from "./authType.ts";
+import type { AuthData, Profile, Token } from "./authType.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { accessTokenClosure } from "../../../const/const.ts";
 
-export async function authenticationUser(data: AuthData) {
+export async function authenticationUser(data: AuthData): Promise<Token> {
   try {
     const res = await axios.post(
       "https://easydev.club/api/v1/auth/signin",
@@ -31,12 +31,22 @@ export async function getProfile(
     });
     return res.data;
   } catch (err) {
-    console.log(err);
+    if (axios.isAxiosError(err) && err.response?.status === 401) {
+      const newAccessToken = await refreshToken();
+
+      const res = await axios.get("https://easydev.club/api/v1/user/profile", {
+        headers: {
+          Authorization: `Bearer ${newAccessToken}`,
+        },
+      });
+
+      return res.data;
+    }
     throw err;
   }
 }
 
-export async function refreshToken() {
+export async function refreshToken(): Promise<string> {
   try {
     const refreshToken = localStorage.getItem("refreshToken");
     console.log(refreshToken);
@@ -45,17 +55,17 @@ export async function refreshToken() {
     });
     const newAccessToken = res.data.accessToken;
     const newRefreshToken = res.data.refreshToken;
-    console.log("refresh", newRefreshToken);
-    console.log("access", newAccessToken);
+    // console.log("refresh", newRefreshToken);
+    // console.log("access", newAccessToken);
 
     accessTokenClosure.setAccessToken(newAccessToken);
     localStorage.setItem("refreshToken", newRefreshToken);
 
     return newAccessToken;
   } catch (err) {
-    if (err instanceof Error) {
-      // message.error(err.message);
-    }
+    // if (err instanceof Error) {
+    //   // message.error(err.message);
+    // }
     accessTokenClosure.setAccessToken("");
     localStorage.removeItem("refreshToken");
     throw err;

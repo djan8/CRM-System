@@ -50,7 +50,6 @@ export default function AutorizationForm() {
       accessTokenClosure.setAccessToken(accessToken);
       const accessValidToken = accessTokenClosure.getAccessToken();
       localStorage.setItem("refreshToken", refreshToken);
-      // localStorage.setItem("accessToken", accessToken);
       const userData = await getProfile(accessValidToken);
       dispatch(setIsAuth(true));
       dispatch(setUserProfileData(userData));
