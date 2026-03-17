@@ -5,13 +5,15 @@ export interface Props {
   isChecking: boolean;
   regIsSuccess: boolean;
   modalMode: boolean;
+  dark: boolean;
 }
 
 const initialState: Props = {
   isAuth: false,
-  isChecking: false,
+  isChecking: true,
   regIsSuccess: false,
   modalMode: true,
+  dark: true,
 };
 
 export const AppSlice = createSlice({
@@ -30,10 +32,18 @@ export const AppSlice = createSlice({
     setModalMode: (state, action) => {
       state.modalMode = action.payload;
     },
+    setDark: (state) => {
+      state.dark = !state.dark;
+    },
   },
 });
 
-export const { setIsAuth, setRegIsSuccess, setIsChecking, setModalMode } =
-  AppSlice.actions;
+export const {
+  setIsAuth,
+  setRegIsSuccess,
+  setIsChecking,
+  setModalMode,
+  setDark,
+} = AppSlice.actions;
 
 export default AppSlice.reducer;

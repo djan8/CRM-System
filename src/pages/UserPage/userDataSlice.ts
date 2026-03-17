@@ -24,6 +24,9 @@ export async function logoutUser() {
       message.error(err.message);
     }
   }
+  // finally {
+  //   localStorage.removeItem("refreshToken");
+  // }
 }
 
 type Role = "ADMIN" | "USER" | "MODERATOR";

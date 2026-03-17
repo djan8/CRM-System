@@ -28,7 +28,7 @@ export default function UserPage() {
         <>
           <Flex
             style={{
-              background: "#D3D3D3",
+              // background: "#D3D3D3",
               borderRadius: "5px",
               margin: "1px",
             }}

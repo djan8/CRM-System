@@ -30,9 +30,9 @@ export default function AutorizationForm() {
       const { accessToken, refreshToken } = await authenticationUser(data);
       dispatch(setTextResponseAuth("Успешная аутентификация."));
       accessTokenClosure.setAccessToken(accessToken);
-      const accessValidToken = accessTokenClosure.getAccessToken();
+      // const accessValidToken = accessTokenClosure.getAccessToken();
       localStorage.setItem("refreshToken", refreshToken);
-      const userData = await getProfile(accessValidToken);
+      const userData = await getProfile();
       dispatch(setIsAuth(true));
       dispatch(setUserProfileData(userData));
       navigate("/");

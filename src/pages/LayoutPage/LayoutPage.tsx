@@ -1,14 +1,14 @@
 import { Link, Outlet, useNavigate } from "react-router";
-import { Flex, Layout } from "antd";
+import { ConfigProvider, Flex, Layout, Spin, Switch, theme } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { useEffect } from "react";
-import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
+import { setDark, setIsAuth, setIsChecking } from "../../AppSlice.ts";
 import {
   getProfile,
   refreshToken,
 } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-import { accessTokenClosure } from "../../const/const.ts";
+
 import { setUserProfileData } from "../UserPage/userDataSlice.ts";
 import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
 
@@ -17,7 +17,10 @@ const { Sider } = Layout;
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const dark = useAppSelector((state) => state.visible.dark);
   const isAuth = useAppSelector((state) => state.visible.isAuth);
+  const userData = useAppSelector((state) => state.user.data);
+  const isChecking = useAppSelector((state) => state.visible.isChecking);
 
   useEffect(() => {
     async function initAuth() {
@@ -30,9 +33,9 @@ export default function LayoutPage() {
           return;
         }
 
-        const newToken = await refreshToken();
-        accessTokenClosure.setAccessToken(newToken);
-        const userData = await getProfile(newToken);
+        await refreshToken();
+        const userData = await getProfile();
+
         dispatch(setUserProfileData(userData));
         dispatch(setIsAuth(true));
       } catch {
@@ -45,24 +48,50 @@ export default function LayoutPage() {
 
     void initAuth();
   }, [dispatch, navigate]);
+  if (isChecking) return <Spin />;
   return (
     <>
       {isAuth ? (
-        <Flex gap="middle">
-          <Layout style={{ textAlign: "center", lineHeight: "30px" }}>
-            <Sider width="20%" style={{ background: "#2265ba" }}>
-              <Flex vertical style={{ marginTop: "10px" }}>
-                <Link style={{ color: "whitesmoke" }} to={"profile"}>
-                  Личный кабинет
-                </Link>
-                <Link style={{ color: "whitesmoke" }} to={"/"}>
-                  Список задач
-                </Link>
-              </Flex>
-            </Sider>
-            <Outlet />
-          </Layout>
-        </Flex>
+        <ConfigProvider
+          theme={{
+            algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          }}
+        >
+          <Flex gap="middle">
+            <Layout style={{ textAlign: "center", lineHeight: "30px" }}>
+              <Sider width="20%" style={{ background: "#2265ba" }}>
+                <Switch
+                  checked={dark}
+                  onChange={() => dispatch(setDark())}
+                  checkedChildren="🌙"
+                  unCheckedChildren="☀️"
+                />
+                <Flex vertical style={{ marginTop: "10px" }}>
+                  <Link style={{ color: "whitesmoke" }} to={"profile"}>
+                    Личный кабинет
+                  </Link>
+                  <Link style={{ color: "whitesmoke" }} to={"/"}>
+                    Список задач
+                  </Link>
+                  {userData?.roles.map(
+                    (role) =>
+                      role === "MODERATOR" ||
+                      (role === "ADMIN" && (
+                        <Link
+                          key={role}
+                          style={{ color: "whitesmoke" }}
+                          to={"users"}
+                        >
+                          Пользователи
+                        </Link>
+                      )),
+                  )}
+                </Flex>
+              </Sider>
+              <Outlet />
+            </Layout>
+          </Flex>
+        </ConfigProvider>
       ) : (
         <AuthLayOut />
       )}

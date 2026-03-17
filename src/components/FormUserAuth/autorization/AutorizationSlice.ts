@@ -20,23 +20,20 @@ export async function authenticationUser(data: AuthData): Promise<Token> {
   }
 }
 
-export async function getProfile(
-  accessValidToken: string | null,
-): Promise<Profile> {
+export async function getProfile(): Promise<Profile> {
   try {
     const res = await axios.get("https://easydev.club/api/v1/user/profile", {
       headers: {
-        Authorization: `Bearer ${accessValidToken}`,
+        Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
       },
     });
     return res.data;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response?.status === 401) {
-      const newAccessToken = await refreshToken();
-
+      await refreshToken();
       const res = await axios.get("https://easydev.club/api/v1/user/profile", {
         headers: {
-          Authorization: `Bearer ${newAccessToken}`,
+          Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
         },
       });
 
@@ -46,27 +43,27 @@ export async function getProfile(
   }
 }
 
-export async function refreshToken(): Promise<string> {
+export async function refreshToken(): Promise<void> {
   try {
+    console.log("REFRESH START");
     const refreshToken = localStorage.getItem("refreshToken");
     console.log(refreshToken);
+    if (!refreshToken) return;
     const res = await axios.post("https://easydev.club/api/v1/auth/refresh", {
       refreshToken: refreshToken,
     });
     const newAccessToken = res.data.accessToken;
     const newRefreshToken = res.data.refreshToken;
-    // console.log("refresh", newRefreshToken);
-    // console.log("access", newAccessToken);
+    console.log("refresh", newRefreshToken);
+    console.log("access", newAccessToken);
 
     accessTokenClosure.setAccessToken(newAccessToken);
     localStorage.setItem("refreshToken", newRefreshToken);
-
-    return newAccessToken;
   } catch (err) {
     // if (err instanceof Error) {
     //   // message.error(err.message);
     // }
-    accessTokenClosure.setAccessToken("");
+    accessTokenClosure.setAccessToken(null);
     localStorage.removeItem("refreshToken");
     throw err;
   }

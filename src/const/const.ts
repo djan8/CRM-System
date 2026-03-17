@@ -1,4 +1,5 @@
 export const URL: string = import.meta.env.VITE_API_URL;
+export const URLUSERS = import.meta.env.VITE_API_URLUSERS;
 
 export const STATUSES = {
   ALL: "all",
