@@ -1,7 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import { Flex, Layout } from "antd";
 
-import { useAppDispatch } from "../../hooks.ts";
+import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { useEffect } from "react";
 import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
 import {
@@ -10,12 +10,14 @@ import {
 } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import { accessTokenClosure } from "../../const/const.ts";
 import { setUserProfileData } from "../UserPage/userDataSlice.ts";
+import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
 
 const { Sider } = Layout;
 
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isAuth = useAppSelector((state) => state.visible.isAuth);
 
   useEffect(() => {
     async function initAuth() {
@@ -44,20 +46,26 @@ export default function LayoutPage() {
     void initAuth();
   }, [dispatch, navigate]);
   return (
-    <Flex gap="middle">
-      <Layout style={{ textAlign: "center", lineHeight: "30px" }}>
-        <Sider width="20%" style={{ background: "#2265ba" }}>
-          <Flex vertical style={{ marginTop: "10px" }}>
-            <Link style={{ color: "whitesmoke" }} to={"profile"}>
-              Личный кабинет
-            </Link>
-            <Link style={{ color: "whitesmoke" }} to={"/"}>
-              Список задач
-            </Link>
-          </Flex>
-        </Sider>
-        <Outlet />
-      </Layout>
-    </Flex>
+    <>
+      {isAuth ? (
+        <Flex gap="middle">
+          <Layout style={{ textAlign: "center", lineHeight: "30px" }}>
+            <Sider width="20%" style={{ background: "#2265ba" }}>
+              <Flex vertical style={{ marginTop: "10px" }}>
+                <Link style={{ color: "whitesmoke" }} to={"profile"}>
+                  Личный кабинет
+                </Link>
+                <Link style={{ color: "whitesmoke" }} to={"/"}>
+                  Список задач
+                </Link>
+              </Flex>
+            </Sider>
+            <Outlet />
+          </Layout>
+        </Flex>
+      ) : (
+        <AuthLayOut />
+      )}
+    </>
   );
 }
