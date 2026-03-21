@@ -4,6 +4,7 @@ import {
   Form,
   Input,
   Layout,
+  message,
   // Modal,
   // type ModalProps,
 } from "antd";
@@ -16,8 +17,10 @@ import { Link } from "react-router";
 import Text from "antd/es/typography/Text";
 import { useAppDispatch, useAppSelector } from "../../../hooks.ts";
 import { setModalMode, setRegIsSuccess } from "../../../AppSlice.ts";
-import { registrationUser, setTextResponseReg } from "./RegistationSlice.ts";
+import { registerUser, setTextResponseReg } from "./RegistationSlice.ts";
 import axios from "axios";
+import type { RegistrationValue } from "./RegType.ts";
+import type { UserRegistrationData } from "../autorization/authType.ts";
 
 export default function RegistrationForm() {
   const dispatch = useAppDispatch();
@@ -27,16 +30,24 @@ export default function RegistrationForm() {
   );
   const regIsSuccess = useAppSelector((state) => state.visible.regIsSuccess);
 
-  async function handleOnSubmit() {
+  async function handleRegFormSubmit(value: RegistrationValue) {
     try {
+      console.log(typeof value.phone);
+      const registerData: UserRegistrationData = {
+        login: value.login,
+        username: value.username,
+        password: value.password,
+        email: value.email,
+        phoneNumber: value.phone ? value.phone : "",
+      };
       await form.validateFields();
-      const data = form.getFieldsValue();
-      const { password2, ...other } = data;
-      void password2;
-      await registrationUser(other);
+      await registerUser(registerData);
       dispatch(setTextResponseReg("Успешная регистрация"));
       dispatch(setRegIsSuccess());
     } catch (err) {
+      if (err instanceof Error) {
+        message.error(err.message);
+      }
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 409) {
           dispatch(setTextResponseReg("Пользователь существует"));
@@ -94,7 +105,11 @@ export default function RegistrationForm() {
               </Link>
             </>
           ) : (
-            <Form form={form} layout={"vertical"} onFinish={handleOnSubmit}>
+            <Form
+              form={form}
+              layout={"vertical"}
+              onFinish={handleRegFormSubmit}
+            >
               <Form.Item
                 style={{ marginBottom: 0, paddingBottom: 0 }}
                 name="username"

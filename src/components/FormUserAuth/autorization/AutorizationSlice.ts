@@ -1,87 +1,47 @@
-import axios from "axios";
+// import axios from "axios";
 
-import type { AuthData, Profile, Token } from "./authType.ts";
+import type { AuthData, ProfileData, TokenData } from "./authType.ts";
 import { createSlice } from "@reduxjs/toolkit";
-import { message } from "antd";
-import { accessTokenClosure } from "../../../const/const.ts";
 
-export async function authenticationUser(data: AuthData): Promise<Token> {
-  try {
-    const res = await axios.post(
-      "https://easydev.club/api/v1/auth/signin",
-      data,
-    );
-    return res.data;
-  } catch (err) {
-    if (err instanceof Error) {
-      message.error(err.message);
-    }
-    throw err;
-  }
+import { accessTokenStore } from "../../../const/const.ts";
+import { api, refreshApi } from "../../../api/api.ts";
+
+export async function authenticationUser(data: AuthData): Promise<TokenData> {
+  const res = await api.post("/auth/signin", data);
+  return res.data;
 }
 
-export async function getProfile(
-  accessValidToken: string | null,
-): Promise<Profile> {
-  try {
-    const res = await axios.get("https://easydev.club/api/v1/user/profile", {
-      headers: {
-        Authorization: `Bearer ${accessValidToken}`,
-      },
-    });
-    return res.data;
-  } catch (err) {
-    if (axios.isAxiosError(err) && err.response?.status === 401) {
-      const newAccessToken = await refreshToken();
-
-      const res = await axios.get("https://easydev.club/api/v1/user/profile", {
-        headers: {
-          Authorization: `Bearer ${newAccessToken}`,
-        },
-      });
-
-      return res.data;
-    }
-    throw err;
-  }
+export async function getProfile(): Promise<ProfileData> {
+  const res = await api.get("/user/profile");
+  return res.data;
 }
 
 export async function refreshToken(): Promise<string> {
   try {
-    const refreshToken = localStorage.getItem("refreshToken");
-    console.log(refreshToken);
-    const res = await axios.post("https://easydev.club/api/v1/auth/refresh", {
-      refreshToken: refreshToken,
+    const res = await refreshApi.post("/auth/refresh", {
+      refreshToken: localStorage.getItem("refreshToken"),
     });
-    const newAccessToken = res.data.accessToken;
-    const newRefreshToken = res.data.refreshToken;
-    // console.log("refresh", newRefreshToken);
-    // console.log("access", newAccessToken);
 
-    accessTokenClosure.setAccessToken(newAccessToken);
-    localStorage.setItem("refreshToken", newRefreshToken);
+    localStorage.setItem("refreshToken", res.data.refreshToken);
 
-    return newAccessToken;
+    return res.data.accessToken;
   } catch (err) {
-    // if (err instanceof Error) {
-    //   // message.error(err.message);
-    // }
-    accessTokenClosure.setAccessToken("");
+    accessTokenStore.setAccessToken("");
     localStorage.removeItem("refreshToken");
     throw err;
   }
 }
 
-export interface Props {
+interface AuthorizationSlice {
   textResponseAuth: string;
 }
 
-const initialState: Props = {
+const initialState: AuthorizationSlice = {
   textResponseAuth: "",
 };
 
-export const AuthSlice = createSlice({
-  name: "registration",
+export const AuthorizationSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
     setTextResponseAuth: (state, action) => {
@@ -90,6 +50,6 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { setTextResponseAuth } = AuthSlice.actions;
+export const { setTextResponseAuth } = AuthorizationSlice.actions;
 
-export default AuthSlice.reducer;
+export default AuthorizationSlice.reducer;

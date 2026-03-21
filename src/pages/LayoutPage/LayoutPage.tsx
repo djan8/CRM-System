@@ -3,12 +3,12 @@ import { Flex, Layout } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { useEffect } from "react";
-import { setIsAuth, setIsChecking } from "../../AppSlice.ts";
+import { setIsAuth, setIsChecking, setModalMode } from "../../AppSlice.ts";
 import {
   getProfile,
   refreshToken,
 } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-import { accessTokenClosure } from "../../const/const.ts";
+// import { accessTokenClosure } from "../../const/const.ts";
 import { setUserProfileData } from "../UserPage/userDataSlice.ts";
 import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
 
@@ -24,20 +24,17 @@ export default function LayoutPage() {
       try {
         dispatch(setIsChecking(true));
         const refresh = localStorage.getItem("refreshToken");
-
         if (!refresh) {
           dispatch(setIsChecking(false));
           return;
         }
-
-        const newToken = await refreshToken();
-        accessTokenClosure.setAccessToken(newToken);
-        const userData = await getProfile(newToken);
+        await refreshToken();
+        const userData = await getProfile();
         dispatch(setUserProfileData(userData));
         dispatch(setIsAuth(true));
       } catch {
         localStorage.removeItem("refreshToken");
-        navigate("/auth-modal");
+        dispatch(setModalMode(false));
       } finally {
         dispatch(setIsChecking(false));
       }

@@ -13,7 +13,7 @@ import {
 } from "./AutorizationSlice.ts";
 import axios from "axios";
 import Text from "antd/es/typography/Text";
-import { accessTokenClosure } from "../../../const/const.ts";
+import { accessTokenStore } from "../../../const/const.ts";
 
 export default function AutorizationForm() {
   const [form] = Form.useForm();
@@ -25,14 +25,15 @@ export default function AutorizationForm() {
 
   async function handleOnSubmit() {
     try {
-      await form.validateFields();
+      // await form.validateFields();
       const data = form.getFieldsValue();
       const { accessToken, refreshToken } = await authenticationUser(data);
+      console.log("Сработал обработчик авторизации");
       dispatch(setTextResponseAuth("Успешная аутентификация."));
-      accessTokenClosure.setAccessToken(accessToken);
-      const accessValidToken = accessTokenClosure.getAccessToken();
+      accessTokenStore.setAccessToken(accessToken);
+      // const accessValidToken = accessTokenClosure.getAccessToken();
       localStorage.setItem("refreshToken", refreshToken);
-      const userData = await getProfile(accessValidToken);
+      const userData = await getProfile();
       dispatch(setIsAuth(true));
       dispatch(setUserProfileData(userData));
       navigate("/");

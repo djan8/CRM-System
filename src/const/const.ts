@@ -6,7 +6,7 @@ export const STATUSES = {
   COMPLETED: "completed",
 } as const;
 
-function closureAccessToken() {
+function createAccessTokenStore() {
   let accessToken: string | null = null;
   return {
     getAccessToken: function () {
@@ -17,4 +17,4 @@ function closureAccessToken() {
     },
   };
 }
-export const accessTokenClosure = closureAccessToken();
+export const accessTokenStore = createAccessTokenStore();

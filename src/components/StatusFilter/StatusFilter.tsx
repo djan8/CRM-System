@@ -1,38 +1,40 @@
-import type { StatusType } from "../../types/type.ts";
+import type { Status } from "../../types/TodoType.ts";
 import type { JSX } from "react";
 import { Tabs, type TabsProps } from "antd";
 import { Typography } from "antd";
-const { Text } = Typography;
 import { setFilterStatus } from "../../pages/TodoListPage/TodoListSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 
 export default function StatusFilter(): JSX.Element {
   const dispatch = useAppDispatch();
   const filterStatus = useAppSelector(
-    (state) => state.todosResponse.filerStatus,
+    (state) => state.todosResponse.filterStatus,
   );
   const info = useAppSelector(
     (state) => state.todosResponse.todosResponse?.info,
   );
 
-  if (!info) return <Text type="warning">Ant Design (warning)</Text>;
-  const [all, completed, inWork] = Object.keys(info);
+  if (!info)
+    return (
+      <Typography.Text type="warning">Ant Design (warning)</Typography.Text>
+    );
+  // const [all, completed, inWork] = Object.keys(info);
 
-  const onChangeStatus = (filterStatus: string): void => {
-    dispatch(setFilterStatus(filterStatus as StatusType));
+  const handleChangeStatus = (filterStatus: string): void => {
+    dispatch(setFilterStatus(filterStatus as Status));
   };
 
   const items: TabsProps["items"] = [
     {
-      key: all,
+      key: "all",
       label: `Все (${info.all})`,
     },
     {
-      key: inWork,
+      key: "inWork",
       label: `В работе (${info.inWork})`,
     },
     {
-      key: completed,
+      key: "completed",
       label: `Сделано (${info.completed})`,
     },
   ];
@@ -46,7 +48,7 @@ export default function StatusFilter(): JSX.Element {
         color={"deepskyblue"}
         activeKey={filterStatus}
         items={items}
-        onChange={onChangeStatus}
+        onChange={handleChangeStatus}
       />
     </>
   );

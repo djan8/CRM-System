@@ -9,15 +9,16 @@ interface Props {
 export default function AddTaskForm({ onUpdate }: Props): JSX.Element {
   const [form] = Form.useForm();
 
-  async function handleOnSubmit(title: { title: string }): Promise<void> {
-    await form.validateFields();
+  async function handleSubmit(title: { title: string }): Promise<void> {
     try {
       await addTask(title);
       await onUpdate();
       form.resetFields();
     } catch (err) {
       if (err instanceof Error) {
-        message.error("Не удалось добавить задачу");
+        message.error(
+          `Не удалось добавить задачу ${err.name}-${err.message}-Вы написали: ${title.title.toString()}`,
+        );
         message.error(err.message);
       }
     }
@@ -25,7 +26,7 @@ export default function AddTaskForm({ onUpdate }: Props): JSX.Element {
 
   return (
     <>
-      <Form form={form} layout={"inline"} onFinish={handleOnSubmit}>
+      <Form form={form} layout={"inline"} onFinish={handleSubmit}>
         <Form.Item
           style={{ flex: 1 }}
           name="title"

@@ -1,23 +1,28 @@
-// import Text from "antd/es/typography/Text";
 import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
-import { Button, Flex, Spin } from "antd";
-import { LoadingOutlined, LoginOutlined } from "@ant-design/icons";
+import { Button, Flex, message, Spin } from "antd";
+import { LoadingOutlined, LogoutOutlined } from "@ant-design/icons";
 import { logoutUser } from "./userDataSlice.ts";
 import { setTextResponseAuth } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-import { useNavigate } from "react-router";
-import { setIsAuth } from "../../AppSlice.ts";
+import { setIsAuth, setModalMode } from "../../AppSlice.ts";
+import { accessTokenStore } from "../../const/const.ts";
 
 export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const handlerLogOutUser = () => {
-    void logoutUser();
-    dispatch(setTextResponseAuth(""));
-    navigate("/auth-modal");
-    dispatch(setIsAuth(false));
-  };
+
+  async function handlerLogOutUser() {
+    try {
+      void (await logoutUser());
+      localStorage.removeItem("refreshToken");
+      accessTokenStore.setAccessToken(null);
+      dispatch(setTextResponseAuth(""));
+      dispatch(setModalMode(false));
+      dispatch(setIsAuth(false));
+    } catch {
+      message.error("ошибка выхода из аккаунта");
+    }
+  }
 
   return (
     <>
@@ -63,7 +68,7 @@ export default function UserPage() {
               color={"blue"}
               onClick={handlerLogOutUser}
             >
-              <LoginOutlined />
+              <LogoutOutlined />
             </Button>
           </Flex>
         </>
