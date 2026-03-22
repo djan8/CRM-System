@@ -47,12 +47,12 @@ export interface UserFilters {
 //   USER = "USER",
 // }
 
-export const Roles = {
+export const RolesConst = {
   ADMIN: "ADMIN",
   MODERATOR: "MODERATOR",
   USER: "USER",
 } as const;
-export type Roles = (typeof Roles)[keyof typeof Roles];
+export type Roles = (typeof RolesConst)[keyof typeof RolesConst];
 
 // Интерфейс для обновления прав пользователя
 export interface UserRolesRequest {

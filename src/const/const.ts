@@ -1,5 +1,7 @@
 export const URL: string = import.meta.env.VITE_API_URL;
 
+export const PAGINATION_LIMIT = 20;
+
 export const STATUSES = {
   ALL: "all",
   INWORK: "inWork",

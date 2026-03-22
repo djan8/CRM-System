@@ -27,8 +27,8 @@ import {
   UserDeleteOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import type { Roles, User, UserFilters } from "./type.ts";
-import { Link, useNavigate } from "react-router";
+import { type Roles, RolesConst, type User, type UserFilters } from "./type.ts";
+import { Link } from "react-router";
 import {
   blockUser,
   deleteUser,
@@ -40,6 +40,8 @@ import {
 import { refreshToken } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import axios from "axios";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
+import { setModalMode } from "../../AppSlice.ts";
+import { PAGINATION_LIMIT } from "../../const/const.ts";
 
 export default function UsersPage() {
   const dispatch = useAppDispatch();
@@ -47,13 +49,10 @@ export default function UsersPage() {
   const meta = useAppSelector((state) => state.users?.usersMetaResponse?.meta);
   const isAuth = useAppSelector((state) => state.visible.isAuth);
   const isChecking = useAppSelector((state) => state.visible.isChecking);
-  const data = useAppSelector((state) => state.users.usersMetaResponse?.data);
-  console.log(data);
-  // const [value, setValue] = useState("");
-  const PAGINATION_LIMIT = 20;
+
   const [selected, setSelected] = useState("all");
   const [editingId, setEditingId] = useState<number | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [filters, setFilters] = useState<UserFilters>({
     search: undefined,
     sortBy: undefined,
@@ -62,20 +61,15 @@ export default function UsersPage() {
     page: 0,
     limit: PAGINATION_LIMIT,
   });
-  console.log(filters);
 
   const loadUsers = useCallback(async () => {
     try {
       const data = await getUsersList(filters);
-      console.log(filters);
       dispatch(setUsersData(data));
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        await refreshToken();
-        const data = await getUsersList(filters);
-
-        dispatch(setUsersData(data));
-      }
+      console.log(err);
+      localStorage.removeItem("refreshToken");
+      dispatch(setModalMode(false));
     }
   }, [dispatch, filters]);
   useEffect(() => {
@@ -89,47 +83,29 @@ export default function UsersPage() {
       await deleteUser(id);
       await loadUsers();
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        try {
-          message.error("ошибка удаления");
-          await refreshToken();
-          await loadUsers();
-        } catch {
-          navigate("/auth-modal");
-        }
-      }
+      console.log(err);
+      message.error("ошибка удаления");
     }
   }
+  // }
   async function handleBlockUser(id: number) {
     try {
       await blockUser(id);
       await loadUsers();
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        try {
-          message.error("ошибка блок");
-          await refreshToken();
-          await loadUsers();
-        } catch {
-          navigate("/auth-modal");
-        }
-      }
+      console.log(err);
+      message.error("ошибка удаления");
     }
   }
+
   async function handleUnBlockUser(id: number) {
     try {
       await unblockUser(id);
       await loadUsers();
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        try {
-          message.error("ошибка разблок");
-          await refreshToken();
-          await loadUsers();
-        } catch {
-          navigate("/auth-modal");
-        }
-      }
+      console.log(err);
+
+      message.error("ошибка разблок");
     }
   }
 
@@ -141,20 +117,13 @@ export default function UsersPage() {
 
   const handleChangeRoles = async (id: number, roles: Roles[]) => {
     try {
-      // dispatch(updateUserRoles({ id, roles }));
       console.log("id-", id, "roles-", roles);
+      if (roles.length === 0) roles = [RolesConst.USER];
       await updateRightUser(id, { roles });
       await loadUsers();
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        try {
-          message.error("ошибка разблок");
-          await refreshToken();
-          await loadUsers();
-        } catch {
-          navigate("/auth-modal");
-        }
-      }
+      console.log(err);
+      message.error("ошибка изменения роли");
     }
   };
 
@@ -174,7 +143,6 @@ export default function UsersPage() {
     {
       title: "Телефон",
       dataIndex: "phoneNumber",
-      // key: 'address',
     },
     {
       title: "Роли",
@@ -238,12 +206,7 @@ export default function UsersPage() {
             title={"Изменить роли?"}
             onConfirm={() => setEditingId(record.id)}
           >
-            <Flex
-              vertical
-              gap={4}
-              // onClick={() => setEditingId(record.id)}
-              style={{ cursor: "pointer" }}
-            >
+            <Flex vertical gap={4} style={{ cursor: "pointer" }}>
               {roles.length === 0 ? (
                 <Tag color="default">+ Добавить роль</Tag>
               ) : (
@@ -349,14 +312,10 @@ export default function UsersPage() {
   async function handleTableChange(
     pagination: TablePaginationConfig,
     _filters: Record<string, FilterValue | null>,
-    // sorter: { field: string; columnKey: string; order: string },
     sorter: SorterResult<User> | SorterResult<User>[],
   ) {
     try {
       if (Array.isArray(sorter)) return;
-      console.log(sorter);
-      console.log(pagination);
-      console.log(_filters);
       const sortField = sorter.field || sorter.columnKey;
       let sortOrder: "asc" | "desc" | undefined;
       if (sorter.order === "ascend") sortOrder = "asc";
@@ -370,18 +329,6 @@ export default function UsersPage() {
         page: (pagination.current ?? 1) - 1,
       };
       setFilters(newFilters);
-      // const data = await getUsersList(newFilters);
-      // dispatch(setUsersData(data));
-      // setFilters(newFilters);
-      // loadUsers(newFilters);
-      // const data = await getUsersList({
-      //   sortBy: sortField,
-      //   sortOrder: sortOrder as "asc" | "desc" | undefined,
-      //   search: value,
-      // });
-      // dispatch(setUsersData(data));
-      // { sortBy: username, sortOrder: 'asc' }
-      // console.log(sortOrder, sortField);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
         await refreshToken();
@@ -394,35 +341,9 @@ export default function UsersPage() {
 
   async function handleSearchFilter(event: ChangeEvent<HTMLInputElement>) {
     const newValue = event.target.value;
-    // setValue(newValue);
-    // const newFilters = { ...filters, search: newValue, page: 1 };
-    console.log("поиск сработал", filters, "-такие теперь");
-    // const data = await getUsersList(newFilters);
-    // dispatch(setUsersData(data));
-    setFilters((prev) => ({ ...prev, search: newValue, page: 0 }));
-    // setFilters(newFilters);
-    // await loadUsers(newFilters);
-    // const data = await getUsersList({
-    //   search: value,
-    // });
-    // dispatch(setUsersData({ ...data, data: data.data ?? [] }));
-    // dispatch(setUsersData(data));
-  }
 
-  // async function handlePaginationChange(page: number, pageSize: number) {
-  //   console.log(page, pageSize); //4 20
-  //   const newFilters = { ...filters, limit: pageSize, page: page - 1 };
-  //   setFilters(newFilters);
-  //   // const data = await getUsersList(newFilters);
-  //   // dispatch(setUsersData(data));
-  //   // setFilters(newFilters);
-  //   // await loadUsers(newFilters);
-  //   // const data = await getUsersList({
-  //   //   limit: pageSize,
-  //   //   page: page,
-  //   // });
-  //   // dispatch(setUsersData(data));
-  // }
+    setFilters((prev) => ({ ...prev, search: newValue, page: 0 }));
+  }
 
   const rowSelection: TableProps<User>["rowSelection"] = {
     hideSelectAll: true,
@@ -446,15 +367,6 @@ export default function UsersPage() {
     if (e.key === "all") isBlock = undefined;
     const newFilters = { ...filters, isBlocked: isBlock };
     setFilters(newFilters);
-    // console.log("newFilters:", newFilters);
-    // await loadUsers(newFilters);
-    // const data = await getUsersList({
-    //   isBlocked: isBlock,
-    // });
-    // //
-    // dispatch(setUsersData(data));
-    // setFilters(newFilters);
-    console.log("click", e);
   };
   const items: MenuProps["items"] = [
     {
@@ -513,8 +425,6 @@ export default function UsersPage() {
             pageSize: filters.limit,
             total: meta.totalAmount,
             showSizeChanger: true,
-            // pageSizeOptions: ["20"],
-            // onChange: handlePaginationChange,
           }}
           dataSource={users}
           scroll={{ x: "max-content" }}

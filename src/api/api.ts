@@ -10,19 +10,20 @@ export const refreshApi = axios.create({
 });
 export const logoutApi = axios.create({
   baseURL: URL,
+  headers: { Authorization: `Bearer ${accessTokenStore.getAccessToken()}` },
 });
 
-api.interceptors.request.use((config) => {
-  const accessToken = accessTokenStore.getAccessToken();
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+// api.interceptors.request.use((config) => {
+//   const accessToken = accessTokenStore.getAccessToken();
+//   if (accessToken) {
+//     config.headers.Authorization = `Bearer ${accessToken}`;
+//   }
+//   return config;
+// });
 
 api.interceptors.response.use(undefined, async (error) => {
   const originalRequest = error.config;
-  console.log(originalRequest);
+  console.log(originalRequest, "<====что это");
   if (error.response?.status === 401 && !originalRequest._retry) {
     console.log("сработал интерцептор");
     originalRequest._retry = true;
