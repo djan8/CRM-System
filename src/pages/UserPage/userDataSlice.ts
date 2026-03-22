@@ -1,32 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { accessTokenClosure } from "../../const/const.ts";
-import { message } from "antd";
+import { logoutApi } from "../../api/api.ts";
+import { accessTokenStore } from "../../const/const.ts";
 
 export async function logoutUser() {
   try {
-    await axios.post(
-      "https://easydev.club/api/v1/user/logout",
+    await logoutApi.post(
+      "/user/logout",
       {
         refreshToken: localStorage.getItem("refreshToken"),
       },
       {
         headers: {
-          Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
+          Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
         },
       },
     );
-    localStorage.removeItem("refreshToken");
-    accessTokenClosure.setAccessToken(null);
   } catch (err) {
-    if (err instanceof Error) {
-      message.error(err.message);
-    }
+    console.log(err);
+    throw err;
   }
-  // finally {
-  //   localStorage.removeItem("refreshToken");
-  // }
 }
 
 type Role = "ADMIN" | "USER" | "MODERATOR";

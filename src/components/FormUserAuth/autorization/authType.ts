@@ -3,7 +3,7 @@ export interface AuthData {
   password: string;
 }
 
-export interface Token {
+export interface TokenData {
   accessToken: string;
   refreshToken: string;
 }
@@ -11,7 +11,7 @@ export interface Token {
 //   refreshToken: string;
 // }
 
-export interface UserRegistration {
+export interface UserRegistrationData {
   login: string;
   username: string;
   password: string;
@@ -19,7 +19,7 @@ export interface UserRegistration {
   phoneNumber: string;
 }
 
-export interface Profile {
+export interface ProfileData {
   id: number;
   username: string;
   email: string;

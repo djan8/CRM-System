@@ -3,7 +3,12 @@ import { ConfigProvider, Flex, Layout, Spin, Switch, theme } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { useEffect } from "react";
-import { setDark, setIsAuth, setIsChecking } from "../../AppSlice.ts";
+import {
+  setDark,
+  setIsAuth,
+  setIsChecking,
+  setModalMode,
+} from "../../AppSlice.ts";
 import {
   getProfile,
   refreshToken,
@@ -40,7 +45,7 @@ export default function LayoutPage() {
         dispatch(setIsAuth(true));
       } catch {
         localStorage.removeItem("refreshToken");
-        navigate("/auth-modal");
+        dispatch(setModalMode(false));
       } finally {
         dispatch(setIsChecking(false));
       }

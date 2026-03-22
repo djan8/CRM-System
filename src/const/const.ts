@@ -1,5 +1,4 @@
 export const URL: string = import.meta.env.VITE_API_URL;
-export const URLUSERS = import.meta.env.VITE_API_URLUSERS;
 
 export const STATUSES = {
   ALL: "all",
@@ -7,7 +6,7 @@ export const STATUSES = {
   COMPLETED: "completed",
 } as const;
 
-function closureAccessToken() {
+function createAccessTokenStore() {
   let accessToken: string | null = null;
   return {
     getAccessToken: function () {
@@ -18,4 +17,4 @@ function closureAccessToken() {
     },
   };
 }
-export const accessTokenClosure = closureAccessToken();
+export const accessTokenStore = createAccessTokenStore();

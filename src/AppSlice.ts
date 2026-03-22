@@ -1,36 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export interface Props {
   isAuth: boolean;
   isChecking: boolean;
-  regIsSuccess: boolean;
-  modalMode: boolean;
+  isRegSuccess: boolean;
+  isModalMode: boolean;
   dark: boolean;
 }
 
 const initialState: Props = {
   isAuth: false,
-  isChecking: true,
-  regIsSuccess: false,
-  modalMode: true,
+  isChecking: false,
+  isRegSuccess: false,
+  isModalMode: true,
   dark: true,
 };
 
 export const AppSlice = createSlice({
-  name: "visible",
+  name: "app",
   initialState,
   reducers: {
-    setIsAuth: (state, action) => {
+    setIsAuth: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload;
     },
     setIsChecking: (state, action) => {
       state.isChecking = action.payload;
     },
     setRegIsSuccess: (state) => {
-      state.regIsSuccess = !state.regIsSuccess;
+      state.isRegSuccess = !state.isRegSuccess;
     },
-    setModalMode: (state, action) => {
-      state.modalMode = action.payload;
+    setModalMode: (state, action: PayloadAction<boolean>) => {
+      state.isModalMode = action.payload;
     },
     setDark: (state) => {
       state.dark = !state.dark;

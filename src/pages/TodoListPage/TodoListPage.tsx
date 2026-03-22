@@ -8,26 +8,26 @@ import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { getTodos, setTodosResponse } from "./TodoListSlice.ts";
 
 export default function TodoListPage(): JSX.Element {
-  const { todosResponse, filerStatus } = useAppSelector(
+  const { todosResponse, filterStatus } = useAppSelector(
     (state) => state.todosResponse,
   );
   const dispatch = useAppDispatch();
 
   const loadTodos = useCallback(async () => {
     try {
-      const todos = await getTodos(filerStatus);
+      const todos = await getTodos(filterStatus);
       dispatch(setTodosResponse(todos));
     } catch {
       message.error("Ошибка загрузки данных");
     }
-  }, [filerStatus, dispatch]);
+  }, [filterStatus, dispatch]);
 
   useEffect(() => {
     void loadTodos();
 
     const intervalId = setInterval(loadTodos, 5000);
     return () => clearInterval(intervalId);
-  }, [filerStatus, loadTodos]);
+  }, [filterStatus, loadTodos]);
 
   return (
     <>

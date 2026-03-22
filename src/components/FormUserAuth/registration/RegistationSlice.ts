@@ -1,28 +1,26 @@
-import type { UserRegistration } from "../autorization/authType.ts";
-import axios from "axios";
+import type { UserRegistrationData } from "../autorization/authType.ts";
 import { createSlice } from "@reduxjs/toolkit";
-import { message } from "antd";
 
-export async function registrationUser(data: UserRegistration): Promise<void> {
+import { api } from "../../../api/api.ts";
+
+export async function registerUser(data: UserRegistrationData): Promise<void> {
   try {
-    await axios.post("https://easydev.club/api/v1/auth/signup", data);
+    await api.post("/auth/signup", data);
   } catch (err) {
-    if (err instanceof Error) {
-      message.error(err.message);
-    }
+    console.log("ошибка регистрации", err);
     throw err;
   }
 }
 
-export interface Props {
+interface RegistrationSlice {
   textResponseReg: string;
 }
 
-const initialState: Props = {
+const initialState: RegistrationSlice = {
   textResponseReg: "",
 };
 
-export const RegSlice = createSlice({
+export const RegistrationSlice = createSlice({
   name: "registration",
   initialState,
   reducers: {
@@ -32,6 +30,6 @@ export const RegSlice = createSlice({
   },
 });
 
-export const { setTextResponseReg } = RegSlice.actions;
+export const { setTextResponseReg } = RegistrationSlice.actions;
 
-export default RegSlice.reducer;
+export default RegistrationSlice.reducer;

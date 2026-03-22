@@ -1,4 +1,4 @@
-import { URLUSERS } from "../../const/const.ts";
+import { URL } from "../../const/const.ts";
 import axios from "axios";
 import type {
   MetaResponse,
@@ -7,7 +7,7 @@ import type {
   UserRolesRequest,
 } from "./type.ts";
 import { createSlice } from "@reduxjs/toolkit";
-import { accessTokenClosure } from "../../const/const.ts";
+import { accessTokenStore } from "../../const/const.ts";
 import { refreshToken } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 
 export async function getUsersList(
@@ -22,12 +22,12 @@ export async function getUsersList(
       filter?.isBlocked,
     );
     // { sortBy: username, sortOrder: 'asc' }
-    console.log("TOKEN", accessTokenClosure.getAccessToken());
+    console.log("TOKEN", accessTokenStore.getAccessToken());
     console.log(filter, "filter");
-    const res = await axios.get(`${URLUSERS}/admin/users`, {
+    const res = await axios.get(`${URL}/admin/users`, {
       params: filter,
       headers: {
-        Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
+        Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
       },
     });
     console.log(res.data);
@@ -38,10 +38,10 @@ export async function getUsersList(
       // const newAccessToken = await refreshToken();
 
       await refreshToken();
-      const res = await axios.get(`${URLUSERS}/admin/users`, {
+      const res = await axios.get(`${URL}/admin/users`, {
         params: filter,
         headers: {
-          Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
+          Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
         },
       });
       console.log(res.data);
@@ -65,9 +65,9 @@ export async function getUsersList(
 
 export async function deleteUser(id: number): Promise<void> {
   try {
-    await axios.delete(`${URLUSERS}/admin/users/${id}`, {
+    await axios.delete(`${URL}/admin/users/${id}`, {
       headers: {
-        Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
+        Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
       },
     });
   } catch (err) {
@@ -81,9 +81,9 @@ export async function deleteUser(id: number): Promise<void> {
 // Response: User
 export async function blockUser(id: number) {
   try {
-    await axios.post(`${URLUSERS}/admin/users/${id}/block`, null, {
+    await axios.post(`${URL}/admin/users/${id}/block`, null, {
       headers: {
-        Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
+        Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
       },
     });
   } catch (err) {
@@ -96,9 +96,9 @@ export async function blockUser(id: number) {
 }
 export async function unblockUser(id: number) {
   try {
-    await axios.post(`${URLUSERS}/admin/users/${id}/unblock`, null, {
+    await axios.post(`${URL}/admin/users/${id}/unblock`, null, {
       headers: {
-        Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
+        Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
       },
     });
   } catch (err) {
@@ -125,16 +125,12 @@ export async function unblockUser(id: number) {
 export async function updateRightUser(id: number, roles: UserRolesRequest) {
   console.log(id, roles);
   try {
-    const res = await axios.post(
-      `${URLUSERS}/admin/users/${id}/rights`,
-      roles,
-      {
-        headers: {
-          Authorization: `Bearer ${accessTokenClosure.getAccessToken()}`,
-          "Content-Type": "application/json",
-        },
+    const res = await axios.post(`${URL}/admin/users/${id}/rights`, roles, {
+      headers: {
+        Authorization: `Bearer ${accessTokenStore.getAccessToken()}`,
+        "Content-Type": "application/json",
       },
-    );
+    });
     console.log(res);
   } catch (err) {
     if (axios.isAxiosError(err)) {

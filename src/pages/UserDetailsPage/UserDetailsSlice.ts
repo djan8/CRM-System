@@ -1,4 +1,4 @@
-import { accessTokenClosure, URLUSERS } from "../../const/const.ts";
+import { accessTokenStore, URL } from "../../const/const.ts";
 import type { User } from "../UsersPage/type.ts";
 import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit";
@@ -6,9 +6,9 @@ import type { UserRequest } from "./type.ts";
 
 export async function getUserDetails(id: number): Promise<User> {
   try {
-    const accessToken = accessTokenClosure.getAccessToken();
+    const accessToken = accessTokenStore.getAccessToken();
     console.log(accessToken);
-    const res = await axios.get(`${URLUSERS}/admin/users/${id}`, {
+    const res = await axios.get(`${URL}/admin/users/${id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -31,8 +31,8 @@ export async function refreshUserDetails(
 ): Promise<void> {
   try {
     console.log(data);
-    const accessToken = accessTokenClosure.getAccessToken();
-    const res = await axios.put(`${URLUSERS}/admin/users/${id}`, data, {
+    const accessToken = accessTokenStore.getAccessToken();
+    const res = await axios.put(`${URL}/admin/users/${id}`, data, {
       headers: {
         // "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
