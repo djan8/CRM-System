@@ -3,7 +3,7 @@ import RegistrationForm from "./registration/RegistrationForm.tsx";
 import { useAppSelector } from "../../hooks.ts";
 
 export default function AuthLayOut() {
-  const modalMode = useAppSelector((state) => state.visible.modalMode);
+  const modalMode = useAppSelector((state) => state.visible.isModalMode);
 
   return <>{modalMode ? <RegistrationForm /> : <AutorizationForm />}</>;
 }
