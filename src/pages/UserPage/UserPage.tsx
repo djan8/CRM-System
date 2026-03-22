@@ -13,7 +13,7 @@ export default function UserPage() {
 
   async function handlerLogOutUser() {
     try {
-      void (await logoutUser());
+      await logoutUser();
       localStorage.removeItem("refreshToken");
       accessTokenStore.setAccessToken(null);
       dispatch(setTextResponseAuth(""));
