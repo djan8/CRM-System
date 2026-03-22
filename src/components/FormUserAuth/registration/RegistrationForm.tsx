@@ -28,7 +28,7 @@ export default function RegistrationForm() {
   const textResponseReg = useAppSelector(
     (state) => state.registration.textResponseReg,
   );
-  const regIsSuccess = useAppSelector((state) => state.visible.regIsSuccess);
+  const regIsSuccess = useAppSelector((state) => state.app.isRegSuccess);
 
   async function handleRegFormSubmit(value: RegistrationValue) {
     try {

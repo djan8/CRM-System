@@ -17,7 +17,7 @@ const { Sider } = Layout;
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isAuth = useAppSelector((state) => state.visible.isAuth);
+  const isAuth = useAppSelector((state) => state.app.isAuth);
 
   useEffect(() => {
     async function initAuth() {
