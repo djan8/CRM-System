@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { logoutApi } from "../../api/api.ts";
-import { accessTokenStore } from "../../const/const.ts";
+import { accessTokenStore } from "../../shared/appConfig.ts";
 
 export async function logoutUser() {
   try {

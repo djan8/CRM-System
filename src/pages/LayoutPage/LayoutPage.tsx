@@ -8,8 +8,8 @@ import {
   getProfile,
   refreshToken,
 } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
-// import { accessTokenClosure } from "../../const/const.ts";
-import { setUserProfileData } from "../UserPage/userDataSlice.ts";
+// import { accessTokenClosure } from "../../shared/shared.ts";
+import { setUserProfileData } from "../UserPage/UserDataSlice.ts";
 import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
 
 const { Sider } = Layout;

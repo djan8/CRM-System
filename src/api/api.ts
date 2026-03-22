@@ -1,5 +1,5 @@
 import axios from "axios";
-import { accessTokenStore, URL } from "../const/const.ts";
+import { accessTokenStore, URL } from "../shared/appConfig.ts";
 import { refreshToken } from "../components/FormUserAuth/autorization/AutorizationSlice.ts";
 
 export const api = axios.create({
@@ -15,7 +15,7 @@ export const logoutApi = axios.create({
 });
 
 // api.interceptors.request.use((config) => {
-//   const accessToken = accessTokenStore.getAccessToken();
+//   shared accessToken = accessTokenStore.getAccessToken();
 //   if (accessToken) {
 //     config.headers.Authorization = `Bearer ${accessToken}`;
 //   }

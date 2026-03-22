@@ -1,6 +1,6 @@
 import { type JSX, useCallback, useEffect } from "react";
 
-import TaskList from "../../components/TaskList/TaskList.tsx";
+import TaskList from "../../components/TodoList/TodoList.tsx";
 import AddTaskForm from "../../components/AddTaskForm/AddTaskForm.tsx";
 import StatusFilter from "../../components/StatusFilter/StatusFilter.tsx";
 import { Flex, message, Spin } from "antd";

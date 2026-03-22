@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./pages/UserPage/userDataSlice.ts";
+import userReducer from "./pages/UserPage/UserDataSlice.ts";
 import appReducer from "./AppSlice.ts";
 import todosResponseReducer from "./pages/TodoListPage/TodoListSlice.ts";
 import regReducer from "./components/FormUserAuth/registration/RegistationSlice.ts";
