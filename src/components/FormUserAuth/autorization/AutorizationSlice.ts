@@ -1,9 +1,6 @@
-// import axios from "axios";
-
 import type { AuthData, ProfileData, TokenData } from "./authType.ts";
 import { createSlice } from "@reduxjs/toolkit";
 
-// import { accessTokenStore } from "../../../const/const.ts";
 import { api, refreshApi } from "../../../api/api.ts";
 
 export async function authenticationUser(data: AuthData): Promise<TokenData> {
