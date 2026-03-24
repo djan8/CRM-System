@@ -11,6 +11,7 @@ import {
 // import { accessTokenClosure } from "../../shared/shared.ts";
 import { setUserProfileData } from "../UserPage/UserDataSlice.ts";
 import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
+import { accessTokenStore } from "../../shared/appConfig.ts";
 
 const { Sider } = Layout;
 
@@ -28,12 +29,14 @@ export default function LayoutPage() {
           dispatch(setIsChecking(false));
           return;
         }
-        await refreshToken();
+        const newAccessToken = await refreshToken();
+        accessTokenStore.setAccessToken(newAccessToken);
         const userData = await getProfile();
         dispatch(setUserProfileData(userData));
         dispatch(setIsAuth(true));
       } catch {
         localStorage.removeItem("refreshToken");
+        navigate("/auth-modal");
         dispatch(setModalMode(false));
       } finally {
         dispatch(setIsChecking(false));

@@ -3,7 +3,7 @@
 import type { AuthData, ProfileData, TokenData } from "./authType.ts";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { accessTokenStore } from "../../../shared/appConfig.ts";
+// import { accessTokenStore } from "../../../const/const.ts";
 import { api, refreshApi } from "../../../api/api.ts";
 
 export async function authenticationUser(data: AuthData): Promise<TokenData> {
@@ -26,8 +26,8 @@ export async function refreshToken(): Promise<string> {
 
     return res.data.accessToken;
   } catch (err) {
-    accessTokenStore.setAccessToken("");
-    localStorage.removeItem("refreshToken");
+    console.log(err);
+
     throw err;
   }
 }
