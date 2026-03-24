@@ -28,7 +28,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { type Roles, RolesConst, type User, type UserFilters } from "./type.ts";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   blockUser,
   deleteUser,
@@ -61,6 +61,7 @@ export default function UsersPage() {
     page: 0,
     limit: PAGINATION_LIMIT,
   });
+  const navigate = useNavigate();
 
   const loadUsers = useCallback(async () => {
     try {
@@ -69,9 +70,10 @@ export default function UsersPage() {
     } catch (err) {
       console.log(err);
       localStorage.removeItem("refreshToken");
+      navigate("/auth-modal");
       dispatch(setModalMode(false));
     }
-  }, [dispatch, filters]);
+  }, [dispatch, filters, navigate]);
   useEffect(() => {
     if (isAuth && !isChecking) {
       void loadUsers();
