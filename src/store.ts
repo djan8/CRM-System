@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./pages/UserPage/userDataSlice.ts";
+import userReducer from "./pages/UserPage/UserDataSlice.ts";
 import appReducer from "../src/AppSlice.ts";
 import todosResponseReducer from "./pages/TodoListPage/TodoListSlice.ts";
 import regReducer from "./components/FormUserAuth/registration/RegistationSlice.ts";
@@ -12,7 +12,7 @@ export const store = configureStore({
     user: userReducer,
     users: usersReducer,
     details: userDetailsReducer,
-    visible: appReducer,
+    app: appReducer,
     todosResponse: todosResponseReducer,
     registration: regReducer,
     authorization: authReducer,

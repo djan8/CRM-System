@@ -1,4 +1,4 @@
-import { URL } from "../../const/const.ts";
+import { URL } from "../../shared/appConfig.ts";
 
 import type {
   MetaResponse,

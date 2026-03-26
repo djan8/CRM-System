@@ -14,19 +14,19 @@ import {
   refreshToken,
 } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 
-import { setUserProfileData } from "../UserPage/userDataSlice.ts";
+import { setUserProfileData } from "../UserPage/UserDataSlice.ts";
 import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
-import { accessTokenStore } from "../../const/const.ts";
+import { accessTokenStore } from "../../shared/appConfig.ts";
 
 const { Sider } = Layout;
 
 export default function LayoutPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const dark = useAppSelector((state) => state.visible.dark);
-  const isAuth = useAppSelector((state) => state.visible.isAuth);
+  const dark = useAppSelector((state) => state.app.dark);
+  const isAuth = useAppSelector((state) => state.app.isAuth);
   const userData = useAppSelector((state) => state.user.data);
-  const isChecking = useAppSelector((state) => state.visible.isChecking);
+  const isChecking = useAppSelector((state) => state.app.isChecking);
 
   useEffect(() => {
     async function initAuth() {

@@ -4,7 +4,7 @@ const { Sider } = Layout;
 import auth from "../../../assets/regImg.svg";
 import { Link, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../hooks.ts";
-import { setUserProfileData } from "../../../pages/UserPage/userDataSlice.ts";
+import { setUserProfileData } from "../../../pages/UserPage/UserDataSlice.ts";
 import { setIsAuth, setModalMode } from "../../../AppSlice.ts";
 import {
   authenticationUser,
@@ -13,7 +13,7 @@ import {
 } from "./AutorizationSlice.ts";
 import axios from "axios";
 import Text from "antd/es/typography/Text";
-import { accessTokenStore } from "../../../const/const.ts";
+import { accessTokenStore } from "../../../shared/appConfig.ts";
 
 export default function AutorizationForm() {
   const [form] = Form.useForm();
@@ -31,7 +31,7 @@ export default function AutorizationForm() {
       console.log("Сработал обработчик авторизации");
       dispatch(setTextResponseAuth("Успешная аутентификация."));
       accessTokenStore.setAccessToken(accessToken);
-      // const accessValidToken = accessTokenClosure.getAccessToken();
+      // shared accessValidToken = accessTokenClosure.getAccessToken();
       localStorage.setItem("refreshToken", refreshToken);
       const userData = await getProfile();
       dispatch(setIsAuth(true));

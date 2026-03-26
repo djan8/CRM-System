@@ -1,4 +1,4 @@
-import { STATUSES } from "../const/const.ts";
+import { STATUSES } from "../shared/appConfig.ts";
 
 export interface TodoData {
   id: number;

@@ -2,10 +2,10 @@ import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { Button, Flex, message, Spin } from "antd";
 import { LoadingOutlined, LogoutOutlined } from "@ant-design/icons";
-import { logoutUser } from "./userDataSlice.ts";
+import { logoutUser } from "./UserDataSlice.ts";
 import { setTextResponseAuth } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
 import { setIsAuth, setModalMode } from "../../AppSlice.ts";
-import { accessTokenStore } from "../../const/const.ts";
+import { accessTokenStore } from "../../shared/appConfig.ts";
 
 export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
@@ -33,6 +33,7 @@ export default function UserPage() {
         <>
           <Flex
             style={{
+              // background: "#D3D3D3",
               borderRadius: "5px",
               margin: "1px",
             }}

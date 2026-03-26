@@ -6,7 +6,7 @@ import type {
   TodoInfo,
 } from "../../types/TodoType.ts";
 
-import { STATUSES } from "../../const/const.ts";
+import { STATUSES } from "../../shared/appConfig.ts";
 
 import { api } from "../../api/api.ts";
 

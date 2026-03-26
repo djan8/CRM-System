@@ -20,7 +20,7 @@ export default function UserDetailsPage() {
   const dispatch = useAppDispatch();
   const idNum = Number(params.id);
   const navigate = useNavigate();
-  const isChecking = useAppSelector((state) => state.visible.isChecking);
+  const isChecking = useAppSelector((state) => state.app.isChecking);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {

@@ -41,14 +41,14 @@ import { refreshToken } from "../../components/FormUserAuth/autorization/Autoriz
 import axios from "axios";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { setModalMode } from "../../AppSlice.ts";
-import { PAGINATION_LIMIT } from "../../const/const.ts";
+import { PAGINATION_LIMIT } from "../../shared/appConfig.ts";
 
 export default function UsersPage() {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.users?.usersMetaResponse?.data);
   const meta = useAppSelector((state) => state.users?.usersMetaResponse?.meta);
-  const isAuth = useAppSelector((state) => state.visible.isAuth);
-  const isChecking = useAppSelector((state) => state.visible.isChecking);
+  const isAuth = useAppSelector((state) => state.app.isAuth);
+  const isChecking = useAppSelector((state) => state.app.isChecking);
 
   const [selected, setSelected] = useState("all");
   const [editingId, setEditingId] = useState<number | null>(null);

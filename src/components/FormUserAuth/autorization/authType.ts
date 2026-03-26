@@ -7,9 +7,9 @@ export interface TokenData {
   accessToken: string;
   refreshToken: string;
 }
-// export interface RefreshToken {
-//   refreshToken: string;
-// }
+export interface RefreshToken {
+  refreshToken: string;
+}
 
 export interface UserRegistrationData {
   login: string;

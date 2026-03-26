@@ -1,5 +1,5 @@
 import axios from "axios";
-import { accessTokenStore, URL } from "../const/const.ts";
+import { accessTokenStore, URL } from "../shared/appConfig.ts";
 import { refreshToken } from "../components/FormUserAuth/autorization/AutorizationSlice.ts";
 
 export const api = axios.create({
