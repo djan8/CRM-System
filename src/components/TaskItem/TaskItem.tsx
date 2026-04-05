@@ -35,8 +35,6 @@ export default function TaskItem({ task, onUpdate }: Props) {
 
   async function handleChangeTaskName(value: { title: string }) {
     try {
-      await form.validateFields();
-
       await editTask(task.id, value);
       await onUpdate?.(filerStatus);
       setIsEditing((prev) => !prev);
@@ -44,20 +42,12 @@ export default function TaskItem({ task, onUpdate }: Props) {
       message.error("Ошибка изменения имени, ппробуйте еще раз");
     }
   }
-  async function handleChangeStateValue(): Promise<void> {
-    try {
-      setIsEditing((prev) => !prev);
-      form.setFieldsValue({ title: task.title });
-    } catch {
-      message.error("Ошибка изменения состояния, ппробуйте еще раз");
-    }
+  function handleCancelEdit(): void {
+    setIsEditing((prev) => !prev);
+    form.setFieldsValue({ title: task.title });
   }
-  async function handleChangeEdit(): Promise<void> {
-    try {
-      setIsEditing((prev) => !prev);
-    } catch {
-      message.error("Ошибка изменения состояния, ппробуйте еще раз");
-    }
+  function handleStartEdit(): void {
+    setIsEditing((prev) => !prev);
   }
   async function handleDeleteTask(): Promise<void> {
     try {
@@ -112,7 +102,7 @@ export default function TaskItem({ task, onUpdate }: Props) {
                   color={"danger"}
                   variant={"solid"}
                   htmlType={"button"}
-                  onClick={handleChangeStateValue}
+                  onClick={handleCancelEdit}
                   icon={<CloseOutlined />}
                 />
               </Flex>
@@ -128,7 +118,7 @@ export default function TaskItem({ task, onUpdate }: Props) {
           <Flex gap={"small"}>
             <Button
               size={"large"}
-              onClick={handleChangeEdit}
+              onClick={handleStartEdit}
               type={"primary"}
               icon={<EditOutlined />}
             />

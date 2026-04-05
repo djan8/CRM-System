@@ -1,32 +1,33 @@
 import { type JSX } from "react";
 import { Button, Form, Input, message } from "antd";
-import { addTask } from "./AddTaskSlice.ts";
+import { createTask } from "./CreateTaskSlice.ts";
+import { useAppDispatch } from "../../hooks.ts";
 
 interface Props {
   onUpdate: () => Promise<void>;
 }
 
-export default function AddTaskForm({ onUpdate }: Props): JSX.Element {
+export default function CreateTask({ onUpdate }: Props): JSX.Element {
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
 
-  async function handleSubmit(title: { title: string }): Promise<void> {
+  async function handleSubmitCreateTask(title: {
+    title: string;
+  }): Promise<void> {
     try {
-      await addTask(title);
+      dispatch(createTask(title));
       await onUpdate();
       form.resetFields();
     } catch (err) {
       if (err instanceof Error) {
-        message.error(
-          `Не удалось добавить задачу ${err.name}-${err.message}-Вы написали: ${title.title.toString()}`,
-        );
-        message.error(err.message);
+        message.error(`Не удалось добавить задачу ${title.title.toString()}`);
       }
     }
   }
 
   return (
     <>
-      <Form form={form} layout={"inline"} onFinish={handleSubmit}>
+      <Form form={form} layout={"inline"} onFinish={handleSubmitCreateTask}>
         <Form.Item
           style={{ flex: 1 }}
           name="title"

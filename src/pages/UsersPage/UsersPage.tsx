@@ -37,7 +37,7 @@ import {
   unblockUser,
   updateRightUser,
 } from "./UsersPageSlice.ts";
-import { refreshToken } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
+import { refreshToken } from "../../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
 import axios from "axios";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 import { setModalMode } from "../../AppSlice.ts";

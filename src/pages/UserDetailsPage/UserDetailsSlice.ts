@@ -29,11 +29,11 @@ export async function refreshUserDetails(
   }
 }
 
-interface Props {
+interface initialState {
   userDetails: User | null;
 }
 
-const initialState: Props = {
+const initialState: initialState = {
   userDetails: null,
 };
 

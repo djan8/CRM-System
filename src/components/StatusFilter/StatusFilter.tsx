@@ -14,11 +14,7 @@ export default function StatusFilter(): JSX.Element {
     (state) => state.todosResponse.todosResponse?.info,
   );
 
-  if (!info)
-    return (
-      <Typography.Text type="warning">Ant Design (warning)</Typography.Text>
-    );
-  // const [all, completed, inWork] = Object.keys(info);
+  if (!info) return <Typography.Text type="warning" />;
 
   const handleChangeStatus = (filterStatus: string): void => {
     dispatch(setFilterStatus(filterStatus as Status));

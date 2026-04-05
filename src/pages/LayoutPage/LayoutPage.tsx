@@ -12,7 +12,7 @@ import {
 import {
   getProfile,
   refreshToken,
-} from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
+} from "../../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
 
 import { setUserProfileData } from "../UserPage/UserDataSlice.ts";
 import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
@@ -57,52 +57,48 @@ export default function LayoutPage() {
     void initAuth();
   }, [dispatch, navigate]);
   if (isChecking) return <Spin />;
-  return (
-    <>
-      {isAuth ? (
-        <ConfigProvider
-          theme={{
-            algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
-          }}
-        >
-          <Flex gap="middle">
-            <Layout style={{ textAlign: "center", lineHeight: "30px" }}>
-              <Sider width="20%" style={{ background: "#2265ba" }}>
-                <Switch
-                  checked={dark}
-                  onChange={() => dispatch(setDark())}
-                  checkedChildren="🌙"
-                  unCheckedChildren="☀️"
-                />
-                <Flex vertical style={{ marginTop: "10px" }}>
-                  <Link style={{ color: "whitesmoke" }} to={"profile"}>
-                    Личный кабинет
-                  </Link>
-                  <Link style={{ color: "whitesmoke" }} to={"/"}>
-                    Список задач
-                  </Link>
-                  {userData?.roles.map(
-                    (role) =>
-                      role === "MODERATOR" ||
-                      (role === "ADMIN" && (
-                        <Link
-                          key={role}
-                          style={{ color: "whitesmoke" }}
-                          to={"users"}
-                        >
-                          Пользователи
-                        </Link>
-                      )),
-                  )}
-                </Flex>
-              </Sider>
-              <Outlet />
-            </Layout>
-          </Flex>
-        </ConfigProvider>
-      ) : (
-        <AuthLayOut />
-      )}
-    </>
+  return isAuth ? (
+    <ConfigProvider
+      theme={{
+        algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+      }}
+    >
+      <Flex gap="middle">
+        <Layout style={{ textAlign: "center", lineHeight: "30px" }}>
+          <Sider width="20%" style={{ background: "#2265ba" }}>
+            <Switch
+              checked={dark}
+              onChange={() => dispatch(setDark())}
+              checkedChildren="🌙"
+              unCheckedChildren="☀️"
+            />
+            <Flex vertical style={{ marginTop: "10px" }}>
+              <Link style={{ color: "whitesmoke" }} to={"profile"}>
+                Личный кабинет
+              </Link>
+              <Link style={{ color: "whitesmoke" }} to={"/"}>
+                Список задач
+              </Link>
+              {userData?.roles.map(
+                (role) =>
+                  role === "MODERATOR" ||
+                  (role === "ADMIN" && (
+                    <Link
+                      key={role}
+                      style={{ color: "whitesmoke" }}
+                      to={"users"}
+                    >
+                      Пользователи
+                    </Link>
+                  )),
+              )}
+            </Flex>
+          </Sider>
+          <Outlet />
+        </Layout>
+      </Flex>
+    </ConfigProvider>
+  ) : (
+    <AuthLayOut />
   );
 }

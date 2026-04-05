@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router";
 
 import App from "./App.tsx";
 import UserPage from "./pages/UserPage/UserPage.tsx";
-import RegistrationForm from "./components/FormUserAuth/registration/RegistrationForm.tsx";
-import AutorizationForm from "./components/FormUserAuth/autorization/AutorizationForm.tsx";
+import RegistrationForm from "./components/FormUserAuth/RegisterUser/RegisterUser.tsx";
+import AutorizationForm from "./components/FormUserAuth/LoginUser/LoginUser.tsx";
 import LayoutPage from "./pages/LayoutPage/LayoutPage.tsx";
 import UsersPage from "./pages/UsersPage/UsersPage.tsx";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage.tsx";

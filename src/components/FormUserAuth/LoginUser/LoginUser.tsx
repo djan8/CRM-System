@@ -10,12 +10,12 @@ import {
   authenticationUser,
   getProfile,
   setTextResponseAuth,
-} from "./AutorizationSlice.ts";
+} from "./LoginUserSlice.ts";
 import axios from "axios";
 import Text from "antd/es/typography/Text";
 import { accessTokenStore } from "../../../shared/appConfig.ts";
 
-export default function AutorizationForm() {
+export default function LoginUser() {
   const [form] = Form.useForm();
   const textResponseAuth = useAppSelector(
     (state) => state.authorization.textResponseAuth,
@@ -25,13 +25,10 @@ export default function AutorizationForm() {
 
   async function handleOnSubmit() {
     try {
-      // await form.validateFields();
       const data = form.getFieldsValue();
       const { accessToken, refreshToken } = await authenticationUser(data);
-      console.log("Сработал обработчик авторизации");
       dispatch(setTextResponseAuth("Успешная аутентификация."));
       accessTokenStore.setAccessToken(accessToken);
-      // shared accessValidToken = accessTokenClosure.getAccessToken();
       localStorage.setItem("refreshToken", refreshToken);
       const userData = await getProfile();
       dispatch(setIsAuth(true));

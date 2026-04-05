@@ -2,10 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./pages/UserPage/UserDataSlice.ts";
 import appReducer from "../src/AppSlice.ts";
 import todosResponseReducer from "./pages/TodoListPage/TodoListSlice.ts";
-import regReducer from "./components/FormUserAuth/registration/RegistationSlice.ts";
-import authReducer from "./components/FormUserAuth/autorization/AutorizationSlice.ts";
+import regReducer from "./components/FormUserAuth/RegisterUser/RegisterUser.ts";
+import authReducer from "./components/FormUserAuth/LoginUser/LoginUserSlice.ts";
 import usersReducer from "./pages/UsersPage/UsersPageSlice.ts";
 import userDetailsReducer from "./pages/UserDetailsPage/UserDetailsSlice.ts";
+import createTaskReducer from "./components/CreateTask/CreateTaskSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     todosResponse: todosResponseReducer,
     registration: regReducer,
     authorization: authReducer,
+    createTask: createTaskReducer,
   },
 });
 

@@ -1,9 +1,9 @@
-import type { AuthData, ProfileData, TokenData } from "./authType.ts";
-import { createSlice } from "@reduxjs/toolkit";
+import type { Profile, ProfileData, TokenData } from "./LoginUserType.ts";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { api, refreshApi } from "../../../api/api.ts";
 
-export async function authenticationUser(data: AuthData): Promise<TokenData> {
+export async function authenticationUser(data: Profile): Promise<TokenData> {
   const res = await api.post("/auth/signin", data);
   return res.data;
 }
@@ -29,11 +29,11 @@ export async function refreshToken(): Promise<string> {
   }
 }
 
-interface AuthorizationSlice {
+interface InitialState {
   textResponseAuth: string;
 }
 
-const initialState: AuthorizationSlice = {
+const initialState: InitialState = {
   textResponseAuth: "",
 };
 
@@ -41,7 +41,7 @@ export const AuthorizationSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setTextResponseAuth: (state, action) => {
+    setTextResponseAuth: (state, action: PayloadAction<string>) => {
       state.textResponseAuth = action.payload;
     },
   },

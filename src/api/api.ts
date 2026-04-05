@@ -1,6 +1,6 @@
 import axios from "axios";
 import { accessTokenStore, URL } from "../shared/appConfig.ts";
-import { refreshToken } from "../components/FormUserAuth/autorization/AutorizationSlice.ts";
+import { refreshToken } from "../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
 
 export const api = axios.create({
   baseURL: URL,
@@ -30,8 +30,7 @@ api.interceptors.response.use(undefined, async (error) => {
       // повторяем запрос который упал
       return api(error.config);
     }
-  } catch (e) {
-    console.log(e);
+  } catch {
     accessTokenStore.setAccessToken(null);
     localStorage.removeItem("refreshToken");
   }

@@ -1,7 +1,7 @@
 import { type JSX, useCallback, useEffect } from "react";
 
 import TaskList from "../../components/TodoList/TodoList.tsx";
-import AddTaskForm from "../../components/AddTaskForm/AddTaskForm.tsx";
+import AddTaskForm from "../../components/CreateTask/CreateTask.tsx";
 import StatusFilter from "../../components/StatusFilter/StatusFilter.tsx";
 import { Flex, message, Spin } from "antd";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
@@ -27,21 +27,19 @@ export default function TodoListPage(): JSX.Element {
 
     const intervalId = setInterval(loadTodos, 5000);
     return () => clearInterval(intervalId);
-  }, [filterStatus, loadTodos]);
+  }, [loadTodos]);
 
   return (
-    <>
-      <Flex vertical flex={1} style={{ width: "100%" }}>
-        <Flex
-          vertical
-          gap={"small"}
-          style={{ maxWidth: "40rem", width: "100%", padding: "1rem 1rem" }}
-        >
-          <AddTaskForm onUpdate={loadTodos} />
-          <StatusFilter />
-          {!todosResponse ? <Spin /> : <TaskList onUpdate={loadTodos} />}
-        </Flex>
+    <Flex vertical flex={1} style={{ width: "100%" }}>
+      <Flex
+        vertical
+        gap={"small"}
+        style={{ maxWidth: "40rem", width: "100%", padding: "1rem 1rem" }}
+      >
+        <AddTaskForm onUpdate={loadTodos} />
+        <StatusFilter />
+        {!todosResponse ? <Spin /> : <TaskList onUpdate={loadTodos} />}
       </Flex>
-    </>
+    </Flex>
   );
 }

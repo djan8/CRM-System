@@ -17,12 +17,12 @@ import { Link } from "react-router";
 import Text from "antd/es/typography/Text";
 import { useAppDispatch, useAppSelector } from "../../../hooks.ts";
 import { setModalMode, setRegIsSuccess } from "../../../AppSlice.ts";
-import { registerUser, setTextResponseReg } from "./RegistationSlice.ts";
+import { registerUser, setTextResponseReg } from "./RegisterUser.ts";
 import axios from "axios";
 import type { RegistrationValue } from "./RegType.ts";
-import type { UserRegistrationData } from "../autorization/authType.ts";
+import type { UserRegistrationData } from "../LoginUser/LoginUserType.ts";
 
-export default function RegistrationForm() {
+export default function RegisterUser() {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const textResponseReg = useAppSelector(
@@ -32,7 +32,6 @@ export default function RegistrationForm() {
 
   async function handleRegFormSubmit(value: RegistrationValue) {
     try {
-      console.log(typeof value.phone);
       const registerData: UserRegistrationData = {
         login: value.login,
         username: value.username,

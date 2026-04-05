@@ -21,7 +21,7 @@ export default function UserDetailsPage() {
   const idNum = Number(params.id);
   const navigate = useNavigate();
   const isChecking = useAppSelector((state) => state.app.isChecking);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
   useEffect(() => {
     if (isChecking) return;
@@ -107,7 +107,7 @@ export default function UserDetailsPage() {
               <Form.Item
                 name="username"
                 rules={[
-                  { required: true, message: "Введите задачу" },
+                  { required: true, message: "Введите новый логин" },
                   { min: 2, message: "Минимум 2 символа" },
                   { max: 64, message: "Максимум 64 символа" },
                 ]}

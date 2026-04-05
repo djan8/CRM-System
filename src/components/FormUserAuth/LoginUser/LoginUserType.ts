@@ -1,13 +1,10 @@
-export interface AuthData {
+export interface Profile {
   login: string;
   password: string;
 }
 
 export interface TokenData {
   accessToken: string;
-  refreshToken: string;
-}
-export interface RefreshToken {
   refreshToken: string;
 }
 

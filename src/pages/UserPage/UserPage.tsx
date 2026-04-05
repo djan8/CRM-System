@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { Button, Flex, message, Spin } from "antd";
 import { LoadingOutlined, LogoutOutlined } from "@ant-design/icons";
 import { logoutUser } from "./UserDataSlice.ts";
-import { setTextResponseAuth } from "../../components/FormUserAuth/autorization/AutorizationSlice.ts";
+import { setTextResponseAuth } from "../../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
 import { setIsAuth, setModalMode } from "../../AppSlice.ts";
 import { accessTokenStore } from "../../shared/appConfig.ts";
 
@@ -11,7 +11,7 @@ export default function UserPage() {
   const userData = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
 
-  async function handlerLogOutUser() {
+  async function handleLogOutUser() {
     try {
       await logoutUser();
       localStorage.removeItem("refreshToken");
@@ -66,7 +66,7 @@ export default function UserPage() {
               size={"middle"}
               variant={"solid"}
               color={"blue"}
-              onClick={handlerLogOutUser}
+              onClick={handleLogOutUser}
             >
               <LogoutOutlined />
             </Button>

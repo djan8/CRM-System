@@ -1,22 +1,17 @@
-import type { UserRegistrationData } from "../autorization/authType.ts";
-import { createSlice } from "@reduxjs/toolkit";
+import type { UserRegistrationData } from "../LoginUser/LoginUserType.ts";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { api } from "../../../api/api.ts";
 
 export async function registerUser(data: UserRegistrationData): Promise<void> {
-  try {
-    await api.post("/auth/signup", data);
-  } catch (err) {
-    console.log("ошибка регистрации", err);
-    throw err;
-  }
+  await api.post("/auth/signup", data);
 }
 
-interface RegistrationSlice {
+interface InitialState {
   textResponseReg: string;
 }
 
-const initialState: RegistrationSlice = {
+const initialState: InitialState = {
   textResponseReg: "",
 };
 
@@ -24,7 +19,7 @@ export const RegistrationSlice = createSlice({
   name: "registration",
   initialState,
   reducers: {
-    setTextResponseReg: (state, action) => {
+    setTextResponseReg: (state, action: PayloadAction<string>) => {
       state.textResponseReg = action.payload;
     },
   },

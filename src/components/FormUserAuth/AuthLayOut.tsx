@@ -1,5 +1,5 @@
-import AutorizationForm from "./autorization/AutorizationForm.tsx";
-import RegistrationForm from "./registration/RegistrationForm.tsx";
+import AutorizationForm from "./LoginUser/LoginUser.tsx";
+import RegistrationForm from "./RegisterUser/RegisterUser.tsx";
 import { useAppSelector } from "../../hooks.ts";
 
 export default function AuthLayout() {

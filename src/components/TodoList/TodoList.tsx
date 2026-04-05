@@ -12,19 +12,15 @@ export default function TodoList({ onUpdate }: Props) {
   const toDoListData = useAppSelector(
     (state) => state.todosResponse.todosResponse?.data,
   );
-  return (
-    <>
-      {!toDoListData ? (
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-      ) : (
-        <Flex vertical gap={"small"}>
-          {toDoListData.map((task) => (
-            <Card key={task.id} size={"small"}>
-              <TaskItem onUpdate={onUpdate} task={task} />
-            </Card>
-          ))}
-        </Flex>
-      )}
-    </>
+  return !toDoListData ? (
+    <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+  ) : (
+    <Flex vertical gap={"small"}>
+      {toDoListData.map((task) => (
+        <Card key={task.id} size={"small"}>
+          <TaskItem onUpdate={onUpdate} task={task} />
+        </Card>
+      ))}
+    </Flex>
   );
 }
