@@ -5,7 +5,7 @@ import type {
   User,
   UserFilters,
   UserRolesRequest,
-} from "./type.ts";
+} from "./types.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api.ts";
 

@@ -5,7 +5,7 @@ import AddTaskForm from "../../components/CreateTask/CreateTask.tsx";
 import StatusFilter from "../../components/StatusFilter/StatusFilter.tsx";
 import { Flex, message, Spin } from "antd";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
-import { getTodos, setTodosResponse } from "./TodoListSlice.ts";
+import { getTodos, setTodosResponse } from "./todoListSlice.ts";
 
 export default function TodoListPage(): JSX.Element {
   const { todosResponse, filterStatus } = useAppSelector(

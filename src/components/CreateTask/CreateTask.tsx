@@ -1,13 +1,12 @@
-import { type JSX } from "react";
 import { Button, Form, Input, message } from "antd";
-import { createTask } from "./CreateTaskSlice.ts";
+import { createTask } from "./createTaskSlice.ts";
 import { useAppDispatch } from "../../hooks.ts";
 
 interface Props {
   onUpdate: () => Promise<void>;
 }
 
-export default function CreateTask({ onUpdate }: Props): JSX.Element {
+export default function CreateTask({ onUpdate }: Props) {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
 

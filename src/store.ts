@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./pages/UserPage/UserDataSlice.ts";
-import appReducer from "../src/AppSlice.ts";
-import todosResponseReducer from "./pages/TodoListPage/TodoListSlice.ts";
-import regReducer from "./components/FormUserAuth/RegisterUser/RegisterUser.ts";
-import authReducer from "./components/FormUserAuth/LoginUser/LoginUserSlice.ts";
-import usersReducer from "./pages/UsersPage/UsersPageSlice.ts";
-import userDetailsReducer from "./pages/UserDetailsPage/UserDetailsSlice.ts";
-import createTaskReducer from "./components/CreateTask/CreateTaskSlice.ts";
+import appReducer from "./appSlice.ts";
+import todosResponseReducer from "./pages/TodoListPage/todoListSlice.ts";
+import regReducer from "./components/AuthLayOut/RegisterUser/RegisterUser.ts";
+import authReducer from "./components/AuthLayOut/LoginUser/LoginUserSlice.ts";
+import usersReducer from "./pages/UsersPage/usersPageSlice.ts";
+import userDetailsReducer from "./pages/UserDetailsPage/userDetailsSlice.ts";
+import createTaskReducer from "./components/CreateTask/createTaskSlice.ts";
 
 export const store = configureStore({
   reducer: {

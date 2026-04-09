@@ -1,5 +1,5 @@
 import { URL } from "../../shared/appConfig.ts";
-import type { User } from "../UsersPage/type.ts";
+import type { User } from "../UsersPage/types.ts";
 // import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit";
 import type { UserRequest } from "./type.ts";

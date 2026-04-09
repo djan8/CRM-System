@@ -1,15 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import type { User } from "../UsersPage/type.ts";
+import type { User } from "../UsersPage/types.ts";
 import { Button, Flex, Form, Input, message, Typography } from "antd";
 
 import {
   getUserDetails,
   refreshUserDetails,
   setUserDetails,
-} from "./UserDetailsSlice.ts";
+} from "./userDetailsSlice.ts";
 import { useAppSelector, useAppDispatch } from "../../hooks.ts";
-import { setModalMode } from "../../AppSlice.ts";
+import { setModalMode } from "../../appSlice.ts";
 import type { UserRequest } from "./type.ts";
 
 export default function UserDetailsPage() {

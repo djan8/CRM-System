@@ -2,7 +2,7 @@ import type { Status } from "../../types/TodoType.ts";
 import type { JSX } from "react";
 import { Tabs, type TabsProps } from "antd";
 import { Typography } from "antd";
-import { setFilterStatus } from "../../pages/TodoListPage/TodoListSlice.ts";
+import { setFilterStatus } from "../../pages/TodoListPage/todoListSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 
 export default function StatusFilter(): JSX.Element {

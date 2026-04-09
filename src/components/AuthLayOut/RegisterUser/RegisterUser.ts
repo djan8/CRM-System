@@ -1,4 +1,4 @@
-import type { UserRegistrationData } from "../LoginUser/LoginUserType.ts";
+import type { UserRegistrationData } from "../LoginUser/loginUser.types.ts";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { api } from "../../../api/api.ts";

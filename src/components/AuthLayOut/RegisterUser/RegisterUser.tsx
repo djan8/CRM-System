@@ -16,11 +16,11 @@ import { Link } from "react-router";
 
 import Text from "antd/es/typography/Text";
 import { useAppDispatch, useAppSelector } from "../../../hooks.ts";
-import { setModalMode, setRegIsSuccess } from "../../../AppSlice.ts";
+import { setModalMode, setRegIsSuccess } from "../../../appSlice.ts";
 import { registerUser, setTextResponseReg } from "./RegisterUser.ts";
 import axios from "axios";
-import type { RegistrationValue } from "./RegType.ts";
-import type { UserRegistrationData } from "../LoginUser/LoginUserType.ts";
+import type { RegistrationValue } from "./registerUser.types.ts";
+import type { UserRegistrationData } from "../LoginUser/loginUser.types.ts";
 
 export default function RegisterUser() {
   const dispatch = useAppDispatch();

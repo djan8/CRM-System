@@ -27,7 +27,12 @@ import {
   UserDeleteOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { type Roles, RolesConst, type User, type UserFilters } from "./type.ts";
+import {
+  type Roles,
+  RolesConst,
+  type User,
+  type UserFilters,
+} from "./types.ts";
 import { Link, useNavigate } from "react-router";
 import {
   blockUser,
@@ -36,11 +41,11 @@ import {
   setUsersData,
   unblockUser,
   updateRightUser,
-} from "./UsersPageSlice.ts";
-import { refreshToken } from "../../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
+} from "./usersPageSlice.ts";
+import { refreshToken } from "../../components/AuthLayOut/LoginUser/LoginUserSlice.ts";
 import axios from "axios";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
-import { setModalMode } from "../../AppSlice.ts";
+import { setModalMode } from "../../appSlice.ts";
 import { PAGINATION_LIMIT } from "../../shared/appConfig.ts";
 
 export default function UsersPage() {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { accessTokenStore, URL } from "../shared/appConfig.ts";
-import { refreshToken } from "../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
+import { refreshToken } from "../components/AuthLayOut/LoginUser/LoginUserSlice.ts";
 
 export const api = axios.create({
   baseURL: URL,

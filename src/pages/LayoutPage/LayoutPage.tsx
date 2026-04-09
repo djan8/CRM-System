@@ -8,14 +8,14 @@ import {
   setIsAuth,
   setIsChecking,
   setModalMode,
-} from "../../AppSlice.ts";
+} from "../../appSlice.ts";
 import {
   getProfile,
   refreshToken,
-} from "../../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
+} from "../../components/AuthLayOut/LoginUser/LoginUserSlice.ts";
 
 import { setUserProfileData } from "../UserPage/UserDataSlice.ts";
-import AuthLayOut from "../../components/FormUserAuth/AuthLayOut.tsx";
+import AuthLayOut from "../../components/AuthLayOut/AuthLayOut.tsx";
 import { accessTokenStore } from "../../shared/appConfig.ts";
 
 const { Sider } = Layout;

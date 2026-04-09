@@ -18,7 +18,7 @@ import {
   SaveOutlined,
 } from "@ant-design/icons";
 import { useAppSelector } from "../../hooks.ts";
-import { deleteTask, editTask } from "./TaskItemSlice.ts";
+import { deleteTask, editTask } from "./taskItemSlice.ts";
 
 const { Text } = Typography;
 interface Props {

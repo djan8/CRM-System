@@ -5,9 +5,9 @@ import auth from "../../../assets/regImg.svg";
 import { Link, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../hooks.ts";
 import { setUserProfileData } from "../../../pages/UserPage/UserDataSlice.ts";
-import { setIsAuth, setModalMode } from "../../../AppSlice.ts";
+import { setIsAuth, setModalMode } from "../../../appSlice.ts";
 import {
-  authenticationUser,
+  authenticateUser,
   getProfile,
   setTextResponseAuth,
 } from "./LoginUserSlice.ts";
@@ -26,7 +26,7 @@ export default function LoginUser() {
   async function handleOnSubmit() {
     try {
       const data = form.getFieldsValue();
-      const { accessToken, refreshToken } = await authenticationUser(data);
+      const { accessToken, refreshToken } = await authenticateUser(data);
       dispatch(setTextResponseAuth("Успешная аутентификация."));
       accessTokenStore.setAccessToken(accessToken);
       localStorage.setItem("refreshToken", refreshToken);

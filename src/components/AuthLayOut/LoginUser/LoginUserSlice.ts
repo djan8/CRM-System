@@ -1,9 +1,9 @@
-import type { Profile, ProfileData, TokenData } from "./LoginUserType.ts";
+import type { Profile, ProfileData, TokenData } from "./loginUser.types.ts";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { api, refreshApi } from "../../../api/api.ts";
 
-export async function authenticationUser(data: Profile): Promise<TokenData> {
+export async function authenticateUser(data: Profile): Promise<TokenData> {
   const res = await api.post("/auth/signin", data);
   return res.data;
 }
@@ -14,19 +14,13 @@ export async function getProfile(): Promise<ProfileData> {
 }
 
 export async function refreshToken(): Promise<string> {
-  try {
-    const res = await refreshApi.post("/auth/refresh", {
-      refreshToken: localStorage.getItem("refreshToken"),
-    });
+  const res = await refreshApi.post("/auth/refresh", {
+    refreshToken: localStorage.getItem("refreshToken"),
+  });
 
-    localStorage.setItem("refreshToken", res.data.refreshToken);
+  localStorage.setItem("refreshToken", res.data.refreshToken);
 
-    return res.data.accessToken;
-  } catch (err) {
-    console.log(err);
-
-    throw err;
-  }
+  return res.data.accessToken;
 }
 
 interface InitialState {

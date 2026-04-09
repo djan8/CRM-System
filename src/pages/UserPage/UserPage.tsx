@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 import { Button, Flex, message, Spin } from "antd";
 import { LoadingOutlined, LogoutOutlined } from "@ant-design/icons";
 import { logoutUser } from "./UserDataSlice.ts";
-import { setTextResponseAuth } from "../../components/FormUserAuth/LoginUser/LoginUserSlice.ts";
-import { setIsAuth, setModalMode } from "../../AppSlice.ts";
+import { setTextResponseAuth } from "../../components/AuthLayOut/LoginUser/LoginUserSlice.ts";
+import { setIsAuth, setModalMode } from "../../appSlice.ts";
 import { accessTokenStore } from "../../shared/appConfig.ts";
 
 export default function UserPage() {
