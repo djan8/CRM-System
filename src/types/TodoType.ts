@@ -1,6 +1,6 @@
-import { STATUSES } from "../const/const.ts";
+import { STATUSES } from "../shared/appConfig.ts";
 
-export interface Todo {
+export interface TodoData {
   id: number;
   title: string;
   created: string; // ISO date string
@@ -24,6 +24,6 @@ export interface MetaResponse<T, N> {
 //   isDone?: boolean; // изменение статуса задачи происходит через этот флаг
 // }
 
-export type TodoRequest = Partial<Omit<Todo, "id" | "created">>;
+export type TodoRequest = Partial<Omit<TodoData, "id" | "created">>;
 
-export type StatusType = (typeof STATUSES)[keyof typeof STATUSES];
+export type Status = (typeof STATUSES)[keyof typeof STATUSES];

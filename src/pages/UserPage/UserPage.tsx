@@ -1,5 +1,78 @@
 import Title from "antd/es/typography/Title";
+import { useAppDispatch, useAppSelector } from "../../hooks.ts";
+import { Button, Flex, message, Spin } from "antd";
+import { LoadingOutlined, LogoutOutlined } from "@ant-design/icons";
+import { logoutUser } from "./UserDataSlice.ts";
+import { setTextResponseAuth } from "../../components/AuthLayOut/LoginUser/LoginUserSlice.ts";
+import { setIsAuth, setModalMode } from "../../appSlice.ts";
+import { accessTokenStore } from "../../shared/appConfig.ts";
 
 export default function UserPage() {
-  return <Title level={3}>Привет</Title>;
+  const userData = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
+
+  async function handleLogOutUser() {
+    try {
+      await logoutUser();
+      localStorage.removeItem("refreshToken");
+      accessTokenStore.setAccessToken(null);
+      dispatch(setTextResponseAuth(""));
+      dispatch(setModalMode(false));
+      dispatch(setIsAuth(false));
+    } catch {
+      message.error("ошибка выхода из аккаунта");
+    }
+  }
+
+  return (
+    <>
+      {!userData && (
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+      )}
+      {userData && (
+        <>
+          <Flex
+            style={{
+              // background: "#D3D3D3",
+              borderRadius: "5px",
+              margin: "1px",
+            }}
+            vertical
+          >
+            <Title style={{ marginTop: "5px" }} type={"secondary"} level={4}>
+              Ваше имя:
+            </Title>
+            <Title style={{ marginTop: "5px" }} level={3}>
+              {userData.username}
+            </Title>
+            <Title style={{ marginTop: "5px" }} type={"secondary"} level={4}>
+              Ваша почта:
+            </Title>
+            <Title style={{ marginTop: "5px" }} level={3}>
+              {userData.email}
+            </Title>
+
+            {userData.phoneNumber.length > 0 ? (
+              <Title
+                style={{ marginTop: "5px" }}
+                level={3}
+              >{`Ваш телефон:${userData.phoneNumber}`}</Title>
+            ) : (
+              <Title style={{ marginTop: "5px" }} level={4}>
+                Телефон не указан
+              </Title>
+            )}
+            <Button
+              size={"middle"}
+              variant={"solid"}
+              color={"blue"}
+              onClick={handleLogOutUser}
+            >
+              <LogoutOutlined />
+            </Button>
+          </Flex>
+        </>
+      )}
+    </>
+  );
 }

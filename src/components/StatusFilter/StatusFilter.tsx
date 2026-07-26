@@ -1,39 +1,36 @@
-import type { StatusType, TodoInfo } from "../../types/type.ts";
-import * as React from "react";
+import type { Status } from "../../types/TodoType.ts";
 import type { JSX } from "react";
-
 import { Tabs, type TabsProps } from "antd";
 import { Typography } from "antd";
-const { Text } = Typography;
+import { setFilterStatus } from "../../pages/TodoListPage/todoListSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../hooks.ts";
 
-interface IStatusProps {
-  info?: TodoInfo;
-  setStatus: React.Dispatch<React.SetStateAction<StatusType>>;
-  status?: StatusType;
-}
+export default function StatusFilter(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const filterStatus = useAppSelector(
+    (state) => state.todosResponse.filterStatus,
+  );
+  const info = useAppSelector(
+    (state) => state.todosResponse.todosResponse?.info,
+  );
 
-export default function StatusFilter({
-  info,
-  setStatus,
-}: IStatusProps): JSX.Element {
-  if (!info) return <Text type="warning">Ant Design (warning)</Text>;
-  const [all, completed, inWork] = Object.keys(info);
+  if (!info) return <Typography.Text type="warning" />;
 
-  const onChangeStatus = (status: string): void => {
-    setStatus(status as StatusType);
+  const handleChangeStatus = (filterStatus: string): void => {
+    dispatch(setFilterStatus(filterStatus as Status));
   };
 
   const items: TabsProps["items"] = [
     {
-      key: all,
+      key: "all",
       label: `Все (${info.all})`,
     },
     {
-      key: inWork,
+      key: "inWork",
       label: `В работе (${info.inWork})`,
     },
     {
-      key: completed,
+      key: "completed",
       label: `Сделано (${info.completed})`,
     },
   ];
@@ -45,9 +42,9 @@ export default function StatusFilter({
         size={"large"}
         centered
         color={"deepskyblue"}
-        defaultActiveKey="1"
+        activeKey={filterStatus}
         items={items}
-        onChange={onChangeStatus}
+        onChange={handleChangeStatus}
       />
     </>
   );

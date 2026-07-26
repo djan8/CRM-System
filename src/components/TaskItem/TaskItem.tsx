@@ -1,6 +1,5 @@
-import type { Todo } from "../../types/type.ts";
-import { deleteTask, editTask } from "../../api/fetch.ts";
-import { type JSX, useState } from "react";
+import type { Status, TodoData } from "../../types/TodoType.ts";
+import { useState } from "react";
 
 import {
   Button,
@@ -18,54 +17,63 @@ import {
   EditOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
+import { useAppSelector } from "../../hooks.ts";
+import { deleteTask, editTask } from "./taskItemSlice.ts";
 
 const { Text } = Typography;
-type Props = {
-  task: Todo;
-  onUpdate?: () => Promise<void>;
-};
+interface Props {
+  task: TodoData;
+  onUpdate?: (status: Status) => Promise<void>;
+}
 
-export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
-  const [isEdit, setIsEdit] = useState(false);
+export default function TaskItem({ task, onUpdate }: Props) {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
+  const filerStatus = useAppSelector(
+    (state) => state.todosResponse.filterStatus,
+  );
 
-  async function changeTaskName() {
+  async function handleChangeTaskName(value: { title: string }) {
     try {
-      await form.validateFields();
-      const title = form.getFieldsValue();
-      console.log(title);
-      await editTask(task.id, title);
-      await onUpdate?.();
-      setIsEdit((prev) => !prev);
+      await editTask(task.id, value);
+      await onUpdate?.(filerStatus);
+      setIsEditing((prev) => !prev);
     } catch {
       message.error("Ошибка изменения имени, ппробуйте еще раз");
     }
   }
-  function handleChangeStateValue(): void {
-    setIsEdit((prev) => !prev);
+  function handleCancelEdit(): void {
+    setIsEditing((prev) => !prev);
     form.setFieldsValue({ title: task.title });
   }
-  function handleClickEdit(): void {
-    setIsEdit((prev) => !prev);
+  function handleStartEdit(): void {
+    setIsEditing((prev) => !prev);
   }
-  async function handleClickDelete(): Promise<void> {
-    await deleteTask(task.id);
-
-    await onUpdate?.();
+  async function handleDeleteTask(): Promise<void> {
+    try {
+      await deleteTask(task.id);
+      await onUpdate?.(filerStatus);
+    } catch {
+      message.error("Ошибка удаления, ппробуйте еще раз");
+    }
   }
   async function handleChangeStatusTask(e: CheckboxChangeEvent): Promise<void> {
-    const checked = e.target.checked;
-    await editTask(task.id, { isDone: checked });
-    await onUpdate?.();
+    try {
+      const checked = e.target.checked;
+      await editTask(task.id, { isDone: checked });
+      await onUpdate?.(filerStatus);
+    } catch {
+      message.error("Ошибка изм статуса, ппробуйте еще раз");
+    }
   }
   return (
     <>
-      {isEdit ? (
+      {isEditing ? (
         <Flex align={"center"} justify={"space-between"} flex={1}>
           <Form
             name="title"
             form={form}
-            onFinish={changeTaskName}
+            onFinish={handleChangeTaskName}
             initialValues={{ title: task.title }}
             style={{ width: "100%" }}
           >
@@ -94,7 +102,7 @@ export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
                   color={"danger"}
                   variant={"solid"}
                   htmlType={"button"}
-                  onClick={handleChangeStateValue}
+                  onClick={handleCancelEdit}
                   icon={<CloseOutlined />}
                 />
               </Flex>
@@ -110,7 +118,7 @@ export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
           <Flex gap={"small"}>
             <Button
               size={"large"}
-              onClick={handleClickEdit}
+              onClick={handleStartEdit}
               type={"primary"}
               icon={<EditOutlined />}
             />
@@ -118,7 +126,7 @@ export default function TaskItem({ task, onUpdate }: Props): JSX.Element {
               size={"large"}
               color={"danger"}
               variant={"solid"}
-              onClick={handleClickDelete}
+              onClick={handleDeleteTask}
               icon={<DeleteOutlined />}
             />
           </Flex>

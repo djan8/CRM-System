@@ -1,31 +1,32 @@
-import { addTask } from "../../api/fetch.ts";
-import { type JSX } from "react";
-
 import { Button, Form, Input, message } from "antd";
+import { createTask } from "./createTaskSlice.ts";
+import { useAppDispatch } from "../../hooks.ts";
 
 interface Props {
   onUpdate: () => Promise<void>;
 }
 
-export default function AddTaskForm({ onUpdate }: Props): JSX.Element {
+export default function CreateTask({ onUpdate }: Props) {
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
 
-  async function handleOnSubmit(title: { title: string }): Promise<void> {
-    await form.validateFields();
+  async function handleSubmitCreateTask(title: {
+    title: string;
+  }): Promise<void> {
     try {
-      await addTask(title);
-
+      dispatch(createTask(title));
       await onUpdate();
-
       form.resetFields();
-    } catch {
-      message.error("Не удалось добавить задачу");
+    } catch (err) {
+      if (err instanceof Error) {
+        message.error(`Не удалось добавить задачу ${title.title.toString()}`);
+      }
     }
   }
 
   return (
     <>
-      <Form form={form} layout={"inline"} onFinish={handleOnSubmit}>
+      <Form form={form} layout={"inline"} onFinish={handleSubmitCreateTask}>
         <Form.Item
           style={{ flex: 1 }}
           name="title"

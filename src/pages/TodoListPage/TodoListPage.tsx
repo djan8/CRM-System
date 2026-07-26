@@ -1,38 +1,33 @@
-import { type JSX, useCallback, useEffect, useState } from "react";
-import type {
-  MetaResponse,
-  StatusType,
-  Todo,
-  TodoInfo,
-} from "../../types/type.ts";
-import { getTodos } from "../../api/fetch.ts";
-import TaskList from "../../components/TaskList/TaskList.tsx";
-import AddTaskForm from "../../components/AddTaskForm/AddTaskForm.tsx";
+import { type JSX, useCallback, useEffect } from "react";
+
+import TaskList from "../../components/TodoList/TodoList.tsx";
+import AddTaskForm from "../../components/CreateTask/CreateTask.tsx";
 import StatusFilter from "../../components/StatusFilter/StatusFilter.tsx";
 import { Flex, message, Spin } from "antd";
-import { STATUSES } from "../../const/const.ts";
+import { useAppDispatch, useAppSelector } from "../../hooks.ts";
+import { getTodos, setTodosResponse } from "./todoListSlice.ts";
 
 export default function TodoListPage(): JSX.Element {
-  const [status, setStatus] = useState<StatusType>(STATUSES.ALL);
-  const [todosResponse, setTodosResponse] = useState<
-    MetaResponse<Todo, TodoInfo> | undefined
-  >();
+  const { todosResponse, filterStatus } = useAppSelector(
+    (state) => state.todosResponse,
+  );
+  const dispatch = useAppDispatch();
 
   const loadTodos = useCallback(async () => {
     try {
-      const todos = await getTodos(status);
-      setTodosResponse(todos);
+      const todos = await getTodos(filterStatus);
+      dispatch(setTodosResponse(todos));
     } catch {
       message.error("Ошибка загрузки данных");
     }
-  }, [status]);
+  }, [filterStatus, dispatch]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadTodos();
+
     const intervalId = setInterval(loadTodos, 5000);
     return () => clearInterval(intervalId);
-  }, [status, loadTodos]);
+  }, [loadTodos]);
 
   return (
     <Flex vertical flex={1} style={{ width: "100%" }}>
@@ -42,16 +37,8 @@ export default function TodoListPage(): JSX.Element {
         style={{ maxWidth: "40rem", width: "100%", padding: "1rem 1rem" }}
       >
         <AddTaskForm onUpdate={loadTodos} />
-        <StatusFilter
-          info={todosResponse?.info}
-          status={status}
-          setStatus={setStatus}
-        />
-        {!todosResponse ? (
-          <Spin />
-        ) : (
-          <TaskList data={todosResponse} onUpdate={loadTodos} />
-        )}
+        <StatusFilter />
+        {!todosResponse ? <Spin /> : <TaskList onUpdate={loadTodos} />}
       </Flex>
     </Flex>
   );
