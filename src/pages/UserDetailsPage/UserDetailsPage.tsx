@@ -10,7 +10,7 @@ import {
 } from "./userDetailsSlice.ts";
 import { useAppSelector, useAppDispatch } from "../../hooks.ts";
 import { setModalMode } from "../../appSlice.ts";
-import type { UserRequest } from "./type.ts";
+// import type { UserRequest } from "./type.ts";
 
 export default function UserDetailsPage() {
   const userDetails = useAppSelector((state) => state.details.userDetails);
@@ -43,24 +43,36 @@ export default function UserDetailsPage() {
     void loadUserDetails();
   }, [idNum, isChecking, navigate, dispatch]);
 
+  function getChangedValue<T extends object>(original: T, value: Partial<T>) {
+    const changed: Partial<T> = {};
+    for (const key of Object.values(value) as (keyof T)[]) {
+      if (original[key] !== value[key]) {
+        changed[key] = value[key];
+      }
+    }
+    return changed;
+  }
+
   async function handleSaveEditedUserValue() {
     try {
-      await form.validateFields();
+      const values = await form.validateFields();
       // console.log(data);
-      const updatedUserValue: UserRequest = {
-        username: details.username,
-        email: details.email,
-        phoneNumber: details.phoneNumber,
-      };
-      if (userDetails?.username === details.username) {
-        delete updatedUserValue.username;
-      }
-      if (userDetails?.email === details.email) {
-        delete updatedUserValue.email;
-      }
-      if (userDetails?.phoneNumber === details.phoneNumber) {
-        delete updatedUserValue.phoneNumber;
-      }
+      // const updatedUserValue: UserRequest = {
+      //   username: details.username,
+      //   email: details.email,
+      //   phoneNumber: details.phoneNumber,
+      // };
+      // if (userDetails?.username === details.username) {
+      //   delete updatedUserValue.username;
+      // }
+      // if (userDetails?.email === details.email) {
+      //   delete updatedUserValue.email;
+      // }
+      // if (userDetails?.phoneNumber === details.phoneNumber) {
+      //   delete updatedUserValue.phoneNumber;
+      // }
+      if (!userDetails) return;
+      const updatedUserValue = getChangedValue(userDetails, values);
       await refreshUserDetails(idNum, updatedUserValue);
       message.info("Данные успешно обновлены");
       const data = await getUserDetails(idNum);
